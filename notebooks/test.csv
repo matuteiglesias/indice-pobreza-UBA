@@ -1,97 +1,11 @@
-,PROV,AGLO_si,observable,0
-0,Buenos Aires,False,Pobreza,1063.275
-1,Buenos Aires,False,Total,3301.65
-2,Buenos Aires,True,Pobreza,4606.3625
-3,Buenos Aires,True,Total,13604.55
-4,Catamarca,False,Pobreza,102.11250000000001
-5,Catamarca,False,Total,230.95
-6,Catamarca,True,Pobreza,66.725
-7,Catamarca,True,Total,189.1
-8,Chaco,False,Pobreza,414.65
-9,Chaco,False,Total,728.65
-10,Chaco,True,Pobreza,179.46249999999998
-11,Chaco,True,Total,413.5
-12,Chubut,False,Pobreza,89.3625
-13,Chubut,False,Total,264.9
-14,Chubut,True,Pobreza,75.57499999999999
-15,Chubut,True,Total,316.9
-16,Ciudad Autónoma de Buenos Aires,False,Pobreza,0.05
-17,Ciudad Autónoma de Buenos Aires,False,Total,1.25
-18,Ciudad Autónoma de Buenos Aires,True,Pobreza,386.0
-19,Ciudad Autónoma de Buenos Aires,True,Total,2909.8
-20,Corrientes,False,Pobreza,389.9875
-21,Corrientes,False,Total,706.25
-22,Corrientes,True,Pobreza,161.0625
-23,Corrientes,True,Total,373.3
-24,Córdoba,False,Pobreza,698.6375
-25,Córdoba,False,Total,1846.2
-26,Córdoba,True,Pobreza,560.7625
-27,Córdoba,True,Total,1718.25
-28,Entre Ríos,False,Pobreza,381.775
-29,Entre Ríos,False,Total,888.5
-30,Entre Ríos,True,Pobreza,160.48749999999998
-31,Entre Ríos,True,Total,448.05
-32,Formosa,False,Pobreza,196.0375
-33,Formosa,False,Total,328.0
-34,Formosa,True,Pobreza,107.05
-35,Formosa,True,Total,241.55
-36,Jujuy,False,Pobreza,205.0375
-37,Jujuy,False,Total,395.95
-38,Jujuy,True,Pobreza,125.2625
-39,Jujuy,True,Total,336.35
-40,La Pampa,False,Pobreza,71.525
-41,La Pampa,False,Total,209.8
-42,La Pampa,True,Pobreza,39.474999999999994
-43,La Pampa,True,Total,127.35
-44,La Rioja,False,Pobreza,82.27499999999999
-45,La Rioja,False,Total,163.4
-46,La Rioja,True,Pobreza,89.64999999999999
-47,La Rioja,True,Total,208.4
-48,Mendoza,False,Pobreza,406.5875
-49,Mendoza,False,Total,877.6
-50,Mendoza,True,Pobreza,336.04999999999995
-51,Mendoza,True,Total,1002.8
-52,Misiones,False,Pobreza,499.575
-53,Misiones,False,Total,904.65
-54,Misiones,True,Pobreza,128.775
-55,Misiones,True,Total,319.7
-56,Neuquén,False,Pobreza,109.42500000000001
-57,Neuquén,False,Total,334.9
-58,Neuquén,True,Pobreza,81.85
-59,Neuquén,True,Total,290.8
-60,Río Negro,False,Pobreza,187.075
-61,Río Negro,False,Total,578.85
-62,Río Negro,True,Pobreza,32.400000000000006
-63,Río Negro,True,Total,131.3
-64,Salta,False,Pobreza,410.59999999999997
-65,Salta,False,Total,728.5
-66,Salta,True,Pobreza,236.35000000000002
-67,Salta,True,Total,615.9
-68,San Juan,False,Pobreza,170.2375
-69,San Juan,False,Total,291.35
-70,San Juan,True,Pobreza,186.2625
-71,San Juan,True,Total,442.25
-72,San Luis,False,Pobreza,114.4375
-73,San Luis,False,Total,267.15
-74,San Luis,True,Pobreza,81.85
-75,San Luis,True,Total,203.15
-76,Santa Cruz,False,Pobreza,60.712500000000006
-77,Santa Cruz,False,Total,247.05
-78,Santa Cruz,True,Pobreza,26.462500000000002
-79,Santa Cruz,True,Total,111.9
-80,Santa Fe,False,Pobreza,596.375
-81,Santa Fe,False,Total,1551.15
-82,Santa Fe,True,Pobreza,621.2375
-83,Santa Fe,True,Total,1840.0
-84,Santiago del Estero,False,Pobreza,341.675
-85,Santiago del Estero,False,Total,567.55
-86,Santiago del Estero,True,Pobreza,161.71249999999998
-87,Santiago del Estero,True,Total,383.3
-88,Tierra del Fuego,False,Pobreza,6.425
-89,Tierra del Fuego,False,Total,26.7
-90,Tierra del Fuego,True,Pobreza,14.325000000000001
-91,Tierra del Fuego,True,Total,129.2
-92,Tucumán,False,Pobreza,353.325
-93,Tucumán,False,Total,701.75
-94,Tucumán,True,Pobreza,323.79999999999995
-95,Tucumán,True,Total,887.25
+,CBA,CBT,CB_EQUIV,Pobreza,Indigencia,Pobreza_5usd,gap_pobreza,gap_indigencia,IDFRAC,PROV,NOMPROV,AGLOMERADO,Region
+0,4046.2464377045717,9971.437138237068,2.83,False,False,False,22401.562861762948,28326.753562295442,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+1,4046.2464377045717,9971.437138237068,2.83,False,False,False,22401.562861762948,28326.753562295442,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+2,4046.2464377045717,9971.437138237068,2.83,False,False,False,22401.562861762948,28326.753562295442,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+3,4046.2464377045717,9971.437138237068,2.2800000000000002,False,False,False,23265.562861762963,29190.753562295457,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+4,4046.2464377045717,9971.437138237068,2.2800000000000002,False,False,False,23265.562861762963,29190.753562295457,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+5,4046.2464377045717,9971.437138237068,2.2800000000000002,False,False,False,23265.562861762963,29190.753562295457,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+6,2697.497625136381,6647.624758824712,1.5899999999999999,False,False,False,1985.375241175284,5935.502374863616,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+7,2697.497625136381,6647.624758824712,1.5899999999999999,False,False,False,1985.375241175284,5935.502374863616,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+8,2697.497625136381,6647.624758824712,1.5,False,False,False,14503.375241175301,18453.502374863634,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
+9,2697.497625136381,6647.624758824712,1.5,False,False,False,14503.375241175301,18453.502374863634,2,2,Ciudad Autónoma de Buenos Aires,32,Gran Buenos Aires
