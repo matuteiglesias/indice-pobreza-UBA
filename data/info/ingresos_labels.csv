@@ -1,0 +1,6 @@
+INGRESO,INGRESO_NLB,INGRESO_JUB,INGRESO_SBS,Ingresos
+0,0,0,0,Sin Ingresos
+1,0,0,0,Laborables
+1,1,0,0,Otros No Lab.
+1,1,0,1,Subsidio
+1,1,1,0,Jubilacion

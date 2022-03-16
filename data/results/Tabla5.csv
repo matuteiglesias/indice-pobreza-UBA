@@ -1,0 +1,46 @@
+Ingresos,Ingresos por:,count,mean,25%,50%,75%
+Jubilacion,Ayuda Social,4695200,0,0,0,0
+Jubilacion,Cuota Alim.,4695200,33,0,0,0
+Jubilacion,ITI (lab. + no lab.),4695200,1770,869,1176,1954
+Jubilacion,Indemnizacion,4695200,1,0,0,0
+Jubilacion,Jubilacion,4695200,1347,764,977,1466
+Jubilacion,No lab.,4695200,1532,798,1029,1710
+Jubilacion,Ocup. Ppal.,4695200,215,0,0,0
+Jubilacion,Otras ocup.,4695200,14,0,0,0
+Jubilacion,Salario,4695200,121,0,0,0
+Laborables,Ayuda Social,17717950,0,0,0,0
+Laborables,Cuota Alim.,17717950,0,0,0,0
+Laborables,ITI (lab. + no lab.),17717950,2569,1173,2116,3279
+Laborables,Indemnizacion,17717950,0,0,0,0
+Laborables,Jubilacion,17717950,0,0,0,0
+Laborables,No lab.,17717950,0,0,0,0
+Laborables,Ocup. Ppal.,17717950,2265,1022,1954,2931
+Laborables,Otras ocup.,17717950,161,0,0,0
+Laborables,Salario,17717950,2136,874,1858,2931
+Otros No Lab.,Ayuda Social,582175,0,0,0,0
+Otros No Lab.,Cuota Alim.,582175,588,0,352,823
+Otros No Lab.,ITI (lab. + no lab.),582175,2111,547,1115,2345
+Otros No Lab.,Indemnizacion,582175,303,0,0,0
+Otros No Lab.,Jubilacion,582175,0,0,0,0
+Otros No Lab.,No lab.,582175,1182,337,614,1125
+Otros No Lab.,Ocup. Ppal.,582175,742,0,0,765
+Otros No Lab.,Otras ocup.,582175,142,0,0,0
+Otros No Lab.,Salario,582175,606,0,0,472
+Sin Ingresos,Ayuda Social,16473925,0,0,0,0
+Sin Ingresos,Cuota Alim.,16473925,0,0,0,0
+Sin Ingresos,ITI (lab. + no lab.),16473925,0,0,0,0
+Sin Ingresos,Indemnizacion,16473925,0,0,0,0
+Sin Ingresos,Jubilacion,16473925,0,0,0,0
+Sin Ingresos,No lab.,16473925,0,0,0,0
+Sin Ingresos,Ocup. Ppal.,16473925,0,0,0,0
+Sin Ingresos,Otras ocup.,16473925,0,0,0,0
+Sin Ingresos,Salario,16473925,0,0,0,0
+Subsidio,Ayuda Social,533825,368,164,315,505
+Subsidio,Cuota Alim.,533825,18,0,0,0
+Subsidio,ITI (lab. + no lab.),533825,551,219,441,704
+Subsidio,Indemnizacion,533825,3,0,0,0
+Subsidio,Jubilacion,533825,0,0,0,0
+Subsidio,No lab.,533825,392,164,329,527
+Subsidio,Ocup. Ppal.,533825,132,0,0,0
+Subsidio,Otras ocup.,533825,25,0,0,0
+Subsidio,Salario,533825,122,0,0,0
