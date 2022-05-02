@@ -1,5 +1,7 @@
-CONDACT,Actividad
-0,Menor de 14
-1,Ocupado
-2,Desocupado
-3,Inactivo
+"CONDACT","Actividad"
+-1,"Entrevista no Realizada"
+0,"Menor de 14"
+1,"Ocupado"
+2,"Desocupado"
+3,"Inactivo"
+9,"Total"
