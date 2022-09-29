@@ -1,7 +1,7 @@
 data/yr_samples/
 data/Pobreza/
+data/geojson/
 data/training/
 data/Fitted_RF/
 data/info/IX_TOT.csv
 notebooks/.ipynb_checkpoints/
-test/noupload2
