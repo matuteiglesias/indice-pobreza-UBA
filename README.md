@@ -17,11 +17,11 @@ El repositorio "Indice de Pobreza - Exactas UBA" está dedicado al cálculo, an�
 
 El objetivo principal de este proyecto es contribuir a la comprensión y mitigación de la pobreza en Argentina ofreciendo una visión clara de sus diversas dimensiones. Al hacerlo, su objetivo es informar la formulación de políticas eficaces, promover la conciencia social e inspirar la acción hacia el desarrollo equitativo y sostenible.
 
-## Uso:
+### Uso:
 
 Ideal para académicos, investigadores, agencias gubernamentales, ONG y cualquier persona interesada en los aspectos multifacéticos de la pobreza en Argentina. Este repositorio sirve como un recurso valioso para la investigación, la toma de decisiones y la promoción.
 
-## Idioma y Herramientas:
+### Idioma y Herramientas:
 
 Desarrollado con python, se usan los modelos de Random Forest del encuestador de hogares.
 
