@@ -49,15 +49,13 @@ Variables:
     P47T_persona: Ingresos de la persona.
     Q: Trimestre.
 
-#### **Tabla: personas_geo**
+#### **Tabla: hogares_geo**
 
-    Clave Primaria: ID
-    Clave Externa: ID, que hace referencia a ID en la tabla personas_ingresos_Q_df.
+    Clave Primaria: HOGAR_REF_ID
     Clave Externa: HOGAR_REF_ID, que hace referencia a HOGAR_REF_ID en la tabla pobreza_hogares.
 
 Variables:
 
-    ID: Identificador único para cada persona.
     RADIO_REF_ID: Identificador de referencia de radio.
     AGLOMERADO: Aglomerado.
     HOGAR_REF_ID: Identificador del hogar al que pertenece la persona. Se relaciona con la tabla pobreza_hogares.
