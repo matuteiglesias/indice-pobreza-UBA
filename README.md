@@ -37,64 +37,69 @@ El script de la notebook 03 genera datasets pobreza hogares, y datasets personas
 
 ### **Datasets de Pobreza**
 
-Este conjunto de datos se divide en dos tablas principales: `pobreza_hogares` y `pobreza_personas`.
-
+Este conjunto de datos se divide en tres tablas principales: personas_ingresos_Q_df, personas_geo, y pobreza_hogares.
 
 #### **Tabla: pobreza_hogares**
 
+Tabla: personas_ingresos_Q_df
 
+    Clave Primaria: ID
 
-* **Clave Primaria:** `HOGAR_REF_ID`
+Variables:
 
+    ID: Identificador único para cada persona.
+    RADIO_REF_ID: Identificador de referencia de radio.
+    DPTO: Departamento.
+    AGLOMERADO: Aglomerado.
+    HOGAR_REF_ID: Identificador del hogar al que pertenece la persona.
+    P02: ...
+    P03: ...
+    P09: ...
+    P10: ...
+    ANO4: Año. Actualmente tiene un único valor.
+    P0910: ...
+    P47T_persona: Ingresos de la persona.
+    Q: Trimestre.
 
-##### **Variables:**
+Tabla: personas_geo
 
+    Clave Primaria: ID
+    Clave Externa: ID, que hace referencia a ID en la tabla personas_ingresos_Q_df.
+    Clave Externa: HOGAR_REF_ID, que hace referencia a HOGAR_REF_ID en la tabla pobreza_hogares.
 
+Variables:
 
-* `HOGAR_REF_ID`: Identificador único para cada hogar.
-* `Q`: Trimestre. Actualmente tiene un único valor.
-* `P47T_hogar`: Ingresos del hogar.
-* `CBA`: ...
-* `CBT`: ...
-* `CB_EQUIV`: ...
-* `Pobreza`: Indicador booleano que denota si el hogar está en situación de pobreza.
-* `Indigencia`: Indicador booleano que denota si el hogar está en situación de indigencia.
-* `gap_pobreza`: ...
-* `gap_indigencia`: ...
+    ID: Identificador único para cada persona.
+    RADIO_REF_ID: Identificador de referencia de radio.
+    AGLOMERADO: Aglomerado.
+    HOGAR_REF_ID: Identificador del hogar al que pertenece la persona. Se relaciona con la tabla pobreza_hogares.
+    ANO4: Año. Actualmente tiene un único valor.
+    COD_2010: Código 2010.
+    IDFRAC: ...
+    DPTO: Departamento.
+    NOMDPTO: Nombre del departamento.
+    PROV: Provincia.
+    NOMPROV: Nombre de la provincia.
+    Region: Región.
+    IN1: ...
+    circuito: ...
 
+Tabla: pobreza_hogares
 
-#### **Tabla: pobreza_personas**
+    Clave Primaria: HOGAR_REF_ID
 
+Variables:
 
-
-* **Clave Primaria:** `ID`
-* **Clave Externa:** `HOGAR_REF_ID`, que hace referencia a `HOGAR_REF_ID` en la tabla `pobreza_hogares`.
-
-
-##### **Variables:**
-
-
-
-* `ID`: Identificador único para cada persona.
-* `RADIO_REF_ID`: Identificador de referencia de radio.
-* `DPTO`: Departamento.
-* `PROV`: Provincia.
-* `AGLOMERADO`: Aglomerado.
-* `HOGAR_REF_ID`: Identificador del hogar al que pertenece la persona. Se relaciona con la tabla `pobreza_hogares`.
-* `P02`: ...
-* `P03`: ...
-* `P09`: ...
-* `P10`: ...
-* `P47T_persona`: Ingresos de la persona.
-* `ANO4`: Año. Actualmente tiene un único valor.
-* `Q`: Trimestre.
-* `P0910`: ...
-* `COD_2010`: Código 2010.
-* `IDFRAC`: ...
-* `NOMPROV`: Nombre de la provincia.
-* `Region`: Región.
-* `IN1`: ...
-* `circuito`: ...
+    HOGAR_REF_ID: Identificador único para cada hogar.
+    Q: Trimestre. Actualmente tiene un único valor.
+    P47T_hogar: Ingresos del hogar.
+    CBA: ...
+    CBT: ...
+    CB_EQUIV: ...
+    Pobreza: Indicador booleano que denota si el hogar está en situación de pobreza.
+    Indigencia: Indicador booleano que denota si el hogar está en situación de indigencia.
+    gap_pobreza: ...
+    gap_indigencia: ...
 
 ### Idioma y Herramientas:
 
