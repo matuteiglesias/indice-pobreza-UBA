@@ -30,6 +30,8 @@ Ej:
 ARG
 `[########################################] | 100% Completed | 100.56 ms
 
+Luego, correr: `01 - Sampleos de Censo.ipynb` (Run All) para tener los muestreos de poblaciones adaptados para el notebook 02.
+
 
 ### Idioma y Herramientas:
 
