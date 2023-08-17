@@ -21,6 +21,16 @@ El objetivo principal de este proyecto es contribuir a la comprensión y mitigac
 
 Ideal para académicos, investigadores, agencias gubernamentales, ONG y cualquier persona interesada en los aspectos multifacéticos de la pobreza en Argentina. Este repositorio sirve como un recurso valioso para la investigación, la toma de decisiones y la promoción.
 
+Antes de usar encuestadores, necesita samplear Censo con https://github.com/matuteiglesias/samplerCensoARG
+Ej:
+`
+(base) matias@matias-ThinkPad-T470-W10DG:~/repos/samplerCensoARG/notebooks$ python samplear.py -dbp '/suite/ext_CPV2010_basico_radio_pub' -f 0.05 -y 2023 2024
+/media/matias/Elements/suite/ext_CPV2010_basico_radio_pub
+0.05
+ARG
+`[########################################] | 100% Completed | 100.56 ms
+
+
 ### Idioma y Herramientas:
 
 Desarrollado con python, se usan los modelos de Random Forest del encuestador de hogares.
