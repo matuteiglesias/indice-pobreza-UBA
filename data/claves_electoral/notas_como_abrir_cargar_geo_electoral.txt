@@ -1,0 +1,35 @@
+
+# Como cargar en python
+
+### Info Geografica
+# display('muestra_hogares', muestra_hogares.max())
+
+# Radio Reference
+radio_ref = pd.read_csv('./../data/info/radio_ref.csv', usecols = ['RADIO_REF_ID', 'DPTO', 'FRAC_REF_ID', 'NOMDPTO', 'radio'])#.merge(aglo_labels)
+dpto_region = pd.read_csv('./../data/info/DPTO_PROV_Region.csv')
+radio_ref = radio_ref.merge(dpto_region)
+radio_ref['COD_2010'] = radio_ref['radio'].astype(str).str.zfill(9); radio_ref = radio_ref.drop('radio', axis = 1)
+radio_ref_cols = radio_ref
+display('radio_ref', radio_ref.max())
+
+
+# ## Circuitos Electorales ## No usar esta version por ahora
+# url = 'https://raw.githubusercontent.com/matuteiglesias/CNE-INDEC-georef/main/radios_circuitos.csv'
+# radios_circuitos = pd.read_csv(url, usecols = ['COD_2010', 'IN1', 'circuito'])
+# radios_circuitos['circuito'] = radios_circuitos['circuito'].str.zfill(6)
+# radios_circuitos
+# radios_circuitos_cols = radios_circuitos[['COD_2010', 'IN1', 'circuito']]
+
+# Claves Dptos
+claves_dptos = pd.read_csv('https://raw.githubusercontent.com/matuteiglesias/elecciones-ARG/main/datos/BD/claves_dptos_ref.csv')
+claves_dptos_cols = claves_dptos[['distrito_id', 'seccion_id', 'IN1', 'NAM']].drop_duplicates()
+display('dtypes claves_dptos_ref', claves_dptos_cols.dtypes)
+
+# Nombres de secciones BD CNE
+# seccion_table = pd.read_csv('./../../elecciones-ARG/datos/BD/seccion_table.csv')
+
+## Radios en distrito y seccion
+radios_circuitos_secciones_ref = pd.read_csv('./../../CNE-INDEC-georef/info/radios_circuitos_secciones_ref.csv')
+radios_circuitos_secciones_ref = radios_circuitos_secciones_ref[['COD_2010', 'distrito_id', 'seccion_id', 'seccion_nombre', 'circuito']]
+display('radios_circuitos_secciones_ref', radios_circuitos_secciones_ref.max())
+
