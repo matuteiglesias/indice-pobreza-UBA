@@ -32,6 +32,69 @@ ARG
 
 Luego, correr: `01 - Sampleos de Censo.ipynb` (Run All) para tener los muestreos de poblaciones adaptados para el notebook 02.
 
+El script de la notebook 03 genera datasets pobreza hogares, y datasets personas. 
+
+
+### **Datasets de Pobreza**
+
+Este conjunto de datos se divide en dos tablas principales: `pobreza_hogares` y `pobreza_personas`.
+
+
+#### **Tabla: pobreza_hogares**
+
+
+
+* **Clave Primaria:** `HOGAR_REF_ID`
+
+
+##### **Variables:**
+
+
+
+* `HOGAR_REF_ID`: Identificador único para cada hogar.
+* `Q`: Trimestre. Actualmente tiene un único valor.
+* `P47T_hogar`: Ingresos del hogar.
+* `CBA`: ...
+* `CBT`: ...
+* `CB_EQUIV`: ...
+* `Pobreza`: Indicador booleano que denota si el hogar está en situación de pobreza.
+* `Indigencia`: Indicador booleano que denota si el hogar está en situación de indigencia.
+* `gap_pobreza`: ...
+* `gap_indigencia`: ...
+
+
+#### **Tabla: pobreza_personas**
+
+
+
+* **Clave Primaria:** `ID`
+* **Clave Externa:** `HOGAR_REF_ID`, que hace referencia a `HOGAR_REF_ID` en la tabla `pobreza_hogares`.
+
+
+##### **Variables:**
+
+
+
+* `ID`: Identificador único para cada persona.
+* `RADIO_REF_ID`: Identificador de referencia de radio.
+* `DPTO`: Departamento.
+* `PROV`: Provincia.
+* `AGLOMERADO`: Aglomerado.
+* `HOGAR_REF_ID`: Identificador del hogar al que pertenece la persona. Se relaciona con la tabla `pobreza_hogares`.
+* `P02`: ...
+* `P03`: ...
+* `P09`: ...
+* `P10`: ...
+* `P47T_persona`: Ingresos de la persona.
+* `ANO4`: Año. Actualmente tiene un único valor.
+* `Q`: Trimestre.
+* `P0910`: ...
+* `COD_2010`: Código 2010.
+* `IDFRAC`: ...
+* `NOMPROV`: Nombre de la provincia.
+* `Region`: Región.
+* `IN1`: ...
+* `circuito`: ...
 
 ### Idioma y Herramientas:
 
