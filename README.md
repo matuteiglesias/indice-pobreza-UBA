@@ -1,3 +1,4 @@
+
 # Indice de Pobreza de la UBA
 
 Análisis y cálculo de tasas de pobreza en Argentina. Herramienta esencial para investigadores, políticos y ONGs.
@@ -6,20 +7,9 @@ Análisis y cálculo de tasas de pobreza en Argentina. Herramienta esencial para
 
 El repositorio "Indice de Pobreza - Exactas UBA" está dedicado al cálculo, análisis y presentación de los índices de pobreza en Argentina. Aprovechando los métodos estadísticos y la integración de varios conjuntos de datos, este proyecto proporciona una comprensión profunda de los niveles de pobreza en diferentes regiones y demografías del país.
 
-**Características clave**:
-
-- **Análisis integral de datos**: utiliza la base de datos completa del censo para lograr la una perspectiva precisa y detallada sobre la pobreza en Argentina.
-- **Visualización dinámica**: ofrece representaciones visuales de métricas de pobreza, lo que permite una comprensión más intuitiva de datos complejos.
-- **Colaboración de código abierto**: alienta las contribuciones y la colaboración de investigadores, estadísticos, legisladores y cualquier persona interesada en la reducción de la pobreza.
-- **Enfoque impulsado por la investigación**: basado en las últimas investigaciones y metodologías académicas, lo que garantiza la credibilidad y la relevancia.
-
-### Objetivo:
-
-El objetivo principal de este proyecto es contribuir a la comprensión y mitigación de la pobreza en Argentina ofreciendo una visión clara de sus diversas dimensiones. Al hacerlo, su objetivo es informar la formulación de políticas eficaces, promover la conciencia social e inspirar la acción hacia el desarrollo equitativo y sostenible.
-
 ### Uso:
 
-Ideal para académicos, investigadores, agencias gubernamentales, ONG y cualquier persona interesada en los aspectos multifacéticos de la pobreza en Argentina. Este repositorio sirve como un recurso valioso para la investigación, la toma de decisiones y la promoción.
+Académicos, investigadores, agencias gubernamentales, ONG y cualquier persona interesada en los aspectos multifacéticos de la pobreza en Argentina. Este repositorio sirve como un recurso valioso para la investigación y la toma de decisiones.
 
 Antes de usar encuestadores, necesita samplear Censo con https://github.com/matuteiglesias/samplerCensoARG
 Ej:
@@ -39,9 +29,7 @@ El script de la notebook 03 genera datasets pobreza hogares, y datasets personas
 
 Este conjunto de datos se divide en tres tablas principales: personas_ingresos_Q_df, personas_geo, y pobreza_hogares.
 
-#### **Tabla: pobreza_hogares**
-
-Tabla: personas_ingresos_Q_df
+#### **Tabla: personas_ingresos_Q_df**
 
     Clave Primaria: ID
 
@@ -61,7 +49,7 @@ Variables:
     P47T_persona: Ingresos de la persona.
     Q: Trimestre.
 
-Tabla: personas_geo
+#### **Tabla: personas_geo**
 
     Clave Primaria: ID
     Clave Externa: ID, que hace referencia a ID en la tabla personas_ingresos_Q_df.
@@ -84,7 +72,8 @@ Variables:
     IN1: ...
     circuito: ...
 
-Tabla: pobreza_hogares
+#### **Tabla: pobreza_hogares**
+
 
     Clave Primaria: HOGAR_REF_ID
 
@@ -105,6 +94,9 @@ Variables:
 
 Desarrollado con python, se usan los modelos de Random Forest del encuestador de hogares.
 
+---
+
 ### Contribuir:
 
 Aportes, sugerencias y colaboraciones son bienvenidas! Siéntase libre de clonar el repositorio, enviar pull request o abrir issue para evaluar mejoras.
+
