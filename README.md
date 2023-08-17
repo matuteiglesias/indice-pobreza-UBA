@@ -27,7 +27,7 @@ El script de la notebook 03 genera datasets pobreza hogares, y datasets personas
 
 ### **Datasets de Pobreza**
 
-Este conjunto de datos se divide en tres tablas principales: personas_ingresos_Q_df, personas_geo, y pobreza_hogares.
+Este conjunto de datos se divide en tres tablas principales: personas_ingresos_Q_df, hogares_geo, y pobreza_hogares.
 
 #### **Tabla: personas_ingresos_Q_df**
 
