@@ -1,0 +1,526 @@
+,NOMPROV,NOMDPTO,seccion_nombre,NAM,count,pct
+0,Buenos Aires,25 de Mayo,25 De Mayo,25 de Mayo,641,0.0009366483769388694
+1,Buenos Aires,9 de Julio,Nueve De Julio,9 de Julio,830,0.0012128208312937
+2,Buenos Aires,Adolfo Alsina,Adolfo Alsina,Adolfo Alsina,319,0.00046613234359360275
+3,Buenos Aires,Adolfo Gonzáles Chaves,Adolfo Gonzales Chaves,Adolfo Gonzales Chaves,205,0.0002995521330303717
+4,Buenos Aires,Alberti,Alberti,Alberti,197,0.00028786229369260106
+5,Buenos Aires,Almirante Brown,Almirante Brown,Almirante Brown,7806,0.011406360733829665
+6,Buenos Aires,Avellaneda,Avellaneda,Avellaneda,5870,0.008577419614089178
+7,Buenos Aires,Ayacucho,Ayacucho,Ayacucho,365,0.0005333489197857837
+8,Buenos Aires,Azul,Azul,Azul,1140,0.0016658021056323107
+9,Buenos Aires,Bahía Blanca,Bahía Blanca,Bahía Blanca,5397,0.007886257863243491
+10,Buenos Aires,Balcarce,Balcarce,Balcarce,767,0.0011207633465087565
+11,Buenos Aires,Baradero,Baradero,Baradero,585,0.0008548195015744752
+12,Buenos Aires,Bartolomé Mitre,Arrecifes,Arrecifes,518,0.0007569170971206464
+13,Buenos Aires,Benito Juárez,Benito Juárez,Benito Juárez,344,0.0005026630915241359
+14,Buenos Aires,Berazategui,Berazategui,Berazategui,5129,0.0074946482454281765
+15,Buenos Aires,Berisso,Berisso,Berisso,1513,0.002210840864755865
+16,Buenos Aires,Bolívar,Bolívar,Bolívar,633,0.0009249585376010989
+17,Buenos Aires,Bragado,Bragado,Bragado,725,0.0010593916899854607
+18,Buenos Aires,Brandsen,Brandsen,Brandsen,501,0.000732076188527884
+19,Buenos Aires,Campana,Campana,Campana,1592,0.0023262780282163496
+20,Buenos Aires,Capitán Sarmiento,Capitán Sarmiento,Capitán Sarmiento,268,0.00039160961781531514
+21,Buenos Aires,Carlos Casares,Carlos Casares,Carlos Casares,417,0.0006093328754812926
+22,Buenos Aires,Carlos Tejedor,Carlos Tejedor,Carlos Tejedor,199,0.0002907847535270437
+23,Buenos Aires,Carmen de Areco,Carmen De Areco,Carmen de Areco,246,0.00035946255963644597
+24,Buenos Aires,Castelli,Castelli,Castelli,145,0.00021187833799709215
+25,Buenos Aires,Cañuelas,Cañuelas,Cañuelas,956,0.0013969358008635868
+26,Buenos Aires,Chacabuco,Chacabuco,Chacabuco,897,0.0013107232357475287
+27,Buenos Aires,Chascomús,Chascomús,Chascomús,779,0.0011382981055154124
+28,Buenos Aires,Chivilcoy,Chivilcoy,Chivilcoy,1182,0.0017271737621556065
+29,Buenos Aires,Colón,Colón,Colón,450,0.0006575534627495963
+30,Buenos Aires,Coronel Dorrego,Coronel Dorrego,Coronel Dorrego,269,0.0003930708477325365
+31,Buenos Aires,Coronel Pringles,Coronel Pringles,Coronel Pringles,385,0.0005625735181302102
+32,Buenos Aires,Coronel Suárez,Coronel Suárez,Coronel Suárez,708,0.0010345507813926983
+33,Buenos Aires,Coronel de Marina L. Rosales,Coronel Rosales,Coronel de Marina Leonardo Rosales,989,0.0014451563881318905
+34,Buenos Aires,Daireaux,Daireaux,Daireaux,297,0.0004339852854147336
+35,Buenos Aires,Dolores,Dolores,Dolores,480,0.0007013903602662361
+36,Buenos Aires,Ensenada,Ensenada,Ensenada,958,0.0013998582606980295
+37,Buenos Aires,Escobar,Escobar,Escobar,3660,0.00534810149703005
+38,Buenos Aires,Esteban Echeverría,Esteban Echeverría,Esteban Echeverría,5482,0.008010462406207305
+39,Buenos Aires,Exaltación de la Cruz,Exaltación De La Cruz,Exaltación de la Cruz,576,0.0008416684323194833
+40,Buenos Aires,Ezeiza,Ezeiza,Ezeiza,3126,0.0045678047212338625
+41,Buenos Aires,Florencio Varela,Florencio Varela,Florencio Varela,7075,0.010338201664340876
+42,Buenos Aires,Florentino Ameghino,F. Ameghino,Florentino Ameghino,164,0.00023964170642429733
+43,Buenos Aires,General Alvarado,General Alvarado,General Alvarado,722,0.0010550080002337968
+44,Buenos Aires,General Alvear,General Alvear,General Alvear,170,0.00024840908592762526
+45,Buenos Aires,General Arenales,General Arenales,General Arenales,267,0.00039014838789809385
+46,Buenos Aires,General Belgrano,General Belgrano,General Belgrano,338,0.0004938957120208079
+47,Buenos Aires,General Guido,General Guido,General Guido,52,7.59839556955089e-05
+48,Buenos Aires,General Juan Madariaga,General Madariaga,General Juan Madariaga,350,0.0005114304710274638
+49,Buenos Aires,General La Madrid,General La Madrid,General La Madrid,184,0.00026886630476872386
+50,Buenos Aires,General Las Heras,General Las Heras,General Las Heras,277,0.00040476068707030705
+51,Buenos Aires,General Lavalle,General Lavalle,General Lavalle,73,0.00010666978395715674
+52,Buenos Aires,General Paz,General Paz,General Paz,199,0.0002907847535270437
+53,Buenos Aires,General Pinto,General Pinto,General Pinto,197,0.00028786229369260106
+54,Buenos Aires,General Pueyrredón,General Pueyrredón,General Pueyrredón,11162,0.016310248336024433
+55,Buenos Aires,General Rodríguez,General Rodríguez,General Rodríguez,1626,0.0023759598454018748
+56,Buenos Aires,General San Martín,General San Martín,General San Martín,6801,0.009937824667022232
+57,Buenos Aires,General Viamonte,General Viamonte,General Viamonte,326,0.000476360953014152
+58,Buenos Aires,General Villegas,General Villegas,General Villegas,562,0.0008212112134783848
+59,Buenos Aires,Guaminí,Guamini,Guaminí,227,0.0003316991912092408
+60,Buenos Aires,Hipólito Yrigoyen,Hipólito Yrigoyen,Hipólito Yrigoyen,178,0.0002600989252653959
+61,Buenos Aires,Hurlingham,Hurlingham,Hurlingham,2954,0.004316473175471795
+62,Buenos Aires,Ituzaingó,Ituzaingo,Ituzaingó,2788,0.0040739090092130545
+63,Buenos Aires,José C. Paz,J. C. Paz,José C. Paz,4227,0.006176618860094542
+64,Buenos Aires,Junín,Junín,Junín,1558,0.002276596211030825
+65,Buenos Aires,La Costa,La Costa,La Costa,1379,0.0020150360558482076
+66,Buenos Aires,La Matanza,La Matanza,La Matanza,32398,0.04734092685813649
+67,Buenos Aires,La Plata,La Plata,La Plata,12169,0.017781706862666308
+68,Buenos Aires,Lanús,Lanús,Lanús,7471,0.01091684871156052
+69,Buenos Aires,Laprida,Laprida,Laprida,186,0.0002717887646031665
+70,Buenos Aires,Las Flores,Las Flores,Las Flores,417,0.0006093328754812926
+71,Buenos Aires,Leandro N. Alem,Leandro N. Alem,Leandro N. Alem,300,0.00043836897516639757
+72,Buenos Aires,Lincoln,Lincoln,Lincoln,730,0.0010666978395715673
+73,Buenos Aires,Lobería,Loberia,Lobería,308,0.00045005881450416814
+74,Buenos Aires,Lobos,Lobos,Lobos,655,0.000957105595779968
+75,Buenos Aires,Lomas de Zamora,Lomas De Zamora,Lomas de Zamora,9928,0.014507090618173317
+76,Buenos Aires,Luján,Luján,Luján,1863,0.0027222713357833287
+77,Buenos Aires,Magdalena,Magdalena,Magdalena,296,0.00043252405549751223
+78,Buenos Aires,Maipú,Maipú,Maipú,175,0.0002557152355137319
+79,Buenos Aires,Malvinas Argentinas,Malvinas Argentinas,Malvinas Argentinas,5050,0.007379211081967692
+80,Buenos Aires,Mar Chiquita,Mar Chiquita,Mar Chiquita,436,0.0006370962439084978
+81,Buenos Aires,Marcos Paz,Marcos Paz,Marcos Paz,927,0.0013545601332641685
+82,Buenos Aires,Mercedes,Mercedes,Mercedes,1089,0.0015912793798540231
+83,Buenos Aires,Merlo,Merlo,Merlo,8622,0.012598724346282265
+84,Buenos Aires,Monte,Monte,Monte,383,0.0005596510582957675
+85,Buenos Aires,Monte Hermoso,Monte Hermoso,Monte Hermoso,136,0.00019872726874210024
+86,Buenos Aires,Moreno,Moreno,Moreno,7619,0.011133110739309277
+87,Buenos Aires,Morón,Morón,Morón,5239,0.007655383536322523
+88,Buenos Aires,Navarro,Navarro,Navarro,285,0.0004164505264080777
+89,Buenos Aires,Necochea,Necochea,Necochea,1623,0.002371576155650211
+90,Buenos Aires,Olavarría,Olavarría,Olavarría,1997,0.0029180761446909865
+91,Buenos Aires,Patagones,Patagones,Patagones,533,0.0007788355458789663
+92,Buenos Aires,Pehuajó,Pehuajó,Pehuajó,719,0.0010506243104821328
+93,Buenos Aires,Pellegrini,Pellegrini,Pellegrini,108,0.00015781283105990312
+94,Buenos Aires,Pergamino,Pergamino,Pergamino,1831,0.0026755119784322465
+95,Buenos Aires,Pila,Pila,Pila,67,9.790240445382878e-05
+96,Buenos Aires,Pilar,Pilar,Pilar,5422,0.007922788611174025
+97,Buenos Aires,Pinamar,Pinamar,Pinamar,527,0.0007700681663756384
+98,Buenos Aires,Presidente Perón,Presidente Perón,Presidente Perón,1458,0.002130473219308692
+99,Buenos Aires,Punta Indio,Punta Indio,Punta Indio,184,0.00026886630476872386
+100,Buenos Aires,Puán,Puan,Puán,298,0.00043544651533195493
+101,Buenos Aires,Quilmes,Quilmes,Quilmes,10266,0.015000986330194125
+102,Buenos Aires,Ramallo,Ramallo,Ramallo,573,0.0008372847425678193
+103,Buenos Aires,Rauch,Rauch,Rauch,285,0.0004164505264080777
+104,Buenos Aires,Rivadavia,Rivadavia,Rivadavia,290,0.0004237566759941843
+105,Buenos Aires,Rojas,Rojas,Rojas,415,0.00060641041564685
+106,Buenos Aires,Roque Pérez,Roque Pérez,Roque Pérez,246,0.00035946255963644597
+107,Buenos Aires,Saavedra,Saavedra,Saavedra,389,0.0005684184377990955
+108,Buenos Aires,Saladillo,Saladillo,Saladillo,598,0.0008738154904983524
+109,Buenos Aires,Salliqueló,Salliqueló,Salliqueló,161,0.00023525801667263334
+110,Buenos Aires,Salto,Salto,Salto,612,0.000894272709339451
+111,Buenos Aires,San Andrés de Giles,San Andrés De Giles,San Andrés de Giles,413,0.0006034879558124073
+112,Buenos Aires,San Antonio de Areco,San Antonio De Areco,San Antonio de Areco,397,0.000580108277136866
+113,Buenos Aires,San Cayetano,San Cayetano,San Cayetano,155,0.00022649063716930542
+114,Buenos Aires,San Fernando,San Fernando,San Fernando,2659,0.0038854103498915035
+115,Buenos Aires,San Isidro,San Isidro,San Isidro,4797,0.007009519912910697
+116,Buenos Aires,San Miguel,San Miguel,San Miguel,4481,0.006547771259068759
+117,Buenos Aires,San Nicolás,San Nicolás,San Nicolás,2377,0.00347334351323509
+118,Buenos Aires,San Pedro,San Pedro,San Pedro,1001,0.0014626911471385465
+119,Buenos Aires,San Vicente,San Vicente,San Vicente,1157,0.0016906430142250733
+120,Buenos Aires,Suipacha,Suipacha,Suipacha,186,0.0002717887646031665
+121,Buenos Aires,Tandil,Tandil,Tandil,2470,0.0036092378955366734
+122,Buenos Aires,Tapalqué,Tapalqué,Tapalqué,176,0.00025717646543095324
+123,Buenos Aires,Tigre,Tigre,Tigre,6901,0.010083947658744366
+124,Buenos Aires,Tordillo,Tordillo,Tordillo,29,4.237566759941843e-05
+125,Buenos Aires,Tornquist,Tornquist,Tornquist,252,0.00036822993913977395
+126,Buenos Aires,Trenque Lauquen,Trenque Lauquen,Trenque Lauquen,793,0.0011587553243565109
+127,Buenos Aires,Tres Arroyos,Tres Arroyos,Tres Arroyos,1012,0.0014787646762279812
+128,Buenos Aires,Tres Lomas,Tres Lomas,Tres Lomas,154,0.00022502940725208407
+129,Buenos Aires,Tres de Febrero,Tres De Febrero,Tres de Febrero,5648,0.008253026572466045
+130,Buenos Aires,Vicente López,Vicente López,Vicente López,4388,0.006411876876767175
+131,Buenos Aires,Villa Gesell,Villa Gesell,Villa Gesell,646,0.0009439545265249761
+132,Buenos Aires,Villarino,Villarino,Villarino,592,0.0008650481109950245
+133,Buenos Aires,Zárate,Zárate,Zárate,1933,0.0028245574299888216
+134,Catamarca,Ambato,Ambato,Ambato,66,9.644117453660746e-05
+135,Catamarca,Ancasti,Ancasti,Ancasti,38,5.552673685441036e-05
+136,Catamarca,Andalgalá,Andalgalá,Andalgalá,257,0.0003755360887258806
+137,Catamarca,Antofagasta de la Sierra,Antofagasta De La Sierra,Antofagasta de la Sierra,22,3.2147058178869155e-05
+138,Catamarca,Belén,Belén,Belén,384,0.0005611122882129889
+139,Catamarca,Capayán,Capayan,Capayán,228,0.00033316042112646214
+140,Catamarca,Capital,Capital,Capital,2405,0.003514257950917287
+141,Catamarca,El Alto,El Alto,El Alto,57,8.329010528161554e-05
+142,Catamarca,Fray Mamerto Esquiú,Fray Mamerto Esquiú,Fray Mamerto Esquiú,172,0.00025133154576206795
+143,Catamarca,La Paz,La Paz,La Paz,330,0.0004822058726830373
+144,Catamarca,Paclin,Paclin,Paclín,58,8.475133519883686e-05
+145,Catamarca,Poman,Pomán,Pomán,158,0.00023087432692096938
+146,Catamarca,Santa María,Santa María,Santa María,313,0.00045736496409027477
+147,Catamarca,Santa Rosa,Santa Rosa,Santa Rosa,184,0.00026886630476872386
+148,Catamarca,Tinogasta,Tinogasta,Tinogasta,310,0.00045298127433861083
+149,Catamarca,Valle Viejo,Valle Viejo,Valle viejo,401,0.0005859531968057514
+150,Chaco,12 de Octubre,12 De Octubre,12 de Octubre,357,0.0005216590804480131
+151,Chaco,1°  de Mayo,Primero De Mayo,1ro. de Mayo,181,0.00026448261501705987
+152,Chaco,2 de Abril,2 De Abril,2 de Abril,110,0.00016073529089434576
+153,Chaco,25 de Mayo,25 De Mayo,25 de Mayo,412,0.0006020267258951859
+154,Chaco,9 de Julio,9 De Julio,9 de Julio,438,0.0006400187037429405
+155,Chaco,Almirante Brown,Almirante Brown,Almirante Brown,557,0.0008139050638922782
+156,Chaco,Bermejo,Bermejo,Bermejo,389,0.0005684184377990955
+157,Chaco,Chacabuco,Chacabuco,Chacabuco,503,0.0007349986483623266
+158,Chaco,Comandante Fernández,Comandante Fernández,Comandante Fernández,1600,0.0023379678675541204
+159,Chaco,Fray Justo Santa María de Oro,Fray J. Sta. María De Oro,Fray Justo Santa María de Oro,199,0.0002907847535270437
+160,Chaco,General Belgrano,General Belgrano,General Belgrano,192,0.0002805561441064944
+161,Chaco,General Donovan,General Donovan,General Donovan,193,0.0002820173740237158
+162,Chaco,General Güemes,General Güemes,General Güemes,952,0.0013910908811947016
+163,Chaco,Independencia,Independencia,Independencia,315,0.0004602874239247174
+164,Chaco,Libertad,Libertad,Libertad,197,0.00028786229369260106
+165,Chaco,Libertador General San Martín,Lib. Gral. San Martín,Libertador General San Martín,920,0.0013443315238436191
+166,Chaco,Maipú,Maipú,Maipú,335,0.000489512022269144
+167,Chaco,Mayor Luis J. Fontana,Mayor L. J. Fontana,Mayor Luis Jorge Fontana,834,0.0012186657509625852
+168,Chaco,O'Higgins,O'Higgins,O'Higgins,276,0.00040329945715308576
+169,Chaco,Presidencia de la Plaza,Pcia. De La Plaza,Presidencia de la Plaza,182,0.00026594384493428116
+170,Chaco,Quitilipi,Quitilipi,Quitilipi,498,0.0007276924987762199
+171,Chaco,San Fernando,San Fernando,San Fernando,6212,0.009077160245778872
+172,Chaco,San Lorenzo,San Lorenzo,San Lorenzo,215,0.00031416443220258494
+173,Chaco,Sargento Cabral,Sargento Cabral,Sargento Cabral,245,0.0003580013297192247
+174,Chaco,Tapenagá,Tapenaga,Tapenagá,59,8.621256511605819e-05
+175,Chubut,Biedma,Biedma,Biedma,1819,0.0026579772194255907
+176,Chubut,Cushamen,Cushamen,Cushamen,407,0.0005947205763090793
+177,Chubut,Escalante,Escalante,Escalante,3694,0.005397783314215575
+178,Chubut,Florentino Ameghino,F. Ameghino,Florentino Ameghino,27,3.945320776497578e-05
+179,Chubut,Futaleufú,Futaleufú,Futaleufú,794,0.001160216554273732
+180,Chubut,Gaiman,Gaiman,Gaiman,207,0.0003024745928648143
+181,Chubut,Gastre,Gastre,Gastre,24,3.50695180133118e-05
+182,Chubut,Languiñeo,Languiñeo,Languiñeo,54,7.890641552995156e-05
+183,Chubut,Martires,Mártires,Mártires,13,1.8995988923877226e-05
+184,Chubut,Paso de los Indios,Paso De Indios,Paso de Indios,31,4.5298127433861083e-05
+185,Chubut,Rawson,Rawson,Rawson,2275,0.003324298061678515
+186,Chubut,Río Senguer,Río Senguer,Río Senguer,105,0.00015342914130823916
+187,Chubut,Sarmiento,Sarmiento,Sarmiento,226,0.0003302379612920195
+188,Chubut,Tehuelches,Tehuelches,Tehuelches,92,0.00013443315238436193
+189,Chubut,Telsen,Telsen,Telsen,29,4.237566759941843e-05
+190,Ciudad Autónoma de Buenos Aires,Comuna 01,Comuna 01,Comuna 1,4498,0.00657261216766152
+191,Ciudad Autónoma de Buenos Aires,Comuna 02,Comuna 02,Comuna 2,3633,0.005308648289265075
+192,Ciudad Autónoma de Buenos Aires,Comuna 03,Comuna 03,Comuna 3,4085,0.005969124211849113
+193,Ciudad Autónoma de Buenos Aires,Comuna 04,Comuna 04,Comuna 4,3922,0.005730943735342038
+194,Ciudad Autónoma de Buenos Aires,Comuna 05,Comuna 05,Comuna 5,3902,0.005701719136997611
+195,Ciudad Autónoma de Buenos Aires,Comuna 06,Comuna 06,Comuna 6,3821,0.005583359513702683
+196,Ciudad Autónoma de Buenos Aires,Comuna 07,Comuna 07,Comuna 7,4179,0.006106479824067918
+197,Ciudad Autónoma de Buenos Aires,Comuna 08,Comuna 08,Comuna 8,3050,0.004456751247525042
+198,Ciudad Autónoma de Buenos Aires,Comuna 09,Comuna 09,Comuna 9,2878,0.004205419701762974
+199,Ciudad Autónoma de Buenos Aires,Comuna 10,Comuna 10,Comuna 10,3102,0.004532735203220551
+200,Ciudad Autónoma de Buenos Aires,Comuna 11,Comuna 11,Comuna 11,3584,0.00523704802332123
+201,Ciudad Autónoma de Buenos Aires,Comuna 12,Comuna 12,Comuna 12,4058,0.005929671004084138
+202,Ciudad Autónoma de Buenos Aires,Comuna 13,Comuna 13,Comuna 13,5124,0.0074873420958420705
+203,Ciudad Autónoma de Buenos Aires,Comuna 14,Comuna 14,Comuna 14,5172,0.0075574811318686935
+204,Ciudad Autónoma de Buenos Aires,Comuna 15,Comuna 15,Comuna 15,3634,0.005310109519182296
+205,Corrientes,Bella Vista,Bella Vista,Bella Vista,545,0.0007963703048856222
+206,Corrientes,Berón de Astrada,Berón De Astrada,Berón de Astrada,39,5.6987966771631685e-05
+207,Corrientes,Capital,Capital,Capital,5542,0.008098136201240584
+208,Corrientes,Concepción,Concepción,Concepción,321,0.0004690548034280454
+209,Corrientes,Curuzú Cuatiá,Curuzú Cuatiá,Curuzú Cuatiá,694,0.0010140935625515997
+210,Corrientes,Empedrado,Empedrado,Empedrado,218,0.0003185481219542489
+211,Corrientes,Esquina,Esquina,Esquina,429,0.0006268676344879485
+212,Corrientes,General Alvear,General Alvear,General Alvear,119,0.0001738863601493377
+213,Corrientes,General Paz,General Paz,General Paz,215,0.00031416443220258494
+214,Corrientes,Goya,Goya,Goya,1311,0.0019156724214771574
+215,Corrientes,Itatí,Itati,Itatí,136,0.00019872726874210024
+216,Corrientes,Ituzaingó,Ituzaingo,Ituzaingó,446,0.000651708543080711
+217,Corrientes,Lavalle,Lavalle,Lavalle,427,0.0006239451746535058
+218,Corrientes,Mburucuyá,Mburucuya,Mburucuyá,135,0.0001972660388248789
+219,Corrientes,Mercedes,Mercedes,Curuzú Cuatiá,608,0.0008884277896705657
+220,Corrientes,Monte Caseros,Monte Caseros,Monte Caseros,606,0.000885505329836123
+221,Corrientes,Paso de los Libres,Paso De Los Libres,Paso de los Libres,728,0.0010637753797371247
+222,Corrientes,Saladas,Saladas,Saladas,307,0.00044859758458694684
+223,Corrientes,San Cosme,San Cosme,San Cosme,227,0.0003316991912092408
+224,Corrientes,San Luis del Palmar,San Luis Del Palmar,San Luis del Palmar,249,0.00036384624938810996
+225,Corrientes,San Martín,San Martín,San Martín,211,0.0003083195125336996
+226,Corrientes,San Miguel,San Miguel,San Miguel,138,0.00020164972857654288
+227,Corrientes,San Roque,San Roque,San Roque,250,0.0003653074793053313
+228,Corrientes,Santo Tomé,Santo Tomé,Santo Tomé,999,0.0014597686873041038
+229,Corrientes,Sauce,Sauce,Sauce,128,0.00018703742940432962
+230,Córdoba,Calamuchita,Calamuchita,Calamuchita,1161,0.0016964879338939585
+231,Córdoba,Capital,Capital,Capital,22215,0.03246122261107174
+232,Córdoba,Colón,Colón,Colón,4459,0.006515624200889889
+233,Córdoba,Cruz del Eje,Cruz Del Eje,Cruz del Eje,962,0.0014057031803669149
+234,Córdoba,General Roca,General Roca,General Roca,665,0.0009717178949521812
+235,Córdoba,General San Martín,General San Martín,General San Martín,2408,0.003518641640668951
+236,Córdoba,Ischilín,Ischilin,Ischilín,497,0.0007262312688589986
+237,Córdoba,Juárez Celman,Juárez Celman,Juárez Celman,1157,0.0016906430142250733
+238,Córdoba,Marcos Juárez,Marcos Juárez,Marcos Juárez,1962,0.00286693309758824
+239,Córdoba,Minas,Minas,Minas,77,0.00011251470362604203
+240,Córdoba,Pocho,Pocho,Pocho,87,0.0001271270027982553
+241,Córdoba,Presidente Roque Sáenz Peña,Roque Sáenz Peña,Presidente Roque Sáenz Peña,675,0.0009863301941243944
+242,Córdoba,Punilla,Punilla,Punilla,3466,0.0050646228930891135
+243,Córdoba,Río Cuarto,Río Cuarto,Río Cuarto,4551,0.006650057353274251
+244,Córdoba,Río Primero,Río Primero,Río Primero,770,0.0011251470362604204
+245,Córdoba,Río Seco,Río Seco,Río Seco,222,0.0003243930416231342
+246,Córdoba,Río Segundo,Río Segundo,Río Segundo,1831,0.0026755119784322465
+247,Córdoba,San Alberto,San Alberto,San Alberto,653,0.0009541831359455254
+248,Córdoba,San Javier,San Javier,San Javier,915,0.0013370253742575125
+249,Córdoba,San Justo,San Justo,San Justo,3765,0.0055015306383382895
+250,Córdoba,Santa María,Santa María,Santa María,1711,0.0025001643883656873
+251,Córdoba,Sobremonte,Sobremonte,Sobremonte,72,0.00010520855403993542
+252,Córdoba,Tercero Arriba,Tercero Arriba,Tercero Arriba,1969,0.0028771617070087892
+253,Córdoba,Totoral,Totoral,Totoral,324,0.0004734384931797094
+254,Córdoba,Tulumba,Tulumba,Tulumba,224,0.00032731550145757686
+255,Córdoba,Unión,Unión,Unión,1942,0.0028377084992438134
+256,Entre Ríos,Colón,Colón,Colón,1274,0.0018616069145399683
+257,Entre Ríos,Concordia,Concordia,Concordia,2712,0.003962855535504234
+258,Entre Ríos,Diamante,Diamante,Diamante,821,0.001199669762038708
+259,Entre Ríos,Federación,Federación,Federación,1204,0.0017593208203344755
+260,Entre Ríos,Federal,Federal,Federal,403,0.000588875656640194
+261,Entre Ríos,Feliciano,Feliciano,Feliciano,215,0.00031416443220258494
+262,Entre Ríos,Gualeguay,Gualeguay,Gualeguay,917,0.0013399478340919552
+263,Entre Ríos,Gualeguaychú,Gualeguaychú,Gualeguaychú,1971,0.002880084166843232
+264,Entre Ríos,Islas del Ibicuy,Islas Del Ibicuy,Islas del Ibicuy,193,0.0002820173740237158
+265,Entre Ríos,La Paz,La Paz,La Paz,979,0.0014305440889596773
+266,Entre Ríos,Nogoya,Nogoyá,Nogoyá,639,0.0009337259171044268
+267,Entre Ríos,Paraná,Paraná,Paraná,5828,0.008516047957565883
+268,Entre Ríos,San Salvador,San Salvador,San Salvador,302,0.0004412914350008402
+269,Entre Ríos,Tala,Tala,Tala,430,0.0006283288644051699
+270,Entre Ríos,Uruguay,Uruguay,Uruguay,1838,0.002685740587852796
+271,Entre Ríos,Victoria,Victoria,Victoria,615,0.000898656399091115
+272,Entre Ríos,Villaguay,Villaguay,Villaguay,786,0.0011485267149359615
+273,Formosa,Bermejo,Bermejo,Bermejo,202,0.0002951684432787077
+274,Formosa,Formosa,Formosa,Formosa,3555,0.005194672355721811
+275,Formosa,Laishi,Laishi,Laishí,246,0.00035946255963644597
+276,Formosa,Matacos,Matacos,Matacos,198,0.0002893235236098224
+277,Formosa,Patiño,Patiño,Patiño,1033,0.001509450504489629
+278,Formosa,Pilagás,Pilagas,Pilagás,261,0.00038138100839476587
+279,Formosa,Pilcomayo,Pilcomayo,Pilcomayo,1223,0.0017870841887616807
+280,Formosa,Pirane,Pirané,Pirané,934,0.0013647887426847178
+281,Formosa,Ramón Lista,Ramón Lista,Ramón Lista,172,0.00025133154576206795
+282,Jujuy,Cochinoca,Cochinoca,Cochinoca,181,0.00026448261501705987
+283,Jujuy,Dr. Manuel Belgrano,General Belgrano,Dr. Manuel Belgrano,4188,0.00611963089332291
+284,Jujuy,El Carmen,El Carmen,El Carmen,1427,0.002085175091874831
+285,Jujuy,Humahuaca,Humahuaca,Humahuaca,256,0.00037407485880865923
+286,Jujuy,Ledesma,Ledesma,Ledesma,1107,0.001617581518364007
+287,Jujuy,Palpalá,Palpalá,Palpalá,758,0.0011076122772537644
+288,Jujuy,Rinconada,Rinconada,Rinconada,34,4.968181718552506e-05
+289,Jujuy,San Antonio,San Antonio,San Antonio,81,0.00011835962329492735
+290,Jujuy,San Pedro,San Pedro,San Pedro,1065,0.0015562098618407112
+291,Jujuy,Santa Bárbara,Santa Bárbara,Santa Bárbara,234,0.0003419278006297901
+292,Jujuy,Santa Catalina,Santa Catalina,Santa Catalina,38,5.552673685441036e-05
+293,Jujuy,Susques,Susques,Susques,48,7.01390360266236e-05
+294,Jujuy,Tilcara,Tilcara,Tilcara,223,0.0003258542715403555
+295,Jujuy,Tumbaya,Tumbaya,Tumbaya,69,0.00010082486428827144
+296,Jujuy,Valle Grande,Valle Grande,Valle Grande,41,5.991042660607433e-05
+297,Jujuy,Yaví,Yavi,Yavi,341,0.0004982794017724719
+298,La Pampa,Atreuco,Atreuco,Atreucó,183,0.0002674050748515025
+299,La Pampa,Caleu Caleu,Caleu Caleu,Caleu Caleu,45,6.575534627495963e-05
+300,La Pampa,Capital,Capital,Capital,2017,0.002947300743035413
+301,La Pampa,Catriló,Catriló,Catriló,132,0.00019288234907321493
+302,La Pampa,Chalileo,Chalileo,Chalileo,59,8.621256511605819e-05
+303,La Pampa,Chapaleufú,Chapaleufu,Chapaleufú,223,0.0003258542715403555
+304,La Pampa,Chical Có,Chical-Co,Chical Co,23,3.360828809609048e-05
+305,La Pampa,Conhelo,Conhelo,Conhelo,244,0.00035654009980200333
+306,La Pampa,Curacó,Curaco,Curacó,21,3.068582826164783e-05
+307,La Pampa,Guatraché,Guatrache,Guatraché,156,0.00022795186708652674
+308,La Pampa,Hucal,Hucal,Hucal,138,0.00020164972857654288
+309,La Pampa,Lihuel Calel,Lihuel Calel,Lihuel Calel,6,8.76737950332795e-06
+310,La Pampa,Limay Mahuida,Limay Mahuida,Limay Mahuida,11,1.6073529089434577e-05
+311,La Pampa,Loventué,Loventue,Loventué,147,0.0002148007978315348
+312,La Pampa,Maracó,Maraco,Maracó,1120,0.0016365775072878842
+313,La Pampa,Puelén,Puelen,Puelén,184,0.00026886630476872386
+314,La Pampa,Quemú Quemú,Quemu Quemu,Quemú Quemú,106,0.00015489037122546048
+315,La Pampa,Rancul,Rancul,Rancul,178,0.0002600989252653959
+316,La Pampa,Realicó,Realicó,Realicó,301,0.00043983020508361886
+317,La Pampa,Toay,Toay,Toay,293,0.0004281403657458483
+318,La Pampa,Trenel,Trenel,Trenel,88,0.00012858823271547662
+319,La Pampa,Utracán,Utracán,Utracán,270,0.0003945320776497578
+320,La Rioja,Arauco,Arauco,Arauco,241,0.0003521564100503394
+321,La Rioja,Capital,Capital,Capital,3043,0.0044465226381044925
+322,La Rioja,Castro Barros,Castro Barros,Castro Barros,69,0.00010082486428827144
+323,La Rioja,Chamical,Chamical,Chamical,222,0.0003243930416231342
+324,La Rioja,Chilecito,Chilecito,Chilecito,811,0.0011850574628664947
+325,La Rioja,Coronel Felipe Varela,Felipe Varela,Coronel Felipe Varela,130,0.00018995988923877229
+326,La Rioja,Famatina,Famatina,Famatina,80,0.00011689839337770601
+327,La Rioja,General Angel V. Peñaloza,Angel Vicente Peñaloza,General  Angel V. Peñaloza,44,6.429411635773831e-05
+328,La Rioja,General Belgrano,General Belgrano,General Belgrano,115,0.0001680414404804524
+329,La Rioja,General Juan F.Quiroga,Juan Facundo Quiroga,General Juan F. Quiroga,50,7.306149586106626e-05
+330,La Rioja,General Lamadrid,General Lamadrid,General Lamadrid,25,3.653074793053313e-05
+331,La Rioja,General Ocampo,General Ortiz De Ocampo,General Ocampo,102,0.00014904545155657517
+332,La Rioja,General San Martín,General San Martín,General San Martín,67,9.790240445382878e-05
+333,La Rioja,Independencia,Independencia,Independencia,34,4.968181718552506e-05
+334,La Rioja,Rosario Vera Peñaloza,Rosario Vera Peñaloza,Rosario Vera Peñaloza,216,0.00031562566211980624
+335,La Rioja,San Blas de los Sauces,San Blas De Los Sauces,San Blas de Los Sauces,52,7.59839556955089e-05
+336,La Rioja,Sanagasta,Sanagasta,Sanagasta,35,5.114304710274638e-05
+337,La Rioja,Vinchina,Vinchina,Vinchina,38,5.552673685441036e-05
+338,Mendoza,Capital,Capital,Capital,2011,0.0029385333635320848
+339,Mendoza,General Alvear,General Alvear,General Alvear,782,0.0011426817952670764
+340,Mendoza,Godoy Cruz,Godoy Cruz,Godoy Cruz,3052,0.004459673707359484
+341,Mendoza,Guaymallén,Guaymallén,Guaymallén,4699,0.0068663193810230075
+342,Mendoza,Junín,Junín,Junín,600,0.0008767379503327951
+343,Mendoza,La Paz,La Paz,La Paz,152,0.00022210694741764143
+344,Mendoza,Las Heras,Las Heras,Las Heras,3002,0.004386612211498418
+345,Mendoza,Lavalle,Lavalle,Lavalle,560,0.0008182887536439421
+346,Mendoza,Luján de Cuyo,Luján,Cuyo,1877,0.0027427285546244274
+347,Mendoza,Maipú,Maipú,Maipú,2730,0.003989157674014218
+348,Mendoza,Malargüe,Malargüe,Malargüe,504,0.0007364598782795479
+349,Mendoza,Rivadavia,Rivadavia,Rivadavia,892,0.001303417086161422
+350,Mendoza,San Carlos,San Carlos,San Carlos,548,0.0008007539946372862
+351,Mendoza,San Martín,San Martín,San Martín,1869,0.0027310387152866566
+352,Mendoza,San Rafael,San Rafael,San Rafael,3182,0.004649633596598257
+353,Mendoza,Santa Rosa,Santa Rosa,Santa Rosa,233,0.00034046657071256877
+354,Mendoza,Tunuyán,Tunuyán,Tunuyán,839,0.0012259719005486918
+355,Mendoza,Tupungato,Tupungato,Tupungato,515,0.0007525334073689825
+356,Misiones,25 de Mayo,25 De Mayo,25de Mayo,390,0.0005698796677163168
+357,Misiones,Apóstoles,Apóstoles,Apóstoles,653,0.0009541831359455254
+358,Misiones,Cainguás,Cainguas,Cainguás,828,0.0012098983714592573
+359,Misiones,Candelaria,Candelaria,Candelaria,447,0.0006531697729979324
+360,Misiones,Capital,Capital,Capital,5392,0.007878951713657385
+361,Misiones,Concepción,Concepción De La Sierra,Concepción,139,0.0002031109584937642
+362,Misiones,El Dorado,El Dorado,Eldorado,1270,0.001855761994871083
+363,Misiones,General Manuel Belgrano,General Manuel Belgrano,General Manuel Belgrano,693,0.0010126323326343784
+364,Misiones,Guaraní,Guaraní,Guaraní,1059,0.0015474424823373834
+365,Misiones,Iguazú,Iguazú,Iguazú,1340,0.001958048089076576
+366,Misiones,Leandro N. Alem,Leandro N. Alem,Leandro N. Alem,719,0.0010506243104821328
+367,Misiones,Libertador General San Martín,L. General San Martín,Libertador General San Martín,713,0.0010418569309788048
+368,Misiones,Montecarlo,Montecarlo,Montecarlo,538,0.000786141695465073
+369,Misiones,Oberá,Oberá,Oberá,1717,0.002508931767869015
+370,Misiones,San Ignacio,San Ignacio,San Ignacio,829,0.0012113596013764785
+371,Misiones,San Javier,San Javier,San Javier,316,0.00046174865384193876
+372,Misiones,San Pedro,San Pedro,San Pedro,498,0.0007276924987762199
+373,Neuquén,Aluminé,Aluminé,Aluminé,182,0.00026594384493428116
+374,Neuquén,Añelo,Añelo,Añelo,262,0.0003828422383119872
+375,Neuquén,Catan Lil,Catan Lil,Catán Lil,36,5.260427701996771e-05
+376,Neuquén,Chos Malal,Chos Malal,Chos Malal,255,0.00037261362889143794
+377,Neuquén,Collón Curá,Collon Curá,Collón Curá,69,0.00010082486428827144
+378,Neuquén,Confluencia,Confluencia,Confluencia,6030,0.00881121640084459
+379,Neuquén,Huiliches,Huiliches,Huiliches,257,0.0003755360887258806
+380,Neuquén,Lacar,Lácar,Lácar,593,0.0008665093409122458
+381,Neuquén,Loncopué,Loncopué,Loncopué,111,0.0001621965208115671
+382,Neuquén,Los Lagos,Los Lagos,Los Lagos,291,0.00042521790591140566
+383,Neuquén,Minas,Minas,Minas,116,0.0001695026703976737
+384,Neuquén,Pehuenches,Pehuenches,Pehuenches,572,0.000835823512650598
+385,Neuquén,Picunches,Picunches,Picunches,112,0.00016365775072878843
+386,Neuquén,Picún Leufú,Picún Leufú,Picún Leufú,83,0.00012128208312936999
+387,Neuquén,Zapala,Zapala,Zapala,578,0.0008445908921539259
+388,Neuquén,Ñorquín,Ñorquín,Ñorquín,76,0.00011105347370882071
+389,Río Negro,25 de Mayo,25 De Mayo,25 de Mayo,283,0.00041352806657363503
+390,Río Negro,9 de Julio,Nueve De Julio,9 de julio,46,6.721657619218096e-05
+391,Río Negro,Adolfo Alsina,Adolfo Alsina,Adolfo Alsina,1031,0.0015065280446551863
+392,Río Negro,Avellaneda,Avellaneda,Avellaneda,608,0.0008884277896705657
+393,Río Negro,Bariloche,Bariloche,Bariloche,2649,0.0038707980507192903
+394,Río Negro,Conesa,Conesa,Conesa,121,0.00017680881998378034
+395,Río Negro,El Cuy,El Cuy,El Cuy,123,0.00017973127981822299
+396,Río Negro,General Roca,General Roca,General Roca,5748,0.008399149564188177
+397,Río Negro,Pichi Mahuída,Pichi Mahuida,Pichi Mahuida,219,0.0003200093518714702
+398,Río Negro,Pilnaniyeu,Pilcaniyeu,Pilcaniyeu,153,0.00022356817733486275
+399,Río Negro,San Antonio,San Antonio Oeste,San Antonio,596,0.0008708930306639099
+400,Río Negro,Valcheta,Valcheta,Valcheta,88,0.00012858823271547662
+401,Río Negro,Ñorquinco,Ñorquinco,Ñorquinco,25,3.653074793053313e-05
+402,Salta,Anta,Anta,Anta,831,0.0012142820612109212
+403,Salta,Cachi,Cachi,Cachi,94,0.00013735561221880457
+404,Salta,Cafayate,Cafayate,Cafayate,238,0.0003477727202986754
+405,Salta,Capital,Capital,Capital,8124,0.011871031847506045
+406,Salta,Cerrillos,Cerrillos,Cerrillos,597,0.0008723542605811311
+407,Salta,Chicoana,Chicoana,Chicoana,295,0.00043106282558029094
+408,Salta,General Güemes,General Güemes,General Güemes,679,0.0009921751137932798
+409,Salta,General José de San Martín,San Martín,General José de San Martín,2231,0.0032600039453207766
+410,Salta,Guachipas,Guachipas,Guachipas,46,6.721657619218096e-05
+411,Salta,Iruya,Iruya,Iruya,70,0.00010228609420549276
+412,Salta,La Caldera,La Caldera,La Caldera,147,0.0002148007978315348
+413,Salta,La Candelaria,La Candelaria,La Candelaria,83,0.00012128208312936999
+414,Salta,La Poma,La Poma,La Poma,21,3.068582826164783e-05
+415,Salta,La Viña,La Viña,La Viña,102,0.00014904545155657517
+416,Salta,Los Andes,Los Andes,Los Andes,73,0.00010666978395715674
+417,Salta,Metán,Metán,Metán,543,0.0007934478450511796
+418,Salta,Molinos,Molinos,Molinos,62,9.059625486772217e-05
+419,Salta,Orán,Orán,Orán,1861,0.0027193488759488862
+420,Salta,Rivadavia,Rivadavia,Rivadavia,415,0.00060641041564685
+421,Salta,Rosario de Lerma,Rosario De Lerma,Rosario de Lerma,535,0.0007817580057134089
+422,Salta,Rosario de la Frontera,Rosario De La Frontera,Rosario de la Frontera,418,0.0006107941053985139
+423,Salta,San Carlos,San Carlos,San Carlos,82,0.00011982085321214867
+424,Salta,Santa Victoria,Santa Victoria,Santa Victoria,117,0.00017096390031489506
+425,San Juan,25 de Mayo,25 De Mayo,25 de Mayo,237,0.00034631149038145406
+426,San Juan,9 de julio,Nueve De Julio,9 de Julio,143,0.0002089558781626495
+427,San Juan,Albardón,Albardón,Albardón,364,0.0005318876898685623
+428,San Juan,Angaco,Angaco,Angaco,114,0.00016658021056323107
+429,San Juan,Calingasta,Calingasta,Calingasta,118,0.00017242513023211638
+430,San Juan,Capital,Capital,Capital,1624,0.0023730373855674323
+431,San Juan,Caucete,Caucete,Caucete,571,0.0008343622827333767
+432,San Juan,Chimbas,Chimbas,Chimbas,1289,0.0018835253632982882
+433,San Juan,Iglesia,Iglesia,Iglesia,125,0.00018265373965266565
+434,San Juan,Jáchal,Jáchal,Jachal,289,0.00042229544607696296
+435,San Juan,Pocito,Pocito,Pocito,899,0.0013136456955819714
+436,San Juan,Rawson,Rawson,Rawson,1625,0.0023744986154846533
+437,San Juan,Rivadavia,Rivadavia,Rivadavia,1227,0.001792929108430566
+438,San Juan,San Martín,San Martín,San Martín,155,0.00022649063716930542
+439,San Juan,Santa Lucía,Santa Lucía,Santa Lucía,703,0.0010272446318065917
+440,San Juan,Sarmiento,Sarmiento,Sarmiento,321,0.0004690548034280454
+441,San Juan,Ullum,Ullúm,Ullum,71,0.00010374732412271408
+442,San Juan,Valle Fértil,Valle Fértil,Valle Fértil,103,0.00015050668147379649
+443,San Juan,Zonda,Zonda,Zonda,76,0.00011105347370882071
+444,San Luis,Ayacucho,Ayacucho,Ayacucho,302,0.0004412914350008402
+445,San Luis,Belgrano,Belgrano,Belgrano,55,8.036764544717288e-05
+446,San Luis,Chacabuco,Chacabuco,Chacabuco,344,0.0005026630915241359
+447,San Luis,Coronel Pringles,Pringles,Coronel Pringles,229,0.0003346216510436835
+448,San Luis,General Pedernera,Pedernera,General Pedernera,2098,0.00306566036633034
+449,San Luis,Gobernador Dupuy,Gobernador Dupuy,Gobernador Dupuy,188,0.00027471122443760914
+450,San Luis,Junín,Junín,Junín,599,0.0008752767204155738
+451,San Luis,La Capital,Pueyrredon,Juan Martín de Pueyrredón,3490,0.005099692411102425
+452,San Luis,Libertador General San Martín,San Martín,Libertador General San Martín,68,9.936363437105012e-05
+453,Santa Cruz,Corpen Aike,Corpen Aike,Corpen Aike,246,0.00035946255963644597
+454,Santa Cruz,Deseado,Deseado,Deseado,2350,0.0034338903054701143
+455,Santa Cruz,Güer Aike,Güer Aike,Güer Aike,2149,0.003140183092108628
+456,Santa Cruz,Lago Argentino,Lago Argentino,Lago Argentino,496,0.0007247700389417773
+457,Santa Cruz,Lago Buenos Aires,Lago Buenos Aires,Lago Buenos Aires,183,0.0002674050748515025
+458,Santa Cruz,Magallanes,Magallanes,Magallanes,198,0.0002893235236098224
+459,Santa Cruz,Río Chico,Río Chico,Río Chico,117,0.00017096390031489506
+460,Santa Fe,9 de Julio,Nueve De Julio,9 de Julio,493,0.0007203863491901133
+461,Santa Fe,Belgrano,Belgrano,Belgrano,838,0.0012245106706314705
+462,Santa Fe,Caseros,Caseros,Caseros,1510,0.002206457175004201
+463,Santa Fe,Castellanos,Castellanos,Castellanos,3295,0.0048147525772442665
+464,Santa Fe,Constitución,Constitución,Constitución,1535,0.002242987922934734
+465,Santa Fe,Garay,Garay,Garay,328,0.00047928341284859466
+466,Santa Fe,General López,General López,General López,3567,0.005212207114728467
+467,Santa Fe,General Obligado,General Obligado,General Obligado,2831,0.0041367418956535715
+468,Santa Fe,Iriondo,Iriondo,Iriondo,1174,0.0017154839228178357
+469,Santa Fe,La Capital,La Capital,La Capital,9152,0.013373176202409569
+470,Santa Fe,Las Colonias,Las Colonias,Las Colonias,2025,0.0029589905823731834
+471,Santa Fe,Rosario,Rosario,Rosario,21042,0.030747199918171125
+472,Santa Fe,San Cristobal,San Cristóbal,San Cristóbal,1222,0.0017856229588444593
+473,Santa Fe,San Javier,San Javier,San Javier,499,0.0007291537286934413
+474,Santa Fe,San Jerónimo,San Jerónimo,San Jerónimo,1426,0.0020837138619576095
+475,Santa Fe,San Justo,San Justo,San Justo,700,0.0010228609420549276
+476,Santa Fe,San Lorenzo,San Lorenzo,San Lorenzo,2869,0.004192268632507982
+477,Santa Fe,San Martín,San Martín,San Martín,1189,0.0017374023715761556
+478,Santa Fe,Vera,Vera,Vera,778,0.001136836875598191
+479,Santiago del Estero,Aguirre,Aguirre,Aguirre,119,0.0001738863601493377
+480,Santiago del Estero,Alberdi,Alberdi,Alberdi,233,0.00034046657071256877
+481,Santiago del Estero,Atamisqui,Atamisqui,Atamisqui,149,0.00021772325766597746
+482,Santiago del Estero,Avellaneda,Avellaneda,Avellaneda,274,0.0004003769973186431
+483,Santiago del Estero,Banda,Banda,Banda,2066,0.003018901008979258
+484,Santiago del Estero,Belgrano,Belgrano,Belgrano,155,0.00022649063716930542
+485,Santiago del Estero,Capital,Capital,Capital,3895,0.0056914905275770615
+486,Santiago del Estero,Choya,Choya,Choya,591,0.0008635868810778032
+487,Santiago del Estero,Copo,Copo,Copo,397,0.000580108277136866
+488,Santiago del Estero,Figueroa,Figueroa,Figueroa,211,0.0003083195125336996
+489,Santiago del Estero,General Taboada,Taboada,General Taboada,485,0.0007086965098523427
+490,Santiago del Estero,Guasayán,Guasayán,Guasayán,102,0.00014904545155657517
+491,Santiago del Estero,Jiménez,Jiménez,Jiménez,205,0.0002995521330303717
+492,Santiago del Estero,Juan F. Ibarra,Juan F. Ibarra,Juan F. Ibarra,231,0.00033754411087812613
+493,Santiago del Estero,Loreto,Loreto,Loreto,293,0.0004281403657458483
+494,Santiago del Estero,Mitre,Mitre,Mitre,29,4.237566759941843e-05
+495,Santiago del Estero,Moreno,Moreno,Moreno,457,0.0006677820721701456
+496,Santiago del Estero,Ojo de agua,Ojo De Agua,Ojo de Agua,205,0.0002995521330303717
+497,Santiago del Estero,Pelegrini,Pellegrini,Pellegrini,288,0.00042083421615974167
+498,Santiago del Estero,Quebrachos,Quebrachos,Quebrachos,131,0.0001914211191559936
+499,Santiago del Estero,Rivadavia,Rivadavia,Rivadavia,76,0.00011105347370882071
+500,Santiago del Estero,Robles,Robles,Robles,622,0.0009088850085116643
+501,Santiago del Estero,Río Hondo,Río Hondo,Río Hondo,771,0.0011266082661776416
+502,Santiago del Estero,Salavina,Salavina,Salavina,148,0.00021626202774875612
+503,Santiago del Estero,San Martín,San Martín,San Martín,127,0.0001855761994871083
+504,Santiago del Estero,Sarmiento,Sarmiento,Sarmiento,55,8.036764544717288e-05
+505,Santiago del Estero,Silípica,Silipica,Silipica,94,0.00013735561221880457
+506,Tierra del Fuego,Río Grande,Río Grande,Río Grande,1487,0.0021728488869081105
+507,Tierra del Fuego,Ushuaia,Ushuaia,Ushuaia,1212,0.001771010659672246
+508,Tucumán,Burruyacú,Burruyacu,Burruyacú,541,0.0007905253852167369
+509,Tucumán,Capital,Capital,Capital,8086,0.011815505110651636
+510,Tucumán,Chicligasta,Chicligasta,Chicligasta,1158,0.0016921042441422945
+511,Tucumán,Cruz Alta,Cruz Alta,Cruz Alta,2612,0.0038167325437821016
+512,Tucumán,Famallá,Famaillá,Famaillá,491,0.0007174638893556707
+513,Tucumán,Graneros,Graneros,Graneros,193,0.0002820173740237158
+514,Tucumán,Juan B. Alberdi,Alberdi,Juan Bautista Alberdi,439,0.0006414799336601618
+515,Tucumán,La Cocha,La Cocha,La Cocha,268,0.00039160961781531514
+516,Tucumán,Leales,Leales,Leales,776,0.0011339144157637483
+517,Tucumán,Lules,Lules,Lules,1090,0.0015927406097712444
+518,Tucumán,Monteros,Monteros,Monteros,942,0.0013764785820224884
+519,Tucumán,Río Chico,Río Chico,Río Chico,821,0.001199669762038708
+520,Tucumán,Simoca,Simoca,Simoca,432,0.0006312513242396125
+521,Tucumán,Tafí Viejo,Tafí Viejo,Tafí Viejo,1848,0.002700352887025009
+522,Tucumán,Tafí del Valle,Tafí Del Valle,Tafí del Valle,235,0.0003433890305470114
+523,Tucumán,Trancas,Trancas,Trancas,275,0.0004018382272358644
+524,Tucumán,Yerba Buena,Yerba Buena,Yerba Buena,1211,0.0017695494297550248
