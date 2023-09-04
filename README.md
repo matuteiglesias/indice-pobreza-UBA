@@ -5,7 +5,7 @@ Análisis y cálculo de tasas de pobreza en Argentina. Herramienta esencial para
 
 ### Descripción
 
-El repositorio "Indice de Pobreza - Exactas UBA" está dedicado al cálculo, análisis y presentación de los índices de pobreza en Argentina. Aprovechando los métodos estadísticos y la integración de varios conjuntos de datos, este proyecto proporciona una comprensión profunda de los niveles de pobreza en diferentes regiones y demografías del país.
+El repositorio "Indice de Pobreza - UBA" está dedicado al cálculo, análisis y presentación de los índices de pobreza en Argentina. Aprovechando los métodos estadísticos y la integración de varios conjuntos de datos, este proyecto proporciona una comprensión profunda de los niveles de pobreza en diferentes regiones y demografías del país.
 
 ### Uso:
 
