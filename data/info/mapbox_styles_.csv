@@ -1,0 +1,15 @@
+title,id,source,variable
+Pobreza (%). Menores de 6,,income_M6202309,Pobreza_mean
+Pobreza (%). Menores de 14,,income_M14202309,Pobreza_mean
+Pobreza (%). Mayores de 24,,income_M24202309,Pobreza_mean
+Pobreza (%). Personas,,income_P202309,Pobreza_mean
+Pobreza (%). Hogares,,income_H202309,Pobreza_mean
+Indigencia (%). Menores de 6,,income_M6202309,Indigencia_mean
+Indigencia (%). Personas,,income_P202309,Indigencia_mean
+Indigencia (%). Mayores de 24,,income_M24202309,Indigencia_mean
+Indigencia (%). Hogares,,income_H202309,Indigencia_mean
+Indigencia (%). Menores de 14,,income_M14202309,Indigencia_mean
+Canasta Alimentaria mediana (AR$). Hogares,,income_H202309,CBA_median
+Canasta Total mediana (AR$). Hogares,,income_H202309,CBT_median
+Ingreso mediano (AR$). Mayores de 24,,income_M24202309,P47T_persona_median
+Ingreso Total Familiar mediano (AR$). Hogares,,income_H202309,P47T_hogar_median

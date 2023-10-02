@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "layers": {
+    "income-provs": {
+      "source": "mapbox://tileset-source/matuteiglesias2/income_provs_M24",
+      "minzoom": 0,
+      "maxzoom": 10
+    },
+    "income-dptos": {
+      "source": "mapbox://tileset-source/matuteiglesias2/income_dptos_M24",
+      "minzoom": 0,
+      "maxzoom": 10
+    },
+    "income-fracs": {
+      "source": "mapbox://tileset-source/matuteiglesias2/income_fracs_M24",
+      "minzoom": 5,
+      "maxzoom": 10
+    }
+  }
+}
