@@ -1,0 +1,15 @@
+title,id,source,variable,page_html,map_html
+Pobreza (%). Menores de 6,clmv3jfs905os01qrh4225j3j,income_M6202309,Pobreza_mean,men6porc.html,test_m6_pobreza.html
+Pobreza (%). Menores de 14,clmv3jhe205jx01ma0sy0dt6i,income_M14202309,Pobreza_mean,men14porc.html,test_m14_pobreza.html
+Pobreza (%). Mayores de 24,clmv3jj5c05ot01qr9xai56zr,income_M24202309,Pobreza_mean,may24porc.html,test_m24_pobreza.html
+Pobreza (%). Personas,clmv3jmpm05l101qidm3sg6rk,income_P202309,Pobreza_mean,personasporc.html,test_pers_pobreza.html
+Pobreza (%). Hogares,clmv3jort05nc01ns5s48ebp0,income_H202309,Pobreza_mean,hogaresporc.html,test_hogar_pobreza.html
+Indigencia (%). Menores de 6,clmv3jqha05ny01p9fiulg7yv,income_M6202309,Indigencia_mean,men6indporc.html,test_m6_indigencia.html
+Indigencia (%). Personas,clmv3jsc205ou01qrhdoi373l,income_P202309,Indigencia_mean,personasindporc.html,test_personas_indigencia.html
+Indigencia (%). Mayores de 24,clmv3jv2m05nz01p95sff7rqi,income_M24202309,Indigencia_mean,may24indporc.html,test_m24_indigencia.html
+Indigencia (%). Hogares,clmv3jxjv05jy01ma3fu27o76,income_H202309,Indigencia_mean,hogaresindporc.html,test_hogares_indigencia.html
+Indigencia (%). Menores de 14,clmv3jzbh05nd01nsf7mr1gbf,income_M14202309,Indigencia_mean,men14indporc.html,test_m14_indigencia.html
+Canasta Alimentaria mediana (AR$). Hogares,clmv3k11r05o001p92zgh7949,income_H202309,CBA_median,cbamedhogares.html,test_cam_ars.html
+Canasta Total mediana (AR$). Hogares,clmv3k2jg05l201qiblko2die,income_H202309,CBT_median,cbtmedars.html,test_ctm_ars.html
+Ingreso mediano (AR$). Mayores de 24,clmv3k5by05jz01ph05lw4ahs,income_M24202309,P47T_persona_median,itfmedmay24.html,test_im_ars.html
+Ingreso Total Familiar mediano (AR$). Hogares,clmv3k6kn05pb01qig11pcaqd,income_H202309,P47T_hogar_median,itfmedhogares.html,test_itf_ars.html

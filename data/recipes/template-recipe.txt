@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "layers": {
+    "income-provs": {
+      "source": "mapbox://tileset-source/matuteiglesias2/votos_provs_pct",
+      "minzoom": 0,
+      "maxzoom": 10
+    },
+    "income-dptos": {
+      "source": "mapbox://tileset-source/matuteiglesias2/votos_dptos_pct",
+      "minzoom": 0,
+      "maxzoom": 10
+    },
+    "income-circs": {
+      "source": "mapbox://tileset-source/matuteiglesias2/votos_circs_pct",
+      "minzoom": 5,
+      "maxzoom": 10
+    }
+  }
+}
+
