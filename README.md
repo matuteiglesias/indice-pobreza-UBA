@@ -1,7 +1,7 @@
 # Indice de pobreza UBA
 **Análisis Socioeconómico de Argentina**
 
-Este proyecto realiza el análisis potente y detallado de las metricas socioeconómicas de Argentina, utilizando diversos conjuntos de datos y metodologías avanzadas para obtener insights valiosos sobre la pobreza, empleo, y otros indicadores clave.
+Este proyecto da herramientas potentes para analisis detallado de las metricas socioeconómicas de Argentina, utilizando diversos conjuntos de datos y metodologías avanzadas para obtener insights valiosos sobre la pobreza, empleo, y otros indicadores clave.
 
 ## Contenido
 
