@@ -1,100 +1,44 @@
 
-# Indice de Pobreza de la UBA
+# Análisis Socioeconómico de Argentina
 
-Análisis y cálculo de tasas de pobreza en Argentina. Herramienta esencial para investigadores, políticos y ONGs.
+Este proyecto realiza un análisis detallado de los aspectos socioeconómicos de Argentina, utilizando diversos conjuntos de datos y metodologías avanzadas para obtener insights valiosos sobre la pobreza, empleo, y otros indicadores clave.
 
-### Descripción
+## Contenido
 
-El repositorio "Indice de Pobreza - UBA" está dedicado al cálculo, análisis y presentación de los índices de pobreza en Argentina. Aprovechando los métodos estadísticos y la integración de varios conjuntos de datos, este proyecto proporciona una comprensión profunda de los niveles de pobreza en diferentes regiones y demografías del país.
+1. [Descripción General](#descripción-general)
+2. [Metodología](#metodología)
+3. [Conjuntos de Datos](docs/datasets.md)
+4. [Resultados](#resultados)
+5. [Cómo Contribuir](#cómo-contribuir)
+6. [Licencia](#licencia)
 
-### Uso:
+## Descripción General
 
-Académicos, investigadores, agencias gubernamentales, ONG y cualquier persona interesada en los aspectos multifacéticos de la pobreza en Argentina. Este repositorio sirve como un recurso valioso para la investigación y la toma de decisiones.
+Este proyecto tiene como objetivo principal analizar la situación socioeconómica de Argentina. Se centra en áreas clave como pobreza, empleo, distribución de ingresos, entre otros. Las metodologías y técnicas de análisis utilizadas permiten una comprensión profunda de las tendencias y desafíos socioeconómicos en el país.
 
-Antes de usar encuestadores, necesita samplear Censo con https://github.com/matuteiglesias/samplerCensoARG
-Ej:
-`
-(base) matias@matias-ThinkPad-T470-W10DG:~/repos/samplerCensoARG/notebooks$ python samplear.py -dbp '/suite/ext_CPV2010_basico_radio_pub' -f 0.05 -y 2023 2024
-/media/matias/Elements/suite/ext_CPV2010_basico_radio_pub
-0.05
-ARG
-`[########################################] | 100% Completed | 100.56 ms
+## Metodología
 
-Luego, correr: `01 - Sampleos de Censo.ipynb` (Run All) para tener los muestreos de poblaciones adaptados para el notebook 02.
+El análisis se basa en una combinación de técnicas estadísticas, análisis geoespacial, y modelado predictivo. Para obtener detalles específicos sobre la metodología utilizada, refiérase al documento detallado [aquí](link-a-documento-metodología).
 
-El script de la notebook 03 genera datasets pobreza hogares, y datasets personas. 
+## [Conjuntos de Datos](docs/datasets.md)
 
+Una variedad de conjuntos de datos se utilizan en este proyecto, tanto fuentes originales como bases de datos derivadas. Para una descripción detallada de cada conjunto de datos, sus fuentes, y cómo se procesan, consulte el documento vinculado.
 
-### **Datasets de Pobreza**
+## Resultados
 
-Este conjunto de datos se divide en tres tablas principales: personas_ingresos_Q_df, hogares_geo, y pobreza_hogares.
+Los resultados del análisis se presentan en forma de gráficos, mapas y tablas. También se proporcionan insights y conclusiones basadas en los hallazgos. Consulte la sección de resultados para una revisión detallada.
 
-#### **Tabla: personas_ingresos_Q_df**
+## Cómo Contribuir
 
-    Clave Primaria: ID
+Si estás interesado en contribuir al proyecto, ya sea con nuevos conjuntos de datos, técnicas de análisis o correcciones, por favor sigue los siguientes pasos:
 
-Variables:
+1. Fork este repositorio.
+2. Crea una nueva rama con un nombre descriptivo.
+3. Realiza tus cambios o adiciones.
+4. Envía un pull request describiendo tus contribuciones.
 
-    ID: Identificador único para cada persona.
-    RADIO_REF_ID: Identificador de referencia de radio.
-    DPTO: Departamento.
-    AGLOMERADO: Aglomerado.
-    HOGAR_REF_ID: Identificador del hogar al que pertenece la persona.
-    P02: ...
-    P03: ...
-    P09: ...
-    P10: ...
-    ANO4: Año. Actualmente tiene un único valor.
-    P0910: ...
-    P47T_persona: Ingresos de la persona.
-    Q: Trimestre.
+Agradecemos cualquier tipo de contribución y nos esforzamos por revisar y fusionar las contribuciones lo más rápido posible.
 
-#### **Tabla: hogares_geo**
+## Licencia
 
-    Clave Primaria: HOGAR_REF_ID
-    Clave Externa: HOGAR_REF_ID, que hace referencia a HOGAR_REF_ID en la tabla pobreza_hogares.
-
-Variables:
-
-    RADIO_REF_ID: Identificador de referencia de radio.
-    AGLOMERADO: Aglomerado.
-    HOGAR_REF_ID: Identificador del hogar al que pertenece la persona. Se relaciona con la tabla pobreza_hogares.
-    ANO4: Año. Actualmente tiene un único valor.
-    COD_2010: Código 2010.
-    IDFRAC: ...
-    DPTO: Departamento.
-    NOMDPTO: Nombre del departamento.
-    PROV: Provincia.
-    NOMPROV: Nombre de la provincia.
-    Region: Región.
-    IN1: ...
-    circuito: ...
-
-#### **Tabla: pobreza_hogares**
-
-
-    Clave Primaria: HOGAR_REF_ID
-
-Variables:
-
-    HOGAR_REF_ID: Identificador único para cada hogar.
-    Q: Trimestre. Actualmente tiene un único valor.
-    P47T_hogar: Ingresos del hogar.
-    CBA: ...
-    CBT: ...
-    CB_EQUIV: ...
-    Pobreza: Indicador booleano que denota si el hogar está en situación de pobreza.
-    Indigencia: Indicador booleano que denota si el hogar está en situación de indigencia.
-    gap_pobreza: ...
-    gap_indigencia: ...
-
-### Idioma y Herramientas:
-
-Desarrollado con python, se usan los modelos de Random Forest del encuestador de hogares.
-
----
-
-### Contribuir:
-
-Aportes, sugerencias y colaboraciones son bienvenidas! Siéntase libre de clonar el repositorio, enviar pull request o abrir issue para evaluar mejoras.
-
+Este proyecto se distribuye bajo la licencia MIT. Consulte el archivo `LICENSE` para obtener más detalles.
