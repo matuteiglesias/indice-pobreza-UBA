@@ -18,9 +18,11 @@ Este proyecto tiene como objetivo principal analizar la situación socioeconómi
 
 ## Metodología
 
-El análisis se basa en una combinación de técnicas estadísticas, análisis geoespacial, y modelado predictivo. Para obtener detalles específicos sobre la metodología utilizada, refiérase al documento detallado [aquí](link-a-documento-metodología).
+El análisis se basa en una combinación de técnicas estadísticas, análisis geoespacial, y modelado predictivo. 
+<!--Para obtener detalles específicos sobre la metodología utilizada, refiérase al documento detallado [aquí](link-a-documento-metodología).-->
 
-![Diagrama de Flujo del Proyecto](images/diagrama_flujo.png)
+![Diagrama de Flujo del Proyecto](https://github.com/matuteiglesias/indice-pobreza-UBA/blob/main/images/graphviz.svg?raw=true)
+
 
 ## [Conjuntos de Datos](docs/data.md)
 
