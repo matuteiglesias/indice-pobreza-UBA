@@ -9,7 +9,7 @@ Este proyecto da herramientas potentes para analisis detallado de las metricas s
 2. [Metodología](#metodología)
 3. [Conjuntos de Datos](docs/datasets.md)
 4. [Resultados](#resultados)
-5. [Cómo Contribuir](#cómo-contribuir)
+5. [Sumate al Equipo](#cómo-contribuir)
 6. [Licencia](#licencia)
 
 ## Descripción General
@@ -32,16 +32,23 @@ Una variedad de conjuntos de datos se utilizan en este proyecto, tanto fuentes o
 
 Los resultados del análisis se presentan en forma de gráficos, mapas y tablas. También se proporcionan insights y conclusiones basadas en los hallazgos. Consulte la sección de resultados para una revisión detallada.
 
-## Cómo Contribuir
+## Sumate al Equipo
 
-Si estás interesado en contribuir al proyecto, ya sea con nuevos conjuntos de datos, técnicas de análisis o correcciones, por favor sigue los siguientes pasos:
+Sumate si te interesa ser parte del proyecto con alguno de estos perfiles.
 
-1. Fork este repositorio.
-2. Crea una nueva rama con un nombre descriptivo.
-3. Realiza tus cambios o adiciones.
-4. Envía un pull request describiendo tus contribuciones.
+1. **Científic/a de Datos/Analista**: Mantener la parte científica del análisis.
+   
+2. **Especialista GIS**: Mantener los mapas.
+   
+3. **Ingenier/a de Datos**: gestionar los datos.
+   
+4. **Desarrollador/a Front-end**: Mantener la página.
 
-Agradecemos cualquier tipo de contribución y nos esforzamos por revisar y fusionar las contribuciones lo más rápido posible.
+5. **Especialista en Documentación y Difusión**: Redactar, documentar y difundír el proyecto.
+
+6. **Gestor/a de Proyecto**: Coordinar todo para que funcione.
+   
+7. **Community Manager**: Manejar la comunidad y las colaboraciones.
 
 ## Licencia
 
