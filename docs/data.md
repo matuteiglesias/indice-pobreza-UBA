@@ -39,11 +39,6 @@ El análisis y la investigación sobre la pobreza son esenciales para comprender
 
 ## 3. Conjuntos de datos
 
----
-
-¡Entendido! Vamos a revisar la estructura de los encabezados en la sección 3 y sugerir una estructura más uniforme. 
-
-## 3. Conjuntos de datos
 
 ### 3.1 Fuentes de Datos
 
