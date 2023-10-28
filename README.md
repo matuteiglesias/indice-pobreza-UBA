@@ -7,7 +7,7 @@ Este proyecto da herramientas potentes para analisis detallado de las metricas s
 
 1. [Descripción General](#descripción-general)
 2. [Metodología](#metodología)
-3. [Conjuntos de Datos](docs/datasets.md)
+3. [Conjuntos de Datos](docs/data.md)
 4. [Resultados](#resultados)
 5. [Sumate al Equipo](#sumate-al-equipo)
 6. [Licencia](#licencia)
