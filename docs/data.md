@@ -299,16 +299,16 @@ Las métricas de pobreza para hogares reflejan la situación de pobreza de los h
 Los nombres de los archivos siguen un formato específico:
 
 1. **Personas Ingresos**: 
-   - Formato: `personas_ingresos_f[FRAC]_[Q]_[EXPERIMENT_TAG].csv`
-   - Ejemplo: `personas_ingresos_f0.01_2022-01_ARG.csv`
+   - Formato: `individual_income_sample[FRAC]_[Q]_[EXPERIMENT_TAG].csv`
+   - Ejemplo: `individual_income_sample0.01_2022-01_ARG.csv`
    
 2. **Pobreza Hogares**:
-   - Formato: `pobreza_hogares_f[FRAC]_q[Q].csv`
-   - Ejemplo: `pobreza_hogares_f0.01_q2022-01.csv`
+   - Formato: `household_poverty_sample[FRAC]_q[Q].csv`
+   - Ejemplo: `household_poverty_sample0.01_q2022-01.csv`
    
 3. **Hogares Geo**:
-   - Formato: `hogares_geo_f[FRAC]_[YEAR]_[EXPERIMENT_TAG].csv`
-   - Ejemplo: `hogares_geo_f0.01_2022_ARG.csv`
+   - Formato: `geo_households_sample[FRAC]_[YEAR]_[EXPERIMENT_TAG].csv`
+   - Ejemplo: `geo_households_sample00.01_2022_ARG.csv`
 
 Donde:
 - `[FRAC]` es el fraccionamiento utilizado.
