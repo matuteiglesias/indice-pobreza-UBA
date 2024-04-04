@@ -174,10 +174,10 @@ Los datos geoespaciales que poseemos están distribuidos en varios archivos GeoJ
 - **PROV (Provincias)**
 
 ##### 2. Métodos de Cálculo:
-- **H:** [Detallar método]
-- **M14:** [Detallar método]
-- **M24:** [Detallar método]
-- **P:** [Detallar método]
+- **H:** Hogares
+- **M14:** Menores de 14
+- **M24:** Mayores de 24
+- **P:** Personas
 
 ##### 3. Métricas Disponibles en los Archivos:
 
