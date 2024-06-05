@@ -26,7 +26,7 @@ El análisis se basa en una combinación de técnicas estadísticas, análisis g
 
 ## [Conjuntos de Datos](docs/data.md)
 
-Una variedad de conjuntos de datos se utilizan en este proyecto, tanto fuentes originales como bases de datos derivadas. Para una descripción detallada de cada conjunto de datos, sus fuentes, y cómo se procesan, consulte el documento vinculado.
+Una variedad de conjuntos de datos se utilizan en este proyecto, tanto fuentes originales como bases de datos derivadas. Para una descripción detallada de cada conjunto de datos, sus fuentes, y cómo se procesan, consulte el documento vinculado en [docs/data.md](docs/data.md).
 
 ## Resultados
 
