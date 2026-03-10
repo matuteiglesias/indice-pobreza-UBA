@@ -9,8 +9,9 @@ Este proyecto da herramientas potentes para analisis detallado de las metricas s
 2. [Metodología](#metodología)
 3. [Conjuntos de Datos](docs/data.md)
 4. [Resultados](#resultados)
-5. [Sumate al Equipo](#sumate-al-equipo)
-6. [Licencia](#licencia)
+5. [Mantenimiento](docs/maintenance.md)
+6. [Sumate al Equipo](#sumate-al-equipo)
+7. [Licencia](#licencia)
 
 ## Descripción General
 
@@ -31,6 +32,21 @@ Una variedad de conjuntos de datos se utilizan en este proyecto, tanto fuentes o
 ## Resultados
 
 Los resultados del análisis se presentan en forma de gráficos, mapas y tablas. También se proporcionan insights y conclusiones basadas en los hallazgos. Consulte la sección de resultados para una revisión detallada.
+
+
+## Mantenimiento rápido del repo
+
+Para revisar higiene del repositorio y diferencias con remoto (si está configurado):
+
+```bash
+make hygiene
+```
+
+Esto genera un reporte con:
+- rama actual y remotos configurados,
+- divergencia ahead/behind contra upstream,
+- resumen del working tree (agregados/modificados/eliminados/no trackeados),
+- top 20 archivos versionados más pesados.
 
 ## Sumate al Equipo
 
