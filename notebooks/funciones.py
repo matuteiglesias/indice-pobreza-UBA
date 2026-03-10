@@ -91,18 +91,22 @@ def predict_save(X_data, x_cols, y_cols, model_filename, out_filename, tag, over
     # return y_censo_fit
 #             gc.collect()
 
-def run_predict_save(iter_dict):
+def run_predict_save(iter_dict, overwrite=False):
     predict_save(**iter_dict)
     out_filename = iter_dict['out_filename']
+
     if out_filename == '/media/matias/Elements/suite/resultados/RFReg_0.05_2022-08-15_ARG.csv': 
         out_filename = '/media/matias/Elements/suite/resultados/RFReg_0.05_2022-08-15_ARG_.csv'
-    return pd.read_csv(out_filename, index_col=['ID'])
+
+    if not overwrite and os.path.exists(out_filename):
+        print(f"File {out_filename} already exists. Read from csv...")
+        return pd.read_csv(out_filename, index_col=['ID'])
 
 
 # Funciones para transformación de ingresos y cálculo de pobreza
 def personas_ingresos_por_trimestre(poblacion, Q, frac, experiment_tag='ARG'):
     # Define the path for RFReg
-    path_modelo_ingresos = f'/media/matias/Elements/suite/resultados/RFC4_{str(frac)}_{Q}_{experiment_tag}.csv'
+    path_modelo_ingresos = f'/media/matias/Elements/suite/out/RFC4_{str(frac)}_{Q}_{experiment_tag}.csv'
     # if path_modelo_ingresos == '/media/matias/Elements/suite/resultados/RFReg_0.05_2022-08-15_ARG.csv': 
     #     path_modelo_ingresos = '/media/matias/Elements/suite/resultados/RFReg_0.05_2022-08-15_ARG_.csv'
 
@@ -181,19 +185,19 @@ def geo_hogares(muestra_hogares, radio_ref_cols, radios_circuitos_secciones_ref,
 
     # Merge operations
     merged_df_1 = pd.merge(muestra_hogares, radio_ref_cols, on='RADIO_REF_ID', how='inner')
-    print(f"size/frac = Pob after merging with radio_ref_cols: {len(merged_df_1)/frac}")
+    print(f"size/frac = Hogares count after merging with radio_ref_cols: {len(merged_df_1)/frac}")
     print("maxs: ", merged_df_1.max())
 
 
     merged_df_3 = pd.merge(merged_df_1, radios_circuitos_secciones_ref, 
                            on = ['COD_2010'], how='left')
     display(merged_df_3.count())
-    print(f"size/frac = Pob after merging with radios_circuitos_secciones_ref: {len(merged_df_3)/frac}")
+    print(f"size/frac = Hogares count after merging with radios_circuitos_secciones_ref: {len(merged_df_3)/frac}")
     # print("dtypes: ", merged_df_3.dtypes)
 
 
     merged_df_4 = pd.merge(merged_df_3, claves_dptos_cols, on=['distrito_id', 'seccion_id'], how='left')
-    print(f"size/frac = Pob after merging with IN1: {len(merged_df_4)/frac}")
+    print(f"size/frac = Hogares count after merging with IN1: {len(merged_df_4)/frac}")
     muestra_hogares_geo = merged_df_4
     print("dtypes: ", merged_df_4.dtypes)
 
@@ -296,8 +300,9 @@ def sintetizar_datos(data, grouper, base='Personas', frac=0.05):
 
     agg_result = df.T.set_index(repeat(base, df.shape[1]), append=True)
     stacker_ix = [-i for i in range(len(grouper) + 1)]
-    agg_result = agg_result.stack(level=stacker_ix).reset_index()
-    
+    # agg_result = agg_result.stack(level=stacker_ix).reset_index()
+    agg_result = agg_result.stack(level=stacker_ix, future_stack=True).reset_index()
+
     agg_result = agg_result.rename(columns = {'level_0': 'observable', 'level_1': 'sintetico', 'level_2': 'base', 0: 'valor'})
     agg_result['frac'] = frac
 
@@ -516,6 +521,26 @@ def generate_Qs_from_year(year):
 
 
 
+def shift_to_mid_quarter_index(df):
+    """
+    Shift the index of a DataFrame to the 15th of the second month of each quarter.
+    """
+    df.index = df.index.map(lambda d: pd.Timestamp(year=d.year, month=(d.month + 1) // 3 * 3 - 1, day=15))
+    return df
+
+
+
+def resample_and_interpolate(df, freq='Q-FEB'):
+    """
+    Resample the DataFrame to the specified frequency and interpolate missing values.
+    """
+    df_resampled = df.resample(freq).asfreq()
+    df_resampled.index = df_resampled.index.map(lambda x: pd.Timestamp(year=x.year, month=x.month, day=15))
+    df_resampled = df_resampled.interpolate(method='linear')
+    df_resampled.fillna(df.mean(), inplace=True)
+    return df_resampled
+
+
 
 import os
 import geopandas as gpd
@@ -533,17 +558,26 @@ def save_geojson(gdf, filename='test.geojson'):
 
 def process_and_save(data, grouper, geo_df, filename_prefix, frac=0.05):
     # Sintetizar datos, eliminar columna 'timestamp' y cambiar la forma del DataFrame
-    df = sintetizar_datos(data, [grouper], base=filename_prefix, frac=frac).drop('timestamp', axis=1).set_index(list(df.drop('valor', axis=1).columns)).unstack([0, 1])['valor']
-    
+    df_ = sintetizar_datos(data, [grouper], base=filename_prefix, frac=frac)
+    df_ = df_.drop('timestamp', axis=1)
+    df = df_.set_index(list(df_.drop('valor', axis=1).columns)).unstack([0, 1])['valor']
+
     # Renombrar columnas y resetear índice
-    df.columns, df = ['_'.join(col) for col in df.columns.values], df.reset_index()
+    # df.columns, df = ['_'.join(col) for col in df.columns.values], df.reset_index()
+    df.columns = ['_'.join(col).strip() if isinstance(col, tuple) else col for col in df.columns]
+    df = df.reset_index()
+    
+
+    # print(df.columns)
     
     # Fusionar con el GeoDataFrame para formar el gdf final
+    # display(df.head())
+    # display(geo_df.head())
     gdf = gpd.GeoDataFrame(df.merge(geo_df), crs=geo_df.crs)
-    
+    # display(gdf.head())
     # Guardar el gdf como GeoJSON
-    filename = f'pobreza_{filename_prefix}_{grouper}.geojson'
-    gdf.to_file(filename, driver='GeoJSON')
+    filename = f'poverty_{filename_prefix}_{grouper}.geojson'
+    gdf.to_file('./../data/geojson/' + filename, driver='GeoJSON')
     
     # Mostrar columnas y sus dtypes
-    print(filename, gdf.dtypes)
+    # print(filename, gdf.dtypes)
