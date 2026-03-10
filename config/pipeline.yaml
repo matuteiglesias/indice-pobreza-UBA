@@ -1,0 +1,176 @@
+project:
+  name: indice-pobreza-uba-v2
+  version: 0.1.0
+  description: Synthetic poverty pipeline for Argentina
+  owner: matias
+  default_run_label: dev
+
+run:
+  run_label: dev
+  experiment_tag: RFC4
+  frac: 0.02
+  years: [2021, 2022, 2023]
+  quarters: null
+  overwrite: false
+  random_seed: 42
+
+paths:
+  root_dir: .
+  data_dir: ./data
+  inputs_dir: ./data/inputs
+  refs_dir: ./data/refs
+  external_dir: ./data/external
+  artifacts_dir: ./artifacts
+
+  synthetic_population_dir: ./data/inputs/synthetic_population
+  trained_models_dir: ./data/inputs/trained_models
+  labor_series_dir: ./data/inputs/labor_series
+  basket_data_dir: ./data/inputs/baskets
+  geo_inputs_dir: ./data/inputs/geography
+
+  stage_predict_dir: ./artifacts/stage_01_predict
+  stage_poverty_dir: ./artifacts/stage_02_poverty
+  stage_stats_dir: ./artifacts/stage_03_stats
+  stage_geo_dir: ./artifacts/stage_04_geo
+  logs_dir: ./artifacts/logs
+
+inputs:
+  synthetic_population:
+    filename_pattern: "table_f{frac}_{year}_{experiment_tag}.csv"
+    id_column: "ID"
+    household_id_column: "HOGAR_REF_ID"
+
+  trained_models:
+    model_filename_pattern: "{target}_{year}_{experiment_tag}.joblib"
+
+  labor_series:
+    empleo_filename: "empleo_series.csv"
+    desempleo_filename: "desoc_aglos.csv"
+
+  basket_data:
+    adulto_equiv_filename: "adulto_eq.csv"
+    regional_baskets_filename: "cb_regional.csv"
+    ipc_filename: "indice_precios.csv"
+    region_lookup_filename: "DPTO_PROV_Region.csv"
+
+  geography:
+    radio_ref_filename: "radio_ref.csv"
+    frac_ref_filename: "FRAC.csv"
+    dpto_ref_filename: "DPTO.csv"
+    prov_ref_filename: "PROV.csv"
+    aglo_ref_filename: "aglo_labels.csv"
+    shape_prov_filename: "provincia.geojson"
+    shape_dpto_filename: "departamento.geojson"
+    shape_frac_filename: "fraccion.geojson"
+
+contracts:
+  stage_01_predict:
+    description: Quarter-level predicted person-level variables from synthetic population and trained models
+    outputs:
+      person_predictions:
+        format: parquet
+        filename_pattern: "person_predictions__q={Q}__frac={frac}__tag={experiment_tag}.parquet"
+        primary_key: ["ID", "Q"]
+
+  stage_02_poverty:
+    description: Poverty and indigence metrics derived from person predictions and household aggregation
+    outputs:
+      person_income:
+        format: parquet
+        filename_pattern: "person_income__q={Q}__frac={frac}__tag={experiment_tag}.parquet"
+        primary_key: ["ID", "Q"]
+      household_poverty:
+        format: parquet
+        filename_pattern: "household_poverty__q={Q}__frac={frac}__tag={experiment_tag}.parquet"
+        primary_key: ["HOGAR_REF_ID", "Q"]
+      household_geo:
+        format: parquet
+        filename_pattern: "household_geo__q={Q}__frac={frac}__tag={experiment_tag}.parquet"
+        primary_key: ["HOGAR_REF_ID", "Q"]
+
+  stage_03_stats:
+    description: Aggregated poverty statistics by selected universes and grouping dimensions
+    outputs:
+      stats_table:
+        format: parquet
+        filename_pattern: "stats__base={base}__groupby={groupby}__frac={frac}__tag={experiment_tag}.parquet"
+        primary_key: null
+      stats_jsonl:
+        format: jsonl
+        filename_pattern: "stats__base={base}__groupby={groupby}__frac={frac}__tag={experiment_tag}.jsonl"
+        primary_key: null
+
+  stage_04_geo:
+    description: Geo-aggregated poverty outputs for map publication
+    outputs:
+      geo_layer:
+        format: geojson
+        filename_pattern: "poverty_map__base={base}__geo={geo_level}__frac={frac}__tag={experiment_tag}.geojson"
+        primary_key: null
+
+domain:
+  universes:
+    - P
+    - PAGLO
+    - M24
+    - H
+    - Hp
+    - Hi
+
+  geo_levels:
+    - prov
+    - dpto
+    - frac
+
+  money:
+    income_column: P47T
+    household_income_column: P47T_hogar
+    poverty_flag_column: Pobreza
+    indigence_flag_column: Indigencia
+
+features:
+  staged_targets:
+    stage1:
+      x_cols: []
+      y_cols: []
+    stage2:
+      x_cols: []
+      y_cols: []
+    stage3:
+      x_cols: []
+      y_cols: []
+    stage4:
+      x_cols: []
+      y_cols:
+        - P47T
+        - P21
+        - PP08D1
+        - TOT_P12
+
+execution:
+  default_stage_order:
+    - stage_01_predict
+    - stage_02_poverty
+    - stage_03_stats
+    - stage_04_geo
+
+  smoke:
+    enabled: true
+    years: [2023]
+    quarters: ["2023Q1"]
+    max_rows: 5000
+    stages:
+      - stage_01_predict
+      - stage_02_poverty
+
+quality:
+  require_input_files: true
+  fail_on_missing_columns: true
+  fail_on_duplicate_primary_keys: true
+  write_run_manifest: true
+  write_stage_metadata: true
+
+logging:
+  level: INFO
+  save_run_manifest: true
+  save_stage_metrics: true
