@@ -44,8 +44,8 @@ inputs:
     model_filename_pattern: "{target}_{year}_{experiment_tag}.joblib"
 
   labor_series:
-    empleo_filename: "empleo_series.csv"
-    desempleo_filename: "desoc_aglos.csv"
+    empleo_filename: "45.2_ECTDT.csv"
+    desempleo_filename: "desoc_AGLOsi_C2010.csv"
 
   basket_data:
     adulto_equiv_filename: "adulto_eq.csv"
