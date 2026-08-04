@@ -1,0 +1,6 @@
+{
+  "verification": "passed",
+  "warnings": [
+    "Documentary INDEC methodology/version is not proven in this repository; candidate use only."
+  ]
+}

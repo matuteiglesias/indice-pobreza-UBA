@@ -83,9 +83,10 @@ oficial.
 #### Configuración y roles del bundle
 
 `outputs` es obligatorio: fija `release_root`, una `release_version` explícita,
-formato tabular Parquet, opción espacial (`none` o
+formato tabular CSV (Parquet puede ser un derivado opcional), opción espacial (`none` o
 `department_2010_geojson`) y los roles del bundle. Los roles mínimos son:
 
+* `person_classification` y `aggregates_tidy`: personas clasificadas y agregados normalizados;
 * `household_classification`: una fila por hogar y período, con umbrales,
   clasificación y gaps;
 * `department_summary` y `national_summary`: agregados ponderados y reconciliables;
@@ -197,3 +198,20 @@ Sumate si te interesa ser parte del proyecto con alguno de estos perfiles.
 ## Licencia
 
 Este proyecto se distribuye bajo la licencia MIT. Consulte el archivo `LICENSE` para obtener más detalles.
+
+### Visible synthetic release and local recovery
+
+The governed, deterministic demonstration is explicitly synthetic and is never an
+official estimate. Build, verify, load, plot, map, inspect, and determinism-check it with:
+
+```bash
+make poverty-release-smoke
+PYTHONPATH=src python -m poverty_pipeline inspect-release build/releases/synthetic-visible-poverty-2024q1/v1
+make local-artifact-inventory
+make release-index
+```
+
+The canonical v1 bundle uses manifest-addressed CSV tables. Every scientific
+input and output role is identified by `release_manifest.json`; optional Parquet
+files are derivatives only. Local recovery inventories historical files read-only
+and refuses fuzzy, positional, or monetarily incompatible joins.

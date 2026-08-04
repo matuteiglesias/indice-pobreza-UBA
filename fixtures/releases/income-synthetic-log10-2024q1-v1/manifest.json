@@ -1,0 +1,56 @@
+{
+  "artifact_type": "research.person-income-predictions/v1",
+  "compatibility": {
+    "classification": "synthetic",
+    "currency": "ARS",
+    "entity": "person",
+    "monetary_reference": "ARS-2024-Q1",
+    "prediction_schema": "person-income-predictions/v1",
+    "prediction_transform": "log10_ars",
+    "price_reference": "ARS-2024-Q1",
+    "sample_id_namespace": "cpv2010:poverty-visible/v1"
+  },
+  "files": [
+    {
+      "path": "person_income.csv",
+      "role": "person_income_predictions",
+      "schema_identity": "person-income-predictions/v1",
+      "sha256": "72f09146b48753cf9223672f402a1ee39ccdfb38b9dbf13231cc3ea4a89b23f6",
+      "size": 800
+    }
+  ],
+  "immutable": true,
+  "limitations": [
+    "Mechanical log inversion is exercised; this is not an unbiased expectation."
+  ],
+  "period": "2024-Q1",
+  "producer": {
+    "commit": "1111111111111111111111111111111111111111",
+    "repository": "repo.synthetic-fixtures"
+  },
+  "release_id": "income-synthetic-log10-2024q1-v1",
+  "reports": [
+    {
+      "path": "producer_qa.json",
+      "role": "producer_qa",
+      "schema_identity": "artifact-qa/v1",
+      "sha256": "edc08d69a7f00e377d3889fc16ee6faf79222f8516b461fd9b1c35bb02986417",
+      "size": 134
+    }
+  ],
+  "schema_version": "research-artifact-manifest/v1",
+  "status": "fixture",
+  "unresolved_blockers": [],
+  "upstream_manifests": [
+    {
+      "artifact_type": "research.eph-annual-input/v1",
+      "manifest_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "release_id": "synthetic-eph-lineage-v1"
+    },
+    {
+      "artifact_type": "research.eph-model-execution/v1",
+      "manifest_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "release_id": "synthetic-model-lineage-v1"
+    }
+  ]
+}

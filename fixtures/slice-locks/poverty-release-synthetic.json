@@ -1,0 +1,101 @@
+{
+  "adult_equivalence": {
+    "approval_id": "candidate-method-input-for-synthetic-only",
+    "artifact_type": "research.poverty-adult-equivalence/v1",
+    "manifest_sha256": "5569f143379b670358761a52a0f1e2f6f742897d5877f2f8d2691ffbcf629929",
+    "path": "../releases/adult-equivalence-candidate-source-bytes-v1",
+    "release_id": "adult-equivalence-candidate-source-bytes-v1"
+  },
+  "approved_execution_policies": {
+    "allow_kernel": true,
+    "gap": {
+      "approval_id": "synthetic-test-policy",
+      "definition": "threshold_minus_income"
+    },
+    "income_output_transform": "linear_ars",
+    "join": "strict",
+    "threshold": {
+      "approval_id": "synthetic-test-policy",
+      "indigence_operator": "inclusive_lte",
+      "poverty_operator": "strict_lt"
+    },
+    "weight": {
+      "approval_id": "synthetic-test-policy",
+      "permitted_estimands": [
+        "poverty_rate",
+        "indigence_rate"
+      ],
+      "policy_id": "approved_household_sample_weight"
+    }
+  },
+  "census": {
+    "artifact_type": "research.census-sample/v1",
+    "geography_vintage": "CPV-2010",
+    "manifest_sha256": "9d01ada30ed4218f6af3870b1ece47c805c8cfefdac51cfcc83ee50fce5449e6",
+    "path": "../releases/census-synthetic-visible-2024q1-v1",
+    "release_id": "census-synthetic-visible-2024q1-v1",
+    "sample_id_namespace": "cpv2010:poverty-visible/v1"
+  },
+  "geography": {
+    "id_property": "department_id",
+    "path": "../geography/departments-synthetic.geojson"
+  },
+  "geography_level": "department_2010",
+  "income": {
+    "artifact_type": "research.person-income-predictions/v1",
+    "manifest_sha256": "e9a09c75a01c18aa9ee73a9b0f0bd96f12ae6e792b6f955c2bfb7e9014c692d0",
+    "monetary_reference": "ARS-2024-Q1",
+    "path": "../releases/income-synthetic-log10-2024q1-v1",
+    "prediction_transform": "log10_ars",
+    "release_id": "income-synthetic-log10-2024q1-v1",
+    "sample_id_namespace": "cpv2010:poverty-visible/v1"
+  },
+  "mode": "poverty_release",
+  "outputs": {
+    "bundle_roles": [
+      "household_classification",
+      "person_classification",
+      "aggregates_tidy",
+      "department_summary",
+      "national_summary",
+      "release_manifest",
+      "run_qa",
+      "limitations",
+      "checksums",
+      "department_spatial"
+    ],
+    "release_root": "../../build/releases",
+    "release_version": "v1",
+    "spatial_output": "department_2010_geojson",
+    "tabular_format": "csv"
+  },
+  "regional_baskets": {
+    "approval_id": "synthetic-policy-only",
+    "artifact_type": "research.regional-baskets/v1",
+    "manifest_sha256": "1f845d088a9f64fc7836e8b3a23a2e83d9d9bd6eae4037be41df2e866bfdd9ea",
+    "monetary_reference": "ARS-2024-Q1",
+    "path": "../releases/regional-baskets-synthetic-six-region-2024q1-v1",
+    "release_id": "regional-baskets-synthetic-six-region-2024q1-v1"
+  },
+  "schema_version": "poverty-slice-lock/v1",
+  "scientific_execution_authorized": true,
+  "selected_period": "2024-Q1",
+  "slice_id": "synthetic-visible-poverty-2024q1",
+  "unresolved_methodology": [],
+  "upstream_lineage": {
+    "annual_eph": {
+      "artifact_type": "research.eph-annual-input/v1",
+      "manifest_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "release_id": "synthetic-eph-lineage-v1"
+    },
+    "income_model_execution": {
+      "artifact_type": "research.eph-model-execution/v1",
+      "manifest_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "release_id": "synthetic-model-lineage-v1"
+    }
+  },
+  "versions": {
+    "contracts": "v1",
+    "package": "v1"
+  }
+}

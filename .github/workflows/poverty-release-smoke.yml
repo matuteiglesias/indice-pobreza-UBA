@@ -1,0 +1,12 @@
+name: synthetic-poverty-release
+on: [push, pull_request]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install matplotlib
+      - run: make poverty-release-smoke
+      - run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'

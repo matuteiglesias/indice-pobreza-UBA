@@ -1,0 +1,6 @@
+{
+  "verification": "passed",
+  "warnings": [
+    "Mechanical log inversion is exercised; this is not an unbiased expectation."
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "artifact_type": "research.census-sample/v1",
+  "compatibility": {
+    "allowed_provenance_columns": [],
+    "geography_vintage": "CPV-2010",
+    "household_schema": "census-household/v1",
+    "person_schema": "census-person/v1",
+    "projection_provenance": "none",
+    "sample_id_namespace": "cpv2010:poverty-visible/v1",
+    "sampling_provenance": "synthetic-hand-calculated",
+    "universe": "synthetic-residents"
+  },
+  "files": [
+    {
+      "path": "persons.csv",
+      "role": "census_persons",
+      "schema_identity": "census-person/v1",
+      "sha256": "ec37c6677025a2c98f5840b508b201df03946f4dfb3388b64ed5c536d08b8589",
+      "size": 214
+    },
+    {
+      "path": "households.csv",
+      "role": "census_households",
+      "schema_identity": "census-household/v1",
+      "sha256": "484463ad07c69ef9156fc66f27df6dd3d429c7caeb4b60a380ee793ae0ac799b",
+      "size": 109
+    }
+  ],
+  "immutable": true,
+  "limitations": [
+    "Synthetic fixture; weights and records are not population estimates."
+  ],
+  "period": "2024-Q1",
+  "producer": {
+    "commit": "1111111111111111111111111111111111111111",
+    "repository": "repo.synthetic-fixtures"
+  },
+  "release_id": "census-synthetic-visible-2024q1-v1",
+  "reports": [
+    {
+      "path": "producer_qa.json",
+      "role": "producer_qa",
+      "schema_identity": "artifact-qa/v1",
+      "sha256": "b60aba27da2ca09dad3b0078c1342b3ff6fa163f830f8a1ab9c8aa2f814a354f",
+      "size": 127
+    }
+  ],
+  "schema_version": "research-artifact-manifest/v1",
+  "status": "fixture",
+  "unresolved_blockers": [],
+  "upstream_manifests": []
+}
