@@ -1,7 +1,261 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "poverty-slice-lock/v1",
+  "title": "Versioned poverty slice lock",
   "type": "object",
-  "required": ["schema_version", "slice_id", "mode", "selected_period", "geography_level", "census", "income", "adult_equivalence", "regional_baskets", "approved_execution_policies", "versions", "scientific_execution_authorized"],
-  "properties": {"schema_version": {"const": "poverty-slice-lock/v1"}, "mode": {"const": "contracts_only"}, "scientific_execution_authorized": {"const": false}}
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "slice_id", "mode", "selected_period",
+    "geography_level", "census", "income", "adult_equivalence",
+    "regional_baskets", "approved_execution_policies", "versions",
+    "scientific_execution_authorized"
+  ],
+  "properties": {
+    "schema_version": {"const": "poverty-slice-lock/v1"},
+    "slice_id": {"type": "string", "minLength": 1, "not": {"pattern": "PENDING_|latest"}},
+    "mode": {"enum": ["contracts_only", "poverty_release"]},
+    "selected_period": {"type": "string", "minLength": 1},
+    "geography_level": {"const": "department_2010"},
+    "census": {"type": "object"},
+    "income": {"type": "object"},
+    "adult_equivalence": {"oneOf": [{"$ref": "#/$defs/unresolvedMethod"}, {"$ref": "#/$defs/adultEquivalencePin"}]},
+    "regional_baskets": {"oneOf": [{"$ref": "#/$defs/unresolvedMethod"}, {"$ref": "#/$defs/basketPin"}]},
+    "geography": {"type": "object"},
+    "approved_execution_policies": {"type": "object"},
+    "versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contracts", "package"],
+      "properties": {
+        "contracts": {"type": "string", "minLength": 1},
+        "package": {"type": "string", "minLength": 1}
+      }
+    },
+    "unresolved_methodology": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "upstream_lineage": {"$ref": "#/$defs/upstreamLineage"},
+    "outputs": {"$ref": "#/$defs/outputConfiguration"},
+    "scientific_execution_authorized": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "contracts_only"}}, "required": ["mode"]},
+      "then": {
+        "properties": {
+          "scientific_execution_authorized": {"const": false},
+          "census": {"$ref": "#/$defs/contractsCensusPin"},
+          "income": {"$ref": "#/$defs/contractsIncomePin"},
+          "adult_equivalence": {"$ref": "#/$defs/unresolvedMethod"},
+          "regional_baskets": {"$ref": "#/$defs/unresolvedMethod"},
+          "approved_execution_policies": {
+            "const": {"join": "strict", "income_output_transform": "linear_ars", "allow_kernel": false}
+          }
+        },
+        "required": ["unresolved_methodology"]
+      }
+    },
+    {
+      "if": {"properties": {"mode": {"const": "poverty_release"}}, "required": ["mode"]},
+      "then": {
+        "required": ["upstream_lineage", "outputs"],
+        "properties": {
+          "scientific_execution_authorized": {"const": true},
+          "census": {"$ref": "#/$defs/censusPin"},
+          "income": {"$ref": "#/$defs/incomePin"},
+          "adult_equivalence": {"$ref": "#/$defs/adultEquivalencePin"},
+          "regional_baskets": {"$ref": "#/$defs/basketPin"},
+          "approved_execution_policies": {"$ref": "#/$defs/executionPolicies"},
+          "unresolved_methodology": {"maxItems": 0}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "safePath": {"type": "string", "minLength": 1, "not": {"pattern": "(^/|latest)"}},
+    "releasePin": {
+      "type": "object",
+      "required": ["artifact_type", "release_id", "manifest_sha256", "path"],
+      "properties": {
+        "artifact_type": {"type": "string"},
+        "release_id": {"type": "string", "minLength": 1, "not": {"pattern": "PENDING_|latest"}},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "path": {"$ref": "#/$defs/safePath"}
+      }
+    },
+    "contractsCensusPin": {
+      "type": "object",
+      "required": ["release_id", "manifest_sha256", "path", "sample_id_namespace", "geography_vintage"],
+      "properties": {
+        "release_id": {"type": "string", "minLength": 1},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "path": {"type": "string", "minLength": 1},
+        "sample_id_namespace": {"type": "string", "minLength": 1},
+        "geography_vintage": {"const": "CPV-2010"}
+      }
+    },
+    "contractsIncomePin": {
+      "type": "object",
+      "required": ["release_id", "manifest_sha256", "path", "sample_id_namespace", "prediction_transform", "monetary_reference"],
+      "properties": {
+        "release_id": {"type": "string", "minLength": 1},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "path": {"type": "string", "minLength": 1},
+        "sample_id_namespace": {"type": "string", "minLength": 1},
+        "prediction_transform": {"enum": ["linear_ars", "log10_ars", "log10_ars_plus_1"]},
+        "monetary_reference": {"type": "string", "minLength": 1}
+      }
+    },
+    "censusPin": {
+      "allOf": [
+        {"$ref": "#/$defs/releasePin"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_type", "release_id", "manifest_sha256", "path", "sample_id_namespace", "geography_vintage"],
+          "properties": {
+            "artifact_type": {"const": "research.census-sample/v1"},
+            "release_id": true, "manifest_sha256": true, "path": true,
+            "sample_id_namespace": {"type": "string", "minLength": 1},
+            "geography_vintage": {"const": "CPV-2010"}
+          }
+        }
+      ]
+    },
+    "incomePin": {
+      "allOf": [
+        {"$ref": "#/$defs/releasePin"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_type", "release_id", "manifest_sha256", "path", "sample_id_namespace", "prediction_transform", "monetary_reference"],
+          "properties": {
+            "artifact_type": {"const": "research.person-income-predictions/v1"},
+            "release_id": true, "manifest_sha256": true, "path": true,
+            "sample_id_namespace": {"type": "string", "minLength": 1},
+            "prediction_transform": {"enum": ["linear_ars", "log10_ars", "log10_ars_plus_1"]},
+            "monetary_reference": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "unresolvedMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_type", "status"],
+      "properties": {
+        "artifact_type": {"type": "string", "minLength": 1},
+        "status": {"const": "unresolved"}
+      }
+    },
+    "adultEquivalencePin": {
+      "allOf": [
+        {"$ref": "#/$defs/releasePin"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_type", "release_id", "manifest_sha256", "path", "approval_id"],
+          "properties": {
+            "artifact_type": {"const": "research.poverty-adult-equivalence/v1"},
+            "release_id": true, "manifest_sha256": true, "path": true,
+            "approval_id": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "basketPin": {
+      "allOf": [
+        {"$ref": "#/$defs/releasePin"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_type", "release_id", "manifest_sha256", "path", "monetary_reference", "approval_id"],
+          "properties": {
+            "artifact_type": {"const": "research.regional-baskets/v1"},
+            "release_id": true, "manifest_sha256": true, "path": true,
+            "monetary_reference": {"type": "string", "minLength": 1},
+            "approval_id": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "executionPolicies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["join", "income_output_transform", "allow_kernel", "threshold", "gap", "weight"],
+      "properties": {
+        "join": {"const": "strict"},
+        "income_output_transform": {"const": "linear_ars"},
+        "allow_kernel": {"const": true},
+        "threshold": {
+          "type": "object", "additionalProperties": false,
+          "required": ["poverty_operator", "indigence_operator", "approval_id"],
+          "properties": {
+            "poverty_operator": {"enum": ["strict_lt", "inclusive_lte"]},
+            "indigence_operator": {"enum": ["strict_lt", "inclusive_lte"]},
+            "approval_id": {"type": "string", "minLength": 1}
+          }
+        },
+        "gap": {
+          "type": "object", "additionalProperties": false,
+          "required": ["definition", "approval_id"],
+          "properties": {
+            "definition": {"enum": ["income_minus_threshold", "threshold_minus_income"]},
+            "approval_id": {"type": "string", "minLength": 1}
+          }
+        },
+        "weight": {
+          "type": "object", "additionalProperties": false,
+          "required": ["policy_id", "approval_id", "permitted_estimands"],
+          "properties": {
+            "policy_id": {"type": "string", "minLength": 1},
+            "approval_id": {"type": "string", "minLength": 1},
+            "permitted_estimands": {
+              "type": "array", "minItems": 1, "uniqueItems": true,
+              "items": {"enum": ["household_count", "person_count", "poverty_rate", "indigence_rate", "poverty_gap", "indigence_gap"]}
+            }
+          }
+        }
+      }
+    },
+    "lineageIdentity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifact_type", "release_id", "manifest_sha256"],
+      "properties": {
+        "artifact_type": {"type": "string", "minLength": 1},
+        "release_id": {"type": "string", "minLength": 1, "not": {"pattern": "latest"}},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "upstreamLineage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["annual_eph", "income_model_execution"],
+      "properties": {
+        "annual_eph": {"allOf": [{"$ref": "#/$defs/lineageIdentity"}, {"properties": {"artifact_type": {"const": "research.eph-annual-input/v1"}}}]},
+        "income_model_execution": {"allOf": [{"$ref": "#/$defs/lineageIdentity"}, {"properties": {"artifact_type": {"const": "research.eph-model-execution/v1"}}}]}
+      }
+    },
+    "outputConfiguration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["release_root", "release_version", "tabular_format", "spatial_output", "bundle_roles"],
+      "properties": {
+        "release_root": {"$ref": "#/$defs/safePath"},
+        "release_version": {"type": "string", "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"},
+        "tabular_format": {"const": "parquet"},
+        "spatial_output": {"enum": ["none", "department_2010_geojson"]},
+        "bundle_roles": {
+          "type": "array", "uniqueItems": true,
+          "items": {"enum": ["household_classification", "department_summary", "national_summary", "release_manifest", "run_qa", "limitations", "checksums", "department_spatial"]},
+          "allOf": [
+            {"contains": {"const": "household_classification"}},
+            {"contains": {"const": "department_summary"}},
+            {"contains": {"const": "national_summary"}},
+            {"contains": {"const": "release_manifest"}},
+            {"contains": {"const": "run_qa"}},
+            {"contains": {"const": "limitations"}},
+            {"contains": {"const": "checksums"}}
+          ]
+        }
+      }
+    }
+  }
 }

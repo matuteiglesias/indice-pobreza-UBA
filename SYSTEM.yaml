@@ -9,7 +9,7 @@ system: research.poverty
 role: poverty-modeling-workspace
 lifecycle: active
 authority:
-  status: proposed
+  status: approved
   owns:
   - poverty measurement research, modeling, and derived outputs
   - project-specific methodological decisions
@@ -19,9 +19,16 @@ authority:
   - public documentation deployment
 interfaces:
   consumes:
-  - artifact:publicdata.eph-microdata@1
-  - artifact:research.eph-model-output@1
-  - artifact:publicdata.regional-baskets-derived@1
+  # Direct, content-locked inputs to a poverty run.
+  - artifact:research.census-sample@1
+  - artifact:research.person-income-predictions@1
+  - artifact:research.poverty-adult-equivalence@1
+  - artifact:research.regional-baskets@1
+  # Annual EPH and model execution are lineage of the prediction release, not
+  # direct poverty-run inputs.
+  upstream_lineage:
+  - artifact:research.eph-annual-input@1
+  - artifact:research.eph-model-execution@1
   produces:
   - artifact:research.poverty-output@1
   - artifact:research.poverty-method@1
@@ -31,16 +38,20 @@ upstream:
 - repo.microdatos-eph-indec
 downstream:
 - repo.atlas-site
-canonical_commands: []
+canonical_commands:
+- name: produce-versioned-poverty-release
+  command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
+  input: poverty-slice-lock/v1
+  output: <lock.outputs.release_root>/<lock.slice_id>/<lock.outputs.release_version>/
 generated_paths:
 - artifacts/
 - figures/
 verification:
-  status: metadata-only
+  status: contract-defined
   last_verified: '2026-08-04'
-  command: null
+  command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
   unknowns:
-  - canonical execution command and current artifact lineage require local confirmation
+  - production release IDs and approval record IDs are supplied by each approved slice lock
 maintenance:
   cadence: quarterly
   next_review: '2026-11-01'
