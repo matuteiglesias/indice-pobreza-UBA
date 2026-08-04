@@ -1,0 +1,4 @@
+sample_person_id,period,prediction_value,prediction_transform,monetary_reference,classification,model_release_id
+cpv2010:test:person:0001,2024-Q4,3,log10_ars,ARS-2024-Q4,synthetic,synthetic-no-model-v1
+cpv2010:test:person:0002,2024-Q4,3.3979400086720375,log10_ars,ARS-2024-Q4,synthetic,synthetic-no-model-v1
+cpv2010:test:person:0003,2024-Q4,0,log10_ars,ARS-2024-Q4,synthetic,synthetic-no-model-v1

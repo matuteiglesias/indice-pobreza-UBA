@@ -1,0 +1,53 @@
+{
+  "adult_equivalence": {
+    "artifact_type": "research.poverty-adult-equivalence/v1",
+    "status": "unresolved"
+  },
+  "approved_execution_policies": {
+    "allow_kernel": false,
+    "income_output_transform": "linear_ars",
+    "join": "strict"
+  },
+  "census": {
+    "geography_vintage": "CPV-2010",
+    "manifest_sha256": "23ec0c2fe6bc840f4bed4ed454f196d131182e9090dcd0ec8f9f50387f81a009",
+    "path": "../releases/census-sample-fixture-v1",
+    "release_id": "census-sample-synthetic-2024q4-v1",
+    "sample_id_namespace": "cpv2010:test/v1"
+  },
+  "geography": {
+    "optional": true,
+    "status": "not_selected"
+  },
+  "geography_level": "department_2010",
+  "income": {
+    "manifest_sha256": "79130c12ae0e260c4ae46192025bdd78087038d3d1e5426f8e130d0e704f978a",
+    "monetary_reference": "ARS-2024-Q4",
+    "path": "../releases/person-income-fixture-v1",
+    "prediction_transform": "linear_ars",
+    "release_id": "person-income-synthetic-2024q4-v1",
+    "sample_id_namespace": "cpv2010:test/v1"
+  },
+  "mode": "contracts_only",
+  "regional_baskets": {
+    "artifact_type": "research.regional-baskets/v1",
+    "status": "unresolved"
+  },
+  "schema_version": "poverty-slice-lock/v1",
+  "scientific_execution_authorized": false,
+  "selected_period": "2024-Q4",
+  "slice_id": "batch4-sprint0-synthetic-2024q4",
+  "unresolved_methodology": [
+    "sample_weight_policy",
+    "income_adequacy",
+    "adult_equivalence",
+    "regional_baskets",
+    "threshold_equality",
+    "gap_sign",
+    "geography_publication"
+  ],
+  "versions": {
+    "contracts": "v1",
+    "package": "poverty_pipeline/0.1.0"
+  }
+}

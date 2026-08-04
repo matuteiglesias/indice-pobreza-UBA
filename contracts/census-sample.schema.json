@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research.census-sample/v1",
+  "description": "Separate person and household CSV contract; identifiers are strings and are never consumer-generated.",
+  "required_person_columns": ["sample_person_id", "sample_household_id", "sex_code", "age_years", "radio_2010_id", "sample_weight"],
+  "required_household_columns": ["sample_household_id", "department_2010_id", "region_id"]
+}

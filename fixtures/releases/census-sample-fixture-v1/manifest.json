@@ -1,0 +1,51 @@
+{
+  "artifact_type": "research.census-sample/v1",
+  "compatibility": {
+    "allowed_provenance_columns": [],
+    "geography_vintage": "CPV-2010",
+    "household_schema": "census-household/v1",
+    "person_schema": "census-person/v1",
+    "sample_id_namespace": "cpv2010:test/v1"
+  },
+  "files": [
+    {
+      "path": "persons.csv",
+      "role": "census_persons",
+      "schema_identity": "census-person/v1",
+      "sha256": "8ae0d32358e832a101b3bbdc4d2333db515cf31d8bfc09a9beadf496fe9b49b0",
+      "size": 297
+    },
+    {
+      "path": "households.csv",
+      "role": "census_households",
+      "schema_identity": "census-household/v1",
+      "sha256": "64173429d72b93bb2c5956430faf8713c777012db42c77ee10ea00b77ee539f0",
+      "size": 128
+    }
+  ],
+  "immutable": true,
+  "limitations": [
+    "Synthetic rows only; no population inference or approved weight policy."
+  ],
+  "period": "2024-Q4",
+  "producer": {
+    "commit": "1111111111111111111111111111111111111111",
+    "repository": "repo.synthetic-fixtures"
+  },
+  "release_id": "census-sample-synthetic-2024q4-v1",
+  "reports": [
+    {
+      "path": "producer_qa.json",
+      "role": "producer_qa",
+      "schema_identity": "artifact-qa/v1",
+      "sha256": "c2966cb563277cf724c1ba603455badc363b66f5dca47e181db582bc1399bbc7",
+      "size": 59
+    }
+  ],
+  "schema_version": "research-artifact-manifest/v1",
+  "status": "fixture",
+  "unresolved_blockers": [
+    "Census sample and weight policy require approval."
+  ],
+  "upstream_manifests": []
+}

@@ -11,5 +11,6 @@ notebooks/.ipynb_checkpoints/
 **/__pycache__/
 *.pyc
 artifacts/
+build/
 notes/
 tags
