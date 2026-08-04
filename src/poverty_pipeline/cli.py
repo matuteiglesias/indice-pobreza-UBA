@@ -8,6 +8,25 @@ from pathlib import Path
 
 from poverty_pipeline.adapters import adapt_census, adapt_income
 from poverty_pipeline.contracts import ContractError, validate_lock
+from poverty_pipeline.planning import ExecutionPlan, build_execution_plan
+
+
+def _resolved_releases(lock: dict) -> dict:
+    """Expose the release-resolution boundary after contract validation."""
+    # validate_lock has already resolved every pin and checked its digest before
+    # returning; adapters must receive only these resolved release objects.
+    return lock["_validated_releases"]
+
+
+def _materialize_and_qa(releases: dict, plan: ExecutionPlan) -> dict:
+    """Stage 4: run the adapters and their strict cardinality/coverage QA."""
+    persons, _, census_qa = adapt_census(releases["census"])
+    _, income_qa = adapt_income(
+        releases["income"], persons, selected_period=plan.selected_period,
+        sample_id_namespace=plan.id_namespace,
+        requested_output_transform=plan.approved_scientific_policies["income_output_transform"],
+    )
+    return {"census": census_qa, "income": income_qa}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -18,20 +37,24 @@ def main(argv: list[str] | None = None) -> int:
     validate.add_argument("--qa-output", type=Path)
     args = parser.parse_args(argv)
     try:
+        # Stage 1: validate the execution lock. validate_lock also performs the
+        # content-addressed resolution required before it returns successfully.
         lock = validate_lock(args.lock)
-        census = lock["_validated_releases"]["census"]
-        income = lock["_validated_releases"]["income"]
-        persons, households, census_qa = adapt_census(census)
-        _, income_qa = adapt_income(
-            income, persons, selected_period=lock["selected_period"],
-            sample_id_namespace=lock["census"]["sample_id_namespace"],
-            requested_output_transform=lock["approved_execution_policies"]["income_output_transform"],
-        )
+        # Stage 2: expose only resolved and validated releases.
+        releases = _resolved_releases(lock)
+        # Stage 3: decide compatibility and materialization without loading rows.
+        plan = build_execution_plan(lock)
+        # Stage 4: adapt/materialize inputs and collect adapter QA.
+        release_qa = _materialize_and_qa(releases, plan)
+        # Stage 5 (scientific engine), stage 6 (aggregation), and stage 7
+        # (packaging) are intentionally unreachable for contracts_only.
         qa = {
             "slice_id": lock["slice_id"], "mode": "contracts_only",
-            "releases": {"census": census_qa, "income": income_qa},
+            "releases": release_qa,
             "adult_equivalence": "unresolved", "regional_baskets": "unresolved",
-            "poverty_kernel_authorized": False, "scientific_execution_performed": False,
+            "poverty_kernel_authorized": plan.kernel_authorized,
+            "scientific_execution_performed": False,
+            "orchestration_stopped_after": "adapter_qa",
         }
         rendered = json.dumps(qa, indent=2, sort_keys=True) + "\n"
         if args.qa_output:
@@ -45,4 +68,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
