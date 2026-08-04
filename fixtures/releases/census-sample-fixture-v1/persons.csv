@@ -1,0 +1,4 @@
+sample_person_id,sample_household_id,sex_code,age_years,radio_2010_id,sample_weight
+cpv2010:test:person:0001,cpv2010:test:household:001,1,42,020010101,2.5
+cpv2010:test:person:0002,cpv2010:test:household:001,2,38,020010101,2.5
+cpv2010:test:person:0003,cpv2010:test:household:002,1,9,060070002,1.25

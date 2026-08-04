@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research-artifact-manifest/v1",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "release_id", "status", "immutable", "producer", "period", "compatibility", "files", "reports", "limitations", "unresolved_blockers", "upstream_manifests"],
+  "properties": {
+    "schema_version": {"const": "research-artifact-manifest/v1"},
+    "immutable": {"const": true},
+    "producer": {"type": "object", "required": ["repository", "commit"]},
+    "files": {"type": "array", "items": {"$ref": "#/$defs/file"}},
+    "reports": {"type": "array", "items": {"$ref": "#/$defs/file"}}
+  },
+  "$defs": {"file": {"type": "object", "required": ["path", "role", "size", "sha256", "schema_identity"]}}
+}

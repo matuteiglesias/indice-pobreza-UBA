@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "poverty-slice-lock/v1",
+  "type": "object",
+  "required": ["schema_version", "slice_id", "mode", "selected_period", "geography_level", "census", "income", "adult_equivalence", "regional_baskets", "approved_execution_policies", "versions", "scientific_execution_authorized"],
+  "properties": {"schema_version": {"const": "poverty-slice-lock/v1"}, "mode": {"const": "contracts_only"}, "scientific_execution_authorized": {"const": false}}
+}

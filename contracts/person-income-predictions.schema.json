@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research.person-income-predictions/v1",
+  "required_columns": ["sample_person_id", "period", "prediction_value", "prediction_transform", "monetary_reference", "classification", "model_release_id"],
+  "prediction_transform": {"enum": ["linear_ars", "log10_ars", "log10_ars_plus_1"]},
+  "classification": {"enum": ["observed", "derived", "projected", "synthetic"]}
+}

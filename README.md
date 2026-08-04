@@ -36,6 +36,22 @@ Los resultados del análisis se presentan en forma de gráficos, mapas y tablas.
 
 ## Mantenimiento rápido del repo
 
+### Sprint-zero contracts and synthetic adapters
+
+The isolated `poverty_pipeline` package validates immutable shared envelopes and
+adapts only synthetic Census and person-income fixtures. It does not load a
+model or execute a poverty methodology. Run:
+
+```bash
+make contracts-check
+make contracts-smoke
+make adapters-smoke
+PYTHONPATH=src python -m poverty_pipeline validate-lock fixtures/slice-locks/contracts-only.yaml
+```
+
+`make smoke` remains the historical structural notebook check; it is not a
+scientific validation or poverty execution.
+
 Para revisar higiene del repositorio y diferencias con remoto (si está configurado):
 
 ```bash

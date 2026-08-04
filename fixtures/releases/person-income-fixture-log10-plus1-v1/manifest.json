@@ -1,0 +1,44 @@
+{
+  "artifact_type": "research.person-income-predictions/v1",
+  "compatibility": {
+    "entity": "person",
+    "monetary_reference": "ARS-2024-Q4",
+    "prediction_schema": "person-income-predictions/v1",
+    "prediction_transform": "log10_ars_plus_1",
+    "sample_id_namespace": "cpv2010:test/v1"
+  },
+  "files": [
+    {
+      "path": "person_income.csv",
+      "role": "person_income_predictions",
+      "schema_identity": "person-income-predictions/v1",
+      "sha256": "4888e283a87ed8b25f465ffac9897ac04e4393c9fb53e6a59a1b4334a6f47b32",
+      "size": 418
+    }
+  ],
+  "immutable": true,
+  "limitations": [
+    "Synthetic predictions only; mechanical retransformation is not an unbiased expectation."
+  ],
+  "period": "2024-Q4",
+  "producer": {
+    "commit": "1111111111111111111111111111111111111111",
+    "repository": "repo.synthetic-fixtures"
+  },
+  "release_id": "person-income-synthetic-2024q4-log10-plus1-v1",
+  "reports": [
+    {
+      "path": "producer_qa.json",
+      "role": "producer_qa",
+      "schema_identity": "artifact-qa/v1",
+      "sha256": "c2966cb563277cf724c1ba603455badc363b66f5dca47e181db582bc1399bbc7",
+      "size": 59
+    }
+  ],
+  "schema_version": "research-artifact-manifest/v1",
+  "status": "fixture",
+  "unresolved_blockers": [
+    "Prediction adequacy for poverty measurement requires approval."
+  ],
+  "upstream_manifests": []
+}
