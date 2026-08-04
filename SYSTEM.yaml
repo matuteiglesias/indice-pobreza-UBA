@@ -1,0 +1,46 @@
+# This file declares the repository boundary and its place in the GitHub estate.
+schema_version: 1
+id: research.poverty.model
+repository:
+  id: repo.indice-pobreza-uba
+  github: matuteiglesias/indice-pobreza-UBA
+domain: research
+system: research.poverty
+role: poverty-modeling-workspace
+lifecycle: active
+authority:
+  status: proposed
+  owns:
+  - poverty measurement research, modeling, and derived outputs
+  - project-specific methodological decisions
+  does_not_own:
+  - official poverty statistics
+  - raw EPH acquisition
+  - public documentation deployment
+interfaces:
+  consumes:
+  - artifact:publicdata.eph-microdata@1
+  - artifact:research.eph-model-output@1
+  - artifact:publicdata.regional-baskets-derived@1
+  produces:
+  - artifact:research.poverty-output@1
+  - artifact:research.poverty-method@1
+upstream:
+- repo.canastasindec
+- repo.income-modeling-eph
+- repo.microdatos-eph-indec
+downstream:
+- repo.atlas-site
+canonical_commands: []
+generated_paths:
+- artifacts/
+- figures/
+verification:
+  status: metadata-only
+  last_verified: '2026-08-04'
+  command: null
+  unknowns:
+  - canonical execution command and current artifact lineage require local confirmation
+maintenance:
+  cadence: quarterly
+  next_review: '2026-11-01'
