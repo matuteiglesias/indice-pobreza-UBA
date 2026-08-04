@@ -95,6 +95,18 @@ formato tabular Parquet, opción espacial (`none` o
 * `checksums`: digests del bundle para verificación posterior;
 * `department_spatial`: opcional y sólo cuando se solicita GeoJSON departamental.
 
+La agregación productiva vive en `poverty_pipeline.aggregation`: recibe solamente
+tablas ya clasificadas y pesos muestrales aprobados, y emite el contrato tidy
+reconciliado. `poverty_pipeline.packaging` crea el bundle tabular determinístico.
+La conversión GeoJSON es una acción posterior y explícita de
+`poverty_pipeline.publication.geojson`; el comando canónico no contiene clientes,
+credenciales ni comandos de despliegue de Mapbox u otro servicio remoto.
+
+Las funciones `sintetizar_datos`, `exportar_a_json`, `process_and_save` y sus
+variantes permanecen en `notebooks/funciones.py` exclusivamente para poder abrir
+notebooks históricos. Ningún módulo bajo `src/` las importa ni las utiliza para
+producir releases.
+
 El lock no puede reemplazar estos roles por notebooks, gráficos o publicación.
 
 ### Notebooks históricos (1–5)
