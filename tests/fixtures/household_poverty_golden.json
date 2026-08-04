@@ -1,0 +1,42 @@
+{
+  "persons": [
+    {"person_id": "north-baby", "household_id": "north", "sex": "F", "age": 0},
+    {"person_id": "north-child", "household_id": "north", "sex": "M", "age": 17},
+    {"person_id": "north-adult", "household_id": "north", "sex": "F", "age": 18},
+    {"person_id": "south-zero", "household_id": "south", "sex": "M", "age": 65},
+    {"person_id": "equal-cbt", "household_id": "equal-cbt", "sex": "M", "age": 18},
+    {"person_id": "equal-cba", "household_id": "equal-cba", "sex": "M", "age": 18}
+  ],
+  "households": [
+    {"household_id": "north", "region": "N", "period": "2025-Q1", "geography_key": "001", "sample_weight": 2.0},
+    {"household_id": "south", "region": "S", "period": "2025-Q1", "geography_key": "002", "sample_weight": 3.0},
+    {"household_id": "equal-cbt", "region": "N", "period": "2025-Q1", "geography_key": "001", "sample_weight": 2.0},
+    {"household_id": "equal-cba", "region": "N", "period": "2025-Q1", "geography_key": "001", "sample_weight": 2.0}
+  ],
+  "incomes": [
+    {"person_id": "north-baby", "amount": 20.0},
+    {"person_id": "north-child", "amount": 40.0},
+    {"person_id": "north-adult", "amount": 60.0},
+    {"person_id": "south-zero", "amount": 0.0},
+    {"person_id": "equal-cbt", "amount": 200.0},
+    {"person_id": "equal-cba", "amount": 100.0}
+  ],
+  "equivalence_cells": [
+    {"sex": "F", "age_min": 0, "age_max": 17, "coefficient": 0.5},
+    {"sex": "F", "age_min": 18, "age_max": 64, "coefficient": 1.0},
+    {"sex": "F", "age_min": 65, "age_max": 120, "coefficient": 0.8},
+    {"sex": "M", "age_min": 0, "age_max": 17, "coefficient": 0.6},
+    {"sex": "M", "age_min": 18, "age_max": 64, "coefficient": 1.0},
+    {"sex": "M", "age_min": 65, "age_max": 120, "coefficient": 0.8}
+  ],
+  "baskets": [
+    {"region": "N", "period": "2025-Q1", "cba": 100.0, "cbt": 200.0},
+    {"region": "S", "period": "2025-Q1", "cba": 150.0, "cbt": 300.0}
+  ],
+  "expected": {
+    "north": {"person_count": 3, "income": 120.0, "adult_equivalence": 2.1, "cba": 210.0, "cbt": 420.0, "poverty": true, "indigence": true, "poverty_gap": -300.0, "indigence_gap": -90.0},
+    "south": {"person_count": 1, "income": 0.0, "adult_equivalence": 0.8, "cba": 120.0, "cbt": 240.0, "poverty": true, "indigence": true, "poverty_gap": -240.0, "indigence_gap": -120.0},
+    "equal-cbt": {"person_count": 1, "income": 200.0, "adult_equivalence": 1.0, "cba": 100.0, "cbt": 200.0, "poverty": false, "indigence": false, "poverty_gap": 0.0, "indigence_gap": 100.0},
+    "equal-cba": {"person_count": 1, "income": 100.0, "adult_equivalence": 1.0, "cba": 100.0, "cbt": 200.0, "poverty": true, "indigence": false, "poverty_gap": -100.0, "indigence_gap": 0.0}
+  }
+}
