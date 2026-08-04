@@ -60,7 +60,12 @@ verified. Raw-GitHub availability was deliberately not used as proof of a stable
 contract. No network fetch, sibling-repository mutation, full notebook run, model
 training, data refresh, deployment, or publication was performed.
 
-## 3. Actual execution graph
+## 3. Historical execution graph (not a production sequence)
+
+The following graph records the superseded notebook behavior solely as audit
+evidence. It is **not execution guidance**. Production must not run any of these
+stages; use only
+`PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>`.
 
 Paths in notebook code are relative to the **notebook working directory**, not the
 repository root. The notebooks share in-memory variables only conceptually; each
@@ -76,7 +81,7 @@ redeclares parameters, sometimes inconsistently.
 | 6/10 publication | GeoJSON, recipes, Mapbox style config | shell calls to delete/upload/create/publish tilesets; embedded tokens | remote Mapbox sources, tilesets, styles | Destructive/networked deployment, not part of poverty computation and must never be implicit. Exposed tokens must be revoked outside this audit. |
 | 7/8 plots, 9 administration, 11 nowcasting | result CSVs and assorted external series | exploratory plots, inventories, uploads, experimental projections | figures/HTML/cloud objects | Historical/exploratory. Notebook 9 contains a deliberate `xx` failure and GCS upload commands. Not a production path. |
 
-### Hidden manual steps
+### Superseded manual dependencies (do not perform)
 
 1. Start Jupyter with `notebooks/` as the working directory and a compatible,
    undocumented Python/geospatial/scikit-learn environment.

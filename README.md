@@ -97,6 +97,26 @@ formato tabular Parquet, opción espacial (`none` o
 
 El lock no puede reemplazar estos roles por notebooks, gráficos o publicación.
 
+### Notebooks históricos (1–5)
+
+Los notebooks numerados 1–5 se conservan **únicamente como evidencia histórica y
+exploratoria**. No forman parte de una secuencia de producción, no deben
+ejecutarse de punta a punta y no están autorizados para muestrear el Censo,
+deserializar modelos upstream, descargar canastas/IPC mutables ni escribir una
+release canónica de pobreza. Su código original quedó como celdas `raw` para
+trazabilidad.
+
+Para producir resultados use solamente el slice lock gobernado:
+
+```bash
+PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
+```
+
+Después de esa ejecución, los notebooks pueden usarse para investigación
+leyendo las tablas inmutables de la release mediante `POVERTY_RELEASE_DIR`. Esa
+ruta debe apuntar al directorio versionado escrito por el comando anterior; los
+notebooks no actualizan ni reemplazan sus tablas.
+
 
 ## [Conjuntos de Datos](docs/data.md)
 
@@ -129,7 +149,14 @@ Para revisar higiene del repositorio y diferencias con remoto (si está configur
 
 ```bash
 make hygiene
+make policy-check
 ```
+
+`policy-check` inspecciona los módulos de producción en `src/` y rechaza rutas
+absolutas del autor, inputs desde `raw.githubusercontent.com`, deserialización de
+modelos y selección directa mediante reloj de pared. La excepción declarada se
+limita a `notebooks/` y `notebooks_legacy/`, que son archivos históricos y nunca
+se importan desde producción.
 
 Esto genera un reporte con:
 - rama actual y remotos configurados,

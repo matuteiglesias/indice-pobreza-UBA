@@ -26,7 +26,7 @@ python - <<'PY'
 import json
 from pathlib import Path
 
-pipeline = [
+notebooks = [
     "notebooks/1. Configuración y Datos Auxiliares.ipynb",
     "notebooks/2. Procesamiento Principal de Datos.ipynb",
     "notebooks/3. Calculo de Pobreza.ipynb",
@@ -34,15 +34,18 @@ pipeline = [
     "notebooks/5. Manejo de Datos Geoespaciales.ipynb",
 ]
 
-for nb_path in pipeline:
+for nb_path in notebooks:
     nb = json.loads(Path(nb_path).read_text())
-    code = "\n".join("".join(cell.get("source", [])) for cell in nb["cells"] if cell.get("cell_type") == "code")
-    if "FRAC" not in code:
-        raise SystemExit(f"missing FRAC parameter in {nb_path}")
-    if nb_path.endswith("3. Calculo de Pobreza.ipynb") and "individual_income_sample" not in code:
-        raise SystemExit(f"expected poverty output references not found in {nb_path}")
+    cells = nb.get("cells", [])
+    if nb.get("metadata", {}).get("poverty_pipeline_status") != "historical-exploratory":
+        raise SystemExit(f"missing historical metadata in {nb_path}")
+    if not cells or "HISTÓRICO / EXPLORATORIO" not in "".join(cells[0].get("source", [])):
+        raise SystemExit(f"missing historical banner in {nb_path}")
+    code = [cell for cell in cells if cell.get("cell_type") == "code"]
+    if len(code) != 1 or "load_released_tables" not in "".join(code[0].get("source", [])):
+        raise SystemExit(f"notebook does not exclusively import released tables: {nb_path}")
 
-print("ok: notebook structure and key markers")
+print("ok: historical notebooks are read-only released-output consumers")
 PY
 
 echo "smoke check passed"
