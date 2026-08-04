@@ -1,0 +1,50 @@
+{
+  "artifact_type": "research.regional-baskets/v1",
+  "compatibility": {
+    "approval_id": "synthetic-policy-only",
+    "currency": "ARS",
+    "monetary_reference": "ARS-2024-Q1",
+    "price_reference": "ARS-2024-Q1",
+    "regions": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "unit": "currency_per_adult_equivalent"
+  },
+  "files": [
+    {
+      "path": "baskets.csv",
+      "role": "regional_baskets",
+      "schema_identity": "regional-baskets/v1",
+      "sha256": "864218be2fdaad5448a75612e9eb859f55c0a621b52400bd77b155ec0ab13865",
+      "size": 136
+    }
+  ],
+  "immutable": true,
+  "limitations": [
+    "Synthetic thresholds; never use as official baskets."
+  ],
+  "period": "2024-Q1",
+  "producer": {
+    "commit": "1111111111111111111111111111111111111111",
+    "repository": "repo.synthetic-fixtures"
+  },
+  "release_id": "regional-baskets-synthetic-six-region-2024q1-v1",
+  "reports": [
+    {
+      "path": "producer_qa.json",
+      "role": "producer_qa",
+      "schema_identity": "artifact-qa/v1",
+      "sha256": "781b66842565534ede050fd46f70bc56bf90c02348a3d941d60aa99e8e5f1f13",
+      "size": 111
+    }
+  ],
+  "schema_version": "research-artifact-manifest/v1",
+  "status": "fixture",
+  "unresolved_blockers": [],
+  "upstream_manifests": []
+}

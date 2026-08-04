@@ -1,0 +1,9 @@
+sample_person_id,period,prediction_value,prediction_transform,monetary_reference,classification,model_release_id
+p1,2024-Q1,1.39794000867204,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p2,2024-Q1,1.39794000867204,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p3,2024-Q1,1.8750612633917,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p4,2024-Q1,2.07918124604762,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p5,2024-Q1,2.30102999566398,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p6,2024-Q1,2.47712125471966,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p7,2024-Q1,2.39794000867204,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1
+p8,2024-Q1,2.39794000867204,log10_ars,ARS-2024-Q1,synthetic,synthetic-income-model-v1

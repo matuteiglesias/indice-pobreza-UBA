@@ -120,3 +120,48 @@ def verify_release_bundle(destination: str | Path) -> None:
         digest, separator, name = line.partition("  ")
         if not separator or Path(name).name != name or _sha256(root / name) != digest:
             raise PackagingError(f"checksum verification failed: {name!r}")
+
+
+def write_scientific_bundle(destination: str | Path, *, tables: Mapping[str, Sequence[Mapping[str, object]]],
+                            manifest: Mapping[str, object], qa: Mapping[str, object],
+                            limitations: Sequence[str], optional_files: Mapping[str, bytes] | None = None) -> Path:
+    """Write the v1 role-addressed CSV bundle atomically.
+
+    The checksum file inventories every other byte in the release.  Its own
+    digest is intentionally omitted because a file cannot contain its own hash.
+    """
+    target = Path(destination)
+    if target.exists():
+        raise PackagingError(f"release destination already exists: {target}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix=f".{target.name}.", dir=target.parent))
+    try:
+        roles: dict[str, str] = {}
+        for role, records in sorted(tables.items()):
+            rows = list(records)
+            if not rows:
+                raise PackagingError(f"table {role} must not be empty")
+            name = f"{role}.csv"
+            fields = list(rows[0])
+            with (staging / name).open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
+                writer.writeheader(); writer.writerows(rows)
+            roles[role] = name
+        _write(staging / "run_qa.json", _json_bytes(dict(qa)))
+        _write(staging / "limitations.md", ("# Limitations\n\n" + "".join(f"- {x.strip()}\n" for x in limitations)).encode())
+        roles.update(run_qa="run_qa.json", limitations="limitations.md",
+                     release_manifest="release_manifest.json", checksums="checksums.sha256")
+        for role, payload in sorted((optional_files or {}).items()):
+            suffix = ".geojson" if role == "department_spatial" else ".svg" if role.startswith("plot_") else ".html"
+            name = role + suffix
+            _write(staging / name, payload); roles[role] = name
+        document = {**dict(manifest), "schema_version": "poverty-output-manifest/v1",
+                    "tabular_format": "csv", "output_roles": roles}
+        _write(staging / "release_manifest.json", _json_bytes(document))
+        names = sorted(p.name for p in staging.iterdir())
+        _write(staging / "checksums.sha256", "".join(f"{_sha256(staging/name)}  {name}\n" for name in names).encode("ascii"))
+        os.replace(staging, target)
+    except Exception:
+        for child in staging.iterdir(): child.unlink()
+        staging.rmdir(); raise
+    return target

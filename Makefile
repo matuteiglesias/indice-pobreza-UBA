@@ -28,3 +28,23 @@ adapters-smoke:
 	mkdir -p build/qa
 	$(PYTHON) -m poverty_pipeline validate-lock fixtures/slice-locks/contracts-only.yaml --qa-output build/qa/contracts-only.json >/dev/null
 	@echo "Synthetic adapter QA written; scientific_execution_performed=false"
+
+.PHONY: poverty-release-smoke local-artifact-inventory
+poverty-release-smoke:
+	rm -rf build/releases/synthetic-visible-poverty-2024q1 build/releases/synthetic-visible-poverty-2024q1-rerun build/inspection
+	$(PYTHON) scripts/build_poverty_release_fixtures.py
+	$(PYTHON) -m poverty_pipeline run-lock fixtures/slice-locks/poverty-release-synthetic.json
+	$(PYTHON) -m poverty_pipeline verify-release build/releases/synthetic-visible-poverty-2024q1/v1
+	POVERTY_RELEASE_DIR=build/releases/synthetic-visible-poverty-2024q1/v1 python -c "import notebooks.released_outputs as r; assert len(r.load_released_tables()) == 5"
+	$(PYTHON) -m poverty_pipeline inspect-release build/releases/synthetic-visible-poverty-2024q1/v1 --output build/inspection
+	cp build/releases/synthetic-visible-poverty-2024q1/v1/aggregates_tidy.csv build/aggregates-first.csv
+	rm -rf build/releases/synthetic-visible-poverty-2024q1
+	$(PYTHON) -m poverty_pipeline run-lock fixtures/slice-locks/poverty-release-synthetic.json
+	cmp build/aggregates-first.csv build/releases/synthetic-visible-poverty-2024q1/v1/aggregates_tidy.csv
+
+local-artifact-inventory:
+	$(PYTHON) scripts/inventory_local_artifacts.py
+
+.PHONY: release-index
+release-index:
+	$(PYTHON) scripts/index_releases.py

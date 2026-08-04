@@ -1,0 +1,9 @@
+sample_person_id,sample_household_id,sex_code,age_years,radio_2010_id,sample_weight
+p1,h1,1,30,r1,1
+p2,h1,2,30,r1,1
+p3,h2,1,30,r2,2
+p4,h3,2,30,r3,1.5
+p5,h4,1,30,r4,1
+p6,h5,2,30,r5,3
+p7,h6,1,30,r6,1
+p8,h6,2,30,r6,1

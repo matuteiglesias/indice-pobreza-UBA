@@ -1,0 +1,49 @@
+{
+  "artifact_type": "research.poverty-adult-equivalence/v1",
+  "compatibility": {
+    "age_max": 110,
+    "age_min": 0,
+    "methodology_id": "repo-adulto-eq-candidate-v1",
+    "sex_codes": [
+      "1",
+      "2"
+    ],
+    "sex_dictionary": {
+      "1": "male",
+      "2": "female"
+    },
+    "source_sha256": "7b8bd46f3b883b17d867bd67c97043d81c15b6964f18fe5ee92beedbfee7f9a3"
+  },
+  "files": [
+    {
+      "path": "adult_equivalence.csv",
+      "role": "adult_equivalence",
+      "schema_identity": "adult-equivalence/v1",
+      "sha256": "7b8bd46f3b883b17d867bd67c97043d81c15b6964f18fe5ee92beedbfee7f9a3",
+      "size": 2139
+    }
+  ],
+  "immutable": true,
+  "limitations": [
+    "Documentary INDEC methodology/version is not proven in this repository; candidate use only."
+  ],
+  "period": "methodology-current",
+  "producer": {
+    "commit": "1111111111111111111111111111111111111111",
+    "repository": "repo.synthetic-fixtures"
+  },
+  "release_id": "adult-equivalence-candidate-source-bytes-v1",
+  "reports": [
+    {
+      "path": "producer_qa.json",
+      "role": "producer_qa",
+      "schema_identity": "artifact-qa/v1",
+      "sha256": "461171b6faaadd7e2edde512a7a83baac429d134b507c1614799f0f934637ad6",
+      "size": 150
+    }
+  ],
+  "schema_version": "research-artifact-manifest/v1",
+  "status": "fixture",
+  "unresolved_blockers": [],
+  "upstream_manifests": []
+}

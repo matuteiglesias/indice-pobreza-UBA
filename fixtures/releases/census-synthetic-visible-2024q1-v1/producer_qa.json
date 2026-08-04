@@ -1,0 +1,6 @@
+{
+  "verification": "passed",
+  "warnings": [
+    "Synthetic fixture; weights and records are not population estimates."
+  ]
+}

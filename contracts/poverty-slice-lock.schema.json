@@ -240,13 +240,15 @@
       "properties": {
         "release_root": {"$ref": "#/$defs/safePath"},
         "release_version": {"type": "string", "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"},
-        "tabular_format": {"const": "parquet"},
+        "tabular_format": {"const": "csv"},
         "spatial_output": {"enum": ["none", "department_2010_geojson"]},
         "bundle_roles": {
           "type": "array", "uniqueItems": true,
-          "items": {"enum": ["household_classification", "department_summary", "national_summary", "release_manifest", "run_qa", "limitations", "checksums", "department_spatial"]},
+          "items": {"enum": ["household_classification", "person_classification", "aggregates_tidy", "department_summary", "national_summary", "release_manifest", "run_qa", "limitations", "checksums", "department_spatial", "plot_national_rates", "plot_department_rates", "plot_gap_distribution", "plot_map_preview"]},
           "allOf": [
             {"contains": {"const": "household_classification"}},
+            {"contains": {"const": "person_classification"}},
+            {"contains": {"const": "aggregates_tidy"}},
             {"contains": {"const": "department_summary"}},
             {"contains": {"const": "national_summary"}},
             {"contains": {"const": "release_manifest"}},

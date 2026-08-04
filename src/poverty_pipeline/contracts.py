@@ -131,30 +131,42 @@ def validate_release(
 
 
 def validate_lock(path: str | Path) -> dict[str, Any]:
-    """Validate a content-locked ``contracts_only`` slice and both releases."""
+    """Validate and resolve a contracts-only or scientific poverty slice."""
     path = Path(path)
     lock = load_json(path)  # JSON is intentionally used as the strict YAML subset.
     _require(lock, {"schema_version", "slice_id", "mode", "selected_period", "geography_level",
              "census", "income", "adult_equivalence", "regional_baskets", "geography",
              "approved_execution_policies", "versions", "unresolved_methodology",
              "scientific_execution_authorized"}, "slice lock")
-    if lock["schema_version"] != "poverty-slice-lock/v1" or lock["mode"] != "contracts_only":
-        raise ContractError("only poverty-slice-lock/v1 contracts_only locks are supported")
-    if lock["scientific_execution_authorized"] is not False:
-        raise ContractError("contracts_only cannot authorize scientific execution")
+    mode = lock["mode"]
+    if lock["schema_version"] != "poverty-slice-lock/v1" or mode not in {"contracts_only", "poverty_release"}:
+        raise ContractError("unsupported slice schema or mode")
+    if lock["scientific_execution_authorized"] is not (mode == "poverty_release"):
+        raise ContractError("scientific authorization must agree with mode")
     if any("PENDING_" in str(value) for value in _walk(lock)):
         raise ContractError("execution lock contains a planning placeholder")
-    if lock["adult_equivalence"].get("status") != "unresolved" or lock["regional_baskets"].get("status") != "unresolved":
-        raise ContractError("method inputs must remain unresolved in contracts_only mode")
     policies = lock["approved_execution_policies"]
-    if policies != {"join": "strict", "income_output_transform": "linear_ars", "allow_kernel": False}:
-        raise ContractError("unapproved execution policy")
+    if mode == "contracts_only":
+        if lock["adult_equivalence"].get("status") != "unresolved" or lock["regional_baskets"].get("status") != "unresolved":
+            raise ContractError("method inputs must remain unresolved in contracts_only mode")
+        if policies != {"join": "strict", "income_output_transform": "linear_ars", "allow_kernel": False}:
+            raise ContractError("unapproved execution policy")
+    elif policies.get("join") != "strict" or policies.get("income_output_transform") != "linear_ars" or policies.get("allow_kernel") is not True:
+        raise ContractError("poverty releases require strict joins and linear ARS kernel input")
     base = path.parent
     releases: dict[str, ValidatedRelease] = {}
-    for name, artifact_type in (("census", "research.census-sample/v1"), ("income", "research.person-income-predictions/v1")):
+    inputs = [("census", "research.census-sample/v1"), ("income", "research.person-income-predictions/v1")]
+    if mode == "poverty_release":
+        inputs += [("adult_equivalence", "research.poverty-adult-equivalence/v1"),
+                   ("regional_baskets", "research.regional-baskets/v1")]
+    statuses = {"fixture", "candidate", "legacy_candidate", "approved"}
+    for name, artifact_type in inputs:
         pin = lock[name]
-        _require(pin, {"release_id", "manifest_sha256", "path", "sample_id_namespace"}, f"{name} pin")
-        release = validate_release((base / pin["path"]).resolve(), expected_artifact_type=artifact_type)
+        _require(pin, {"release_id", "manifest_sha256", "path"}, f"{name} pin")
+        if not isinstance(pin["path"], str) or Path(pin["path"]).is_absolute() or "latest" in pin["path"].lower():
+            raise ContractError(f"unsafe release path for {name}")
+        candidate = (base / pin["path"]).resolve()
+        release = validate_release(candidate, expected_artifact_type=artifact_type, allowed_statuses=statuses)
         if release.manifest["release_id"] != pin["release_id"] or release.manifest_hash != pin["manifest_sha256"]:
             raise ContractError(f"{name} release identity or manifest hash mismatch")
         releases[name] = release
@@ -163,7 +175,7 @@ def validate_lock(path: str | Path) -> dict[str, Any]:
     namespace = lock["census"]["sample_id_namespace"]
     if namespace != lock["income"]["sample_id_namespace"] or namespace != census_c.get("sample_id_namespace") or namespace != income_c.get("sample_id_namespace"):
         raise ContractError("sample-ID namespaces must match exactly")
-    if any(release.manifest["period"] != lock["selected_period"] for release in releases.values()):
+    if any(releases[name].manifest["period"] != lock["selected_period"] for name in ("census", "income")):
         raise ContractError("release period does not exactly match selected period")
     if census_c.get("person_schema") != "census-person/v1" or census_c.get("household_schema") != "census-household/v1":
         raise ContractError("Census file schema identities are incompatible")
@@ -176,6 +188,19 @@ def validate_lock(path: str | Path) -> dict[str, Any]:
         raise ContractError("income transform or monetary reference differs from slice lock")
     if lock["census"].get("geography_vintage") != census_c.get("geography_vintage"):
         raise ContractError("Census geography vintage differs from slice lock")
+    if census_c.get("geography_vintage") != "CPV-2010":
+        raise ContractError("only CPV-2010 geography is supported")
+    if mode == "poverty_release":
+        ae = releases["adult_equivalence"].manifest["compatibility"]
+        basket = releases["regional_baskets"].manifest["compatibility"]
+        if lock["regional_baskets"].get("monetary_reference") != basket.get("monetary_reference") or basket.get("monetary_reference") != income_c.get("monetary_reference"):
+            raise ContractError("income and basket monetary identities must match exactly")
+        if ae.get("sex_codes") != ["1", "2"] or ae.get("age_min") != 0 or ae.get("age_max") != 110:
+            raise ContractError("adult-equivalence domain is incompatible")
+        if releases["adult_equivalence"].manifest["period"] != "methodology-current":
+            raise ContractError("adult-equivalence methodology period is incompatible")
+        if releases["regional_baskets"].manifest["period"] != lock["selected_period"]:
+            raise ContractError("basket period differs from selected period")
     lock["_validated_releases"] = releases
     return lock
 
