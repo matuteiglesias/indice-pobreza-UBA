@@ -41,11 +41,13 @@ Este comando ejecuta `scripts/repo_hygiene_report.sh` y muestra:
 make smoke
 ```
 
-Este smoke no ejecuta el pipeline completo (que depende de notebooks, datos locales y librerías pesadas), pero valida una base mínima:
+Este smoke no ejecuta ciencia; valida el archivo histórico de los notebooks:
 
-- presencia de notebooks núcleo del flujo actual (1→5),
+- presencia de los notebooks históricos 1–5 y de su advertencia de archivo,
 - presencia de helpers (`notebooks/funciones.py`, `notebooks/variables.py`),
 - presencia de un insumo local clave (`data/info/radio_ref.csv`),
-- estructura básica del notebook (parámetros esperados como `FRAC` y referencias a salidas de pobreza).
+- estructura segura (una única celda de código que importa tablas de una release
+  gobernada; el código anterior permanece como celdas `raw`).
 
-Si este chequeo falla, conviene corregir estructura/rutas antes de intentar una corrida manual de notebooks.
+Si falla, corrija la estructura de archivo. No realice una corrida manual: use
+`PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>`.

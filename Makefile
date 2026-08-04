@@ -1,4 +1,4 @@
-.PHONY: hygiene status smoke contracts-check contracts-smoke adapters-smoke
+.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke
 
 PYTHON := PYTHONPATH=src python
 
@@ -11,6 +11,9 @@ hygiene:
 smoke:
 	@echo "Structural notebook smoke only (not a scientific execution)."
 	./scripts/smoke_repo.sh
+
+policy-check:
+	$(PYTHON) scripts/check_production_source_policy.py
 
 contracts-check:
 	$(PYTHON) -m compileall -q src tests
