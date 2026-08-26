@@ -1,4 +1,4 @@
-.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check
+.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check
 
 PYTHON := PYTHONPATH=src python
 
@@ -34,6 +34,9 @@ method-check:
 
 measurement-check: method-check
 	$(PYTHON) -m unittest tests.test_fgt_measurement
+
+v2-contracts-check: measurement-check
+	$(PYTHON) -m unittest tests.test_contracts_v2
 
 .PHONY: poverty-release-smoke local-artifact-inventory
 poverty-release-smoke:
