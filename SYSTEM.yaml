@@ -1,65 +1,86 @@
 # This file declares the repository boundary and its place in the GitHub estate.
 schema_version: 1
-id: research.poverty.model
+id: research.poverty.estimation
 repository:
   id: repo.indice-pobreza-uba
   github: matuteiglesias/indice-pobreza-UBA
 domain: research
 system: research.poverty
-role: poverty-measurement-consumer
+role: poverty-measurement-estimation-authority
 lifecycle: active
 authority:
-  status: approved
+  status: current
   owns:
-  - project-specific poverty methodology and classification
-  - adult-equivalence and threshold-comparison policy as approved by the project
-  - poverty/indigence gaps, permitted estimands and aggregation of classified units
-  - governed poverty releases and their QA/limitations
+  - versioned project poverty methodology and adult-equivalence semantics
+  - household poverty/indigence threshold construction and FGT measurement
+  - weighted poverty estimands over already-governed frame/design inputs
+  - propagation of justified upstream uncertainty representations when available
+  - governed poverty estimate releases, capabilities, QA and limitations
   does_not_own:
-  - official poverty statistics
-  - Census sampling or Census geography authority
-  - raw EPH or Census acquisition
+  - official INDEC poverty publication
+  - Census acquisition, sampling or geography authority
+  - raw EPH acquisition or EPH geography
   - EPH-to-Census semantic alignment
-  - income model training, model selection or Census scoring execution
-  - public documentation deployment
+  - income model training, promotion or Census scoring execution
+  - poverty-line source acquisition/price-series production
+  - geometry, spatial joins, Mapbox transport or public atlas rendering
 interfaces:
-  consumes:
-  # Direct, content-locked inputs to a poverty run.
-  - artifact:research.census-sample@1
-  - artifact:research.person-income-predictions@1
-  - artifact:research.poverty-adult-equivalence@1
-  - artifact:research.regional-baskets@1
-  # EPH, semantic alignment and model/scoring execution are upstream lineage of
-  # the prediction release. They are not opened or executed by the poverty runner.
-  upstream_lineage:
-  - artifact:research.eph-annual-input@1
-  - artifact:research.eph-model-execution@1
-  - artifact:research.eph-census-crosswalk@1
-  produces:
-  - artifact:research.poverty-output@1
-  - artifact:research.poverty-method@1
+  v2_scientific_boundary:
+    consumes:
+    - contract:population-frame
+    - contract:deployable-household-welfare
+    - artifact:research.poverty-method@1
+    - contract:poverty-lines
+    - contract:threshold-area-binding
+    produces:
+    - artifact:poverty-estimate-release@2
+    output_roles:
+    - poverty_estimates.csv
+    - capabilities.json
+    - geography_join_contract.json
+    - release_manifest.json
+    - run_qa.json
+    - LIMITATIONS.md
+    - checksums.sha256
+  legacy_v1_runtime:
+    status: compatibility-only
+    consumes:
+    - artifact:research.census-sample@1
+    - artifact:research.person-income-predictions@1
+    - artifact:research.poverty-adult-equivalence@1
+    - artifact:research.regional-baskets@1
+    produces:
+    - artifact:research.poverty-output@1
 upstream:
 - repo.sampler-censo-arg
 - repo.canastasindec
 - repo.income-modeling-eph
-# repo.eph-censo-aligner is lineage through prediction production, not a direct
-# runtime dependency of a poverty release.
+- repo.argentina-geography
 downstream:
-- repo.atlas-site
+- repo.argentina-poverty-atlas
 canonical_commands:
-- name: produce-versioned-poverty-release
+- name: verify-v2-science-and-release
+  command: make v2-release-smoke
+  output: poverty-estimate-release/v2 fixture
+- name: prove-atlas-consumer-boundary
+  command: make atlas-contract-smoke
+  output: province_2010 synthetic consumer fixture
+- name: produce-legacy-v1-release
   command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
   input: poverty-slice-lock/v1
-  output: <lock.outputs.release_root>/<lock.slice_id>/<lock.outputs.release_version>/
+  status: compatibility-only
 generated_paths:
+- build/
 - artifacts/
 - figures/
 verification:
-  status: contract-defined
-  last_verified: '2026-08-04'
-  command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
-  unknowns:
-  - production release IDs and approval record IDs are supplied by each approved slice lock
+  status: v2-fixture-proven
+  last_verified: '2026-08-26'
+  command: make v2-release-smoke && make atlas-contract-smoke
+  next_real_gates:
+  - exact population-frame release from sampler/inference ecosystem
+  - exact deployable welfare release from promoted-model Census scoring
+  - governed poverty-line release and threshold-area binding
+  - uncertainty input before uncertainty statistics can be published
 maintenance:
-  cadence: quarterly
-  next_review: '2026-11-01'
+  cadence: active-development
