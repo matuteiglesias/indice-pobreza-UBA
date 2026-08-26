@@ -1,4 +1,4 @@
-.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke
+.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check
 
 PYTHON := PYTHONPATH=src python
 
@@ -28,6 +28,12 @@ adapters-smoke:
 	mkdir -p build/qa
 	$(PYTHON) -m poverty_pipeline validate-lock fixtures/slice-locks/contracts-only.yaml --qa-output build/qa/contracts-only.json >/dev/null
 	@echo "Synthetic adapter QA written; scientific_execution_performed=false"
+
+method-check:
+	$(PYTHON) -m unittest tests.test_poverty_method
+
+measurement-check: method-check
+	$(PYTHON) -m unittest tests.test_fgt_measurement
 
 .PHONY: poverty-release-smoke local-artifact-inventory
 poverty-release-smoke:
