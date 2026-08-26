@@ -6,16 +6,21 @@ repository:
   github: matuteiglesias/indice-pobreza-UBA
 domain: research
 system: research.poverty
-role: poverty-modeling-workspace
+role: poverty-measurement-consumer
 lifecycle: active
 authority:
   status: approved
   owns:
-  - poverty measurement research, modeling, and derived outputs
-  - project-specific methodological decisions
+  - project-specific poverty methodology and classification
+  - adult-equivalence and threshold-comparison policy as approved by the project
+  - poverty/indigence gaps, permitted estimands and aggregation of classified units
+  - governed poverty releases and their QA/limitations
   does_not_own:
   - official poverty statistics
-  - raw EPH acquisition
+  - Census sampling or Census geography authority
+  - raw EPH or Census acquisition
+  - EPH-to-Census semantic alignment
+  - income model training, model selection or Census scoring execution
   - public documentation deployment
 interfaces:
   consumes:
@@ -24,18 +29,21 @@ interfaces:
   - artifact:research.person-income-predictions@1
   - artifact:research.poverty-adult-equivalence@1
   - artifact:research.regional-baskets@1
-  # Annual EPH and model execution are lineage of the prediction release, not
-  # direct poverty-run inputs.
+  # EPH, semantic alignment and model/scoring execution are upstream lineage of
+  # the prediction release. They are not opened or executed by the poverty runner.
   upstream_lineage:
   - artifact:research.eph-annual-input@1
   - artifact:research.eph-model-execution@1
+  - artifact:research.eph-census-crosswalk@1
   produces:
   - artifact:research.poverty-output@1
   - artifact:research.poverty-method@1
 upstream:
+- repo.sampler-censo-arg
 - repo.canastasindec
 - repo.income-modeling-eph
-- repo.microdatos-eph-indec
+# repo.eph-censo-aligner is lineage through prediction production, not a direct
+# runtime dependency of a poverty release.
 downstream:
 - repo.atlas-site
 canonical_commands:
