@@ -1,4 +1,4 @@
-.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check v2-release-smoke
+.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check v2-release-smoke atlas-contract-smoke
 
 PYTHON := PYTHONPATH=src python
 
@@ -49,6 +49,12 @@ v2-release-smoke: estimation-check
 	rm -rf build/v2/poverty-estimate-fixture-v2
 	$(PYTHON) scripts/build_v2_estimate_fixture.py --output build/v2/poverty-estimate-fixture-v2
 	cmp build/v2/checksums-first.sha256 build/v2/poverty-estimate-fixture-v2/checksums.sha256
+
+atlas-contract-smoke: v2-release-smoke
+	rm -rf build/v2/atlas-province-contract-fixture
+	$(PYTHON) scripts/build_v2_estimate_fixture.py --geography-level province_2010 --output build/v2/atlas-province-contract-fixture
+	$(PYTHON) -c "import json; from pathlib import Path; from poverty_pipeline.release_v2 import verify_estimate_release; p=Path('build/v2/atlas-province-contract-fixture'); verify_estimate_release(p); j=json.loads((p/'geography_join_contract.json').read_text()); c=json.loads((p/'capabilities.json').read_text()); assert j['joinable_geography_levels']==['province_2010']; assert c['scientific_status']=='synthetic_fixture'"
+	@echo "Atlas consumer contract fixture: passed"
 
 .PHONY: poverty-release-smoke local-artifact-inventory
 poverty-release-smoke:

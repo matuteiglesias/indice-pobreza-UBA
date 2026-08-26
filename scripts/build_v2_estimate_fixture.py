@@ -36,7 +36,7 @@ def content_hash(value: object) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
-def build(output: Path) -> Path:
+def build(output: Path, *, geography_level: str = "department_2010") -> Path:
     method_path = Path("configs/poverty_methods/indec-line-poverty-2016-v1.json")
     method = load_poverty_method(method_path)
     frame = PopulationFrameRelease(
@@ -80,8 +80,18 @@ def build(output: Path) -> Path:
         "cpv2010-frame-ipw-fixture", frame.weight_semantics,
         tuple(HouseholdWeight(h.household_id, h.analysis_weight) for h in frame.households),
     )
-    domains = tuple(HouseholdDomain(h.household_id, "department_2010", h.department_2010_id)
-                    for h in frame.households)
+    if geography_level == "department_2010":
+        domains = tuple(
+            HouseholdDomain(h.household_id, geography_level, h.department_2010_id)
+            for h in frame.households
+        )
+    elif geography_level == "province_2010":
+        domains = tuple(
+            HouseholdDomain(h.household_id, geography_level, h.province_2010_id)
+            for h in frame.households
+        )
+    else:
+        raise ValueError(f"unsupported fixture geography level: {geography_level}")
     estimation = estimate_poverty(
         measurement,
         domains,
@@ -102,8 +112,13 @@ def build(output: Path) -> Path:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=Path("build/v2/poverty-estimate-fixture-v2"))
+    parser.add_argument(
+        "--geography-level",
+        choices=("department_2010", "province_2010"),
+        default="department_2010",
+    )
     args = parser.parse_args()
-    build(args.output)
+    build(args.output, geography_level=args.geography_level)
     print(args.output)
     return 0
 
