@@ -15,6 +15,16 @@ from .household_poverty import (
     WeightUsePolicy,
     calculate_household_poverty,
 )
+from .measurement import (
+    HouseholdPovertyLines,
+    HouseholdPovertyMeasure,
+    HouseholdWelfare,
+    MeasurementError,
+    PersonMember,
+    PersonPovertyMeasure,
+    PovertyMeasurement,
+    measure_poverty,
+)
 from .method import (
     AdultEquivalenceBand,
     MethodContractError,
@@ -25,8 +35,10 @@ from .method import (
 
 __all__ = [
     "AdultEquivalenceBand", "AdultEquivalenceCell", "ComparisonPolicy", "GapSignPolicy",
-    "Household", "HouseholdPoverty", "LinearIncome", "MethodContractError", "NormalizedPerson",
+    "Household", "HouseholdPoverty", "HouseholdPovertyLines", "HouseholdPovertyMeasure",
+    "HouseholdWelfare", "LinearIncome", "MeasurementError", "MethodContractError",
+    "NormalizedPerson", "PersonMember", "PersonPovertyMeasure", "PovertyMeasurement",
     "PovertyMethod", "PovertyPolicies", "PovertyInputError", "RegionalPeriodBasket",
     "ScientificDependencyContract", "WeightUsePolicy", "calculate_household_poverty",
-    "load_poverty_method", "poverty_method_from_dict",
+    "load_poverty_method", "measure_poverty", "poverty_method_from_dict",
 ]
