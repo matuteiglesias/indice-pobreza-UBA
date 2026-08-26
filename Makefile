@@ -1,4 +1,4 @@
-.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check
+.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check v2-release-smoke
 
 PYTHON := PYTHONPATH=src python
 
@@ -40,6 +40,15 @@ v2-contracts-check: measurement-check
 
 estimation-check: v2-contracts-check
 	$(PYTHON) -m unittest tests.test_estimation_v2
+
+v2-release-smoke: estimation-check
+	rm -rf build/v2/poverty-estimate-fixture-v2 build/v2/poverty-estimate-fixture-v2-rerun
+	$(PYTHON) scripts/build_v2_estimate_fixture.py --output build/v2/poverty-estimate-fixture-v2
+	cp build/v2/poverty-estimate-fixture-v2/checksums.sha256 build/v2/checksums-first.sha256
+	$(PYTHON) -c "from poverty_pipeline.release_v2 import verify_estimate_release; verify_estimate_release('build/v2/poverty-estimate-fixture-v2')"
+	rm -rf build/v2/poverty-estimate-fixture-v2
+	$(PYTHON) scripts/build_v2_estimate_fixture.py --output build/v2/poverty-estimate-fixture-v2
+	cmp build/v2/checksums-first.sha256 build/v2/poverty-estimate-fixture-v2/checksums.sha256
 
 .PHONY: poverty-release-smoke local-artifact-inventory
 poverty-release-smoke:
