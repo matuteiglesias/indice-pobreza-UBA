@@ -1,26 +1,20 @@
-"""Strict in-memory contracts for Poverty Estimation v2 producer handoffs.
+"""Strict semantic handoffs for Poverty Estimation v2.
 
-These contracts describe the semantic boundary Poverty expects from upstream
-producers. They intentionally do not know how sampler/model/line repositories
-construct their artifacts.
+The classes here describe what Poverty consumes, not how sampler/model/line
+producers construct their artifacts. No model, GIS, network or file I/O lives in
+this module.
 """
-
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Iterable
+from typing import Iterable, TypeVar
 
-from poverty_pipeline.science import (
-    HouseholdPovertyLines,
-    HouseholdWelfare,
-    PersonMember,
-    PovertyMethod,
-)
+from poverty_pipeline.science import HouseholdPovertyLines, HouseholdWelfare, PersonMember, PovertyMethod
 
 
 class V2ContractError(ValueError):
-    """A v2 handoff is incomplete or semantically incompatible."""
+    pass
 
 
 @dataclass(frozen=True)
@@ -85,7 +79,7 @@ class PovertyLineRelease:
     period: str
     currency: str
     price_reference: str
-    methodology_id: str
+    method_release_id: str
     lines: tuple[PovertyLine, ...]
 
 
@@ -110,27 +104,30 @@ class V2PreparedMeasurement:
     household_lines: tuple[HouseholdPovertyLines, ...]
 
 
-def _nonempty(value: str, label: str) -> str:
+T = TypeVar("T")
+
+
+def _text(value: str, label: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise V2ContractError(f"{label} must be a nonempty string")
     return value
 
 
-def _finite(value: float, label: str, *, positive: bool = False) -> float:
+def _number(value: float, label: str, *, positive: bool = False) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise V2ContractError(f"{label} must be numeric")
-    result = float(value)
-    if not math.isfinite(result) or result < 0 or (positive and result == 0):
+    value = float(value)
+    if not math.isfinite(value) or value < 0 or (positive and value == 0):
         qualifier = "positive" if positive else "nonnegative"
         raise V2ContractError(f"{label} must be finite and {qualifier}")
-    return result
+    return value
 
 
-def _unique(rows: Iterable[object], key, label: str) -> dict[str, object]:
-    result: dict[str, object] = {}
+def _unique(rows: Iterable[T], key, label: str) -> dict[str, T]:
+    result: dict[str, T] = {}
     for row in rows:
         value = key(row)
-        _nonempty(value, f"{label} key")
+        _text(value, f"{label} key")
         if value in result:
             raise V2ContractError(f"duplicate {label} key: {value!r}")
         result[value] = row
@@ -140,147 +137,107 @@ def _unique(rows: Iterable[object], key, label: str) -> dict[str, object]:
 
 
 def validate_population_frame(frame: PopulationFrameRelease) -> None:
-    for label, value in (
-        ("frame release_id", frame.release_id),
-        ("frame namespace", frame.namespace),
-        ("frame vintage", frame.frame_vintage),
-        ("sampling design", frame.sampling_design_id),
-        ("weight semantics", frame.weight_semantics),
-    ):
-        _nonempty(value, label)
-    people = _unique(frame.persons, lambda x: x.person_id, "frame person")
+    for label, value in (("release", frame.release_id), ("namespace", frame.namespace),
+                         ("frame vintage", frame.frame_vintage),
+                         ("sampling design", frame.sampling_design_id),
+                         ("weight semantics", frame.weight_semantics)):
+        _text(value, label)
     households = _unique(frame.households, lambda x: x.household_id, "frame household")
-    for household in households.values():
-        assert isinstance(household, PopulationFrameHousehold)
-        _nonempty(household.department_2010_id, "department_2010_id")
-        _nonempty(household.province_2010_id, "province_2010_id")
-        p = _finite(household.frame_selection_probability, "frame selection probability", positive=True)
-        if p > 1:
+    people = _unique(frame.persons, lambda x: x.person_id, "frame person")
+    for h in households.values():
+        _text(h.department_2010_id, "department_2010_id")
+        _text(h.province_2010_id, "province_2010_id")
+        probability = _number(h.frame_selection_probability, "selection probability", positive=True)
+        if probability > 1:
             raise V2ContractError("frame selection probability must not exceed one")
-        _finite(household.analysis_weight, "analysis weight", positive=True)
-    seen_households: set[str] = set()
-    for person in people.values():
-        assert isinstance(person, PopulationFramePerson)
-        if person.household_id not in households:
-            raise V2ContractError(f"person references unknown household: {person.household_id!r}")
-        household = households[person.household_id]
-        assert isinstance(household, PopulationFrameHousehold)
-        if (person.department_2010_id, person.province_2010_id) != (
-            household.department_2010_id,
-            household.province_2010_id,
-        ):
+        _number(h.analysis_weight, "analysis weight", positive=True)
+    represented: set[str] = set()
+    for p in people.values():
+        if p.household_id not in households:
+            raise V2ContractError(f"person references unknown household: {p.household_id!r}")
+        h = households[p.household_id]
+        if (p.department_2010_id, p.province_2010_id) != (h.department_2010_id, h.province_2010_id):
             raise V2ContractError("person/household geography identity mismatch")
-        for label, value in (
-            ("radio_2010_id", person.radio_2010_id),
-            ("department_2010_id", person.department_2010_id),
-            ("province_2010_id", person.province_2010_id),
-            ("sex", person.sex),
-        ):
-            _nonempty(value, label)
-        if isinstance(person.age, bool) or not isinstance(person.age, int) or person.age < 0:
+        for label, value in (("sex", p.sex), ("radio_2010_id", p.radio_2010_id),
+                             ("department_2010_id", p.department_2010_id),
+                             ("province_2010_id", p.province_2010_id)):
+            _text(value, label)
+        if isinstance(p.age, bool) or not isinstance(p.age, int) or p.age < 0:
             raise V2ContractError("age must be a nonnegative completed-year integer")
-        seen_households.add(person.household_id)
-    if seen_households != set(households):
+        represented.add(p.household_id)
+    if represented != set(households):
         raise V2ContractError("every frame household must contain at least one person")
 
 
 def validate_welfare_release(welfare: WelfareRelease, frame: PopulationFrameRelease) -> None:
-    for label, value in (
-        ("welfare release_id", welfare.release_id),
-        ("frame namespace", welfare.frame_namespace),
-        ("welfare period", welfare.welfare_period),
-        ("currency", welfare.currency),
-        ("price reference", welfare.price_reference),
-        ("welfare concept", welfare.welfare_concept),
-    ):
-        _nonempty(value, label)
+    for label, value in (("release", welfare.release_id), ("frame namespace", welfare.frame_namespace),
+                         ("welfare period", welfare.welfare_period), ("currency", welfare.currency),
+                         ("price reference", welfare.price_reference),
+                         ("welfare concept", welfare.welfare_concept)):
+        _text(value, label)
     if welfare.frame_namespace != frame.namespace:
         raise V2ContractError("welfare release frame namespace mismatch")
     estimates = _unique(welfare.estimates, lambda x: x.household_id, "welfare household")
-    expected = {row.household_id for row in frame.households}
-    if set(estimates) != expected:
+    if set(estimates) != {h.household_id for h in frame.households}:
         raise V2ContractError("welfare household coverage must exactly match the frame")
-    for estimate in estimates.values():
-        assert isinstance(estimate, WelfareEstimate)
-        _finite(estimate.welfare_amount, "welfare amount")
-        if estimate.estimation_status != "estimated":
-            raise V2ContractError("v2 point-estimate fixture requires estimation_status='estimated'")
+    for row in estimates.values():
+        _number(row.welfare_amount, "welfare amount")
+        if row.estimation_status != "estimated":
+            raise V2ContractError("point-estimate contract requires estimation_status='estimated'")
 
 
 def validate_line_release(lines: PovertyLineRelease, method: PovertyMethod) -> None:
-    for label, value in (
-        ("line release_id", lines.release_id),
-        ("line period", lines.period),
-        ("line currency", lines.currency),
-        ("line price reference", lines.price_reference),
-        ("line methodology", lines.methodology_id),
-    ):
-        _nonempty(value, label)
-    if lines.methodology_id != method.methodology_id:
-        raise V2ContractError("poverty-line methodology does not match the poverty method")
-    unique = _unique(lines.lines, lambda x: x.threshold_area_id, "poverty line area")
-    for line in unique.values():
-        assert isinstance(line, PovertyLine)
-        cba = _finite(line.cba_per_adult_equivalent, "CBA per adult equivalent", positive=True)
-        cbt = _finite(line.cbt_per_adult_equivalent, "CBT per adult equivalent", positive=True)
+    for label, value in (("release", lines.release_id), ("period", lines.period),
+                         ("currency", lines.currency), ("price reference", lines.price_reference),
+                         ("method release", lines.method_release_id)):
+        _text(value, label)
+    if lines.method_release_id != method.release_id:
+        raise V2ContractError("poverty lines must pin the exact poverty-method release")
+    by_area = _unique(lines.lines, lambda x: x.threshold_area_id, "poverty line area")
+    for row in by_area.values():
+        cba = _number(row.cba_per_adult_equivalent, "CBA per adult equivalent", positive=True)
+        cbt = _number(row.cbt_per_adult_equivalent, "CBT per adult equivalent", positive=True)
         if cba > cbt:
             raise V2ContractError("CBA must not exceed CBT")
 
 
-def prepare_measurement_inputs(
-    frame: PopulationFrameRelease,
-    welfare: WelfareRelease,
-    lines: PovertyLineRelease,
-    binding: ThresholdAreaBindingRelease,
-    method: PovertyMethod,
-    *,
-    estimation_period: str,
-) -> V2PreparedMeasurement:
-    """Validate exact handoffs and resolve lines without geography computation."""
+def prepare_measurement_inputs(frame: PopulationFrameRelease, welfare: WelfareRelease,
+                               lines: PovertyLineRelease, binding: ThresholdAreaBindingRelease,
+                               method: PovertyMethod, *, estimation_period: str) -> V2PreparedMeasurement:
+    """Resolve P2 inputs using IDs only; no geometry or model logic is allowed."""
     validate_population_frame(frame)
     validate_welfare_release(welfare, frame)
     validate_line_release(lines, method)
-    _nonempty(estimation_period, "estimation period")
+    _text(estimation_period, "estimation period")
     if welfare.welfare_period != estimation_period or lines.period != estimation_period:
-        raise V2ContractError("welfare, poverty-line and estimation periods must match")
+        raise V2ContractError("welfare, line and estimation periods must match")
     if welfare.currency != lines.currency or welfare.price_reference != lines.price_reference:
-        raise V2ContractError("welfare and poverty lines must share currency and price reference")
+        raise V2ContractError("welfare and poverty lines must share monetary reference")
     if welfare.welfare_concept != method.welfare_concept:
-        raise V2ContractError("welfare concept does not match the poverty method")
+        raise V2ContractError("welfare concept does not match poverty method")
     if binding.geography_level != "department_2010":
-        raise V2ContractError("first v2 binding supports department_2010 only")
+        raise V2ContractError("first threshold-area binding supports department_2010 only")
 
     bindings = _unique(binding.bindings, lambda x: x.geography_id, "threshold-area binding")
-    line_by_area = {row.threshold_area_id: row for row in lines.lines}
-    household_by_id = {row.household_id: row for row in frame.households}
-    welfare_by_id = {row.household_id: row for row in welfare.estimates}
-    needed_departments = {row.department_2010_id for row in frame.households}
-    if set(bindings) != needed_departments:
+    needed = {h.department_2010_id for h in frame.households}
+    if set(bindings) != needed:
         raise V2ContractError("threshold-area binding must exactly cover frame departments")
+    line_by_area = {row.threshold_area_id: row for row in lines.lines}
     for row in bindings.values():
-        assert isinstance(row, ThresholdAreaBinding)
         if row.geography_level != binding.geography_level:
             raise V2ContractError("binding row geography level mismatch")
         if row.threshold_area_id not in line_by_area:
             raise V2ContractError(f"binding references unknown threshold area: {row.threshold_area_id!r}")
 
-    people = tuple(
-        PersonMember(row.person_id, row.household_id, row.sex, row.age)
-        for row in frame.persons
-    )
-    household_welfare = tuple(
-        HouseholdWelfare(household_id, welfare_by_id[household_id].welfare_amount)
-        for household_id in sorted(household_by_id)
-    )
-    household_lines = []
-    for household_id in sorted(household_by_id):
-        household = household_by_id[household_id]
-        binding_row = bindings[household.department_2010_id]
-        assert isinstance(binding_row, ThresholdAreaBinding)
-        line = line_by_area[binding_row.threshold_area_id]
-        household_lines.append(HouseholdPovertyLines(
-            household_id,
-            line.cba_per_adult_equivalent,
-            line.cbt_per_adult_equivalent,
-        ))
-    return V2PreparedMeasurement(people, household_welfare, tuple(household_lines))
+    welfare_by_household = {row.household_id: row for row in welfare.estimates}
+    people = tuple(PersonMember(p.person_id, p.household_id, p.sex, p.age) for p in frame.persons)
+    welfare_input = tuple(HouseholdWelfare(h.household_id, welfare_by_household[h.household_id].welfare_amount)
+                          for h in sorted(frame.households, key=lambda x: x.household_id))
+    line_input = []
+    for h in sorted(frame.households, key=lambda x: x.household_id):
+        area = bindings[h.department_2010_id].threshold_area_id
+        line = line_by_area[area]
+        line_input.append(HouseholdPovertyLines(h.household_id,
+                                                line.cba_per_adult_equivalent,
+                                                line.cbt_per_adult_equivalent))
+    return V2PreparedMeasurement(people, welfare_input, tuple(line_input))
