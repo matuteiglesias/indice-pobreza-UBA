@@ -1,8 +1,23 @@
 name: synthetic-poverty-release
-on: [push, pull_request]
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 13 * * 3"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: synthetic-poverty-release-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -10,3 +25,13 @@ jobs:
       - run: pip install matplotlib
       - run: make poverty-release-smoke
       - run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'
+      - name: Record maturity boundary
+        if: always()
+        run: |
+          {
+            echo "## Poverty scheduled maintenance"
+            echo
+            echo "A green run proves the synthetic v2 release/contract path remains executable. It does not claim that real household-welfare, poverty-line, threshold-area, or population-frame parents are available."
+            echo
+            echo "The mature real-data scheduler should consume exact immutable parents and build a candidate poverty release only after those upstream gates close."
+          } >> "$GITHUB_STEP_SUMMARY"
