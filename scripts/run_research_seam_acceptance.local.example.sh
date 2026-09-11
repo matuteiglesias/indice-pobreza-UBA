@@ -10,6 +10,7 @@ python scripts/run_research_seam_acceptance.py \
   --q7 /home/matias/repos/encuestador-de-hogares/science/2026-09-11/results/q7_predictive_distribution \
   --q8 /home/matias/repos/encuestador-de-hogares/science/2026-09-11/results/q8_census_commissioning \
   --eph /home/matias/data/poverty-integration-20260910/eph-releases/eph-2024-q3-3b6a7a15c4af \
+  --baseline-household-oof /home/matias/Downloads/real-eph-2024q3-science-evidence/encuestador-runs/real_eph_2024q3_direct_hurdle_gamma_v1-7f010f6cb22b4d9c/household_oof.jsonl \
   --baskets /home/matias/repos/old/canastasINDEC/data/CB_Reg_defl_Q.csv \
   --department-region data/info/DPTO_PROV_Region.csv \
   --output /home/matias/data/poverty-integration-20260911/first-real-seam \
