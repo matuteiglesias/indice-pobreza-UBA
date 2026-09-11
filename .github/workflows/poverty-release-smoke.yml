@@ -1,4 +1,4 @@
-name: synthetic-poverty-release
+name: Weekly poverty research pulse
 
 on:
   push:
@@ -11,27 +11,63 @@ permissions:
   contents: read
 
 concurrency:
-  group: synthetic-poverty-release-${{ github.ref }}
+  group: weekly-poverty-research-pulse-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-      - run: pip install matplotlib
-      - run: make poverty-release-smoke
-      - run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'
+      - name: Install bounded scientific dependencies
+        run: pip install matplotlib numpy pandas pyarrow
+      - name: Verify deterministic v2 release path
+        run: make poverty-release-smoke
+      - name: Run full unit suite including predictive measurement
+        run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'
+      - name: Prove predictive-welfare research seam remains callable
+        run: |
+          test -f scripts/run_research_seam_acceptance.py
+          test -f docs/PREDICTIVE_WELFARE_SEAM.md
+          test -f docs/LOCAL_SEAM_EVIDENCE_2026-09-11.md
+          PYTHONPATH=src python scripts/run_research_seam_acceptance.py --help >/tmp/research-seam-help.txt
+          python - <<'PY'
+          from pathlib import Path
+
+          seam = Path("docs/PREDICTIVE_WELFARE_SEAM.md").read_text(encoding="utf-8")
+          evidence = Path("docs/LOCAL_SEAM_EVIDENCE_2026-09-11.md").read_text(encoding="utf-8")
+          required_seam = [
+              "research.household-welfare-predictive/v1",
+              "FGT0",
+              "FGT1",
+              "FGT2",
+              "uncertainty_status = not_supplied",
+          ]
+          missing = [marker for marker in required_seam if marker not in seam]
+          if missing:
+              raise SystemExit(f"predictive welfare seam markers missing: {missing}")
+          required_evidence = [
+              "census-sample-2024-0839713eafea8d1b",
+              "eph-cpv2010-semantic-plane-2024q3-v1",
+              "eph-2024-q3-3b6a7a15c4af",
+          ]
+          missing = [marker for marker in required_evidence if marker not in evidence]
+          if missing:
+              raise SystemExit(f"frozen real seam evidence markers missing: {missing}")
+          print("Predictive-welfare research seam and frozen real evidence are inspectable")
+          PY
       - name: Record maturity boundary
         if: always()
         run: |
           {
-            echo "## Poverty scheduled maintenance"
+            echo "## Weekly poverty research pulse"
             echo
-            echo "A green run proves the synthetic v2 release/contract path remains executable. It does not claim that real household-welfare, poverty-line, threshold-area, or population-frame parents are available."
+            echo "A green run proves the deterministic poverty-release contracts, predictive-welfare FGT measurement code, and the first frozen real sampler→welfare→poverty seam remain executable and inspectable."
             echo
-            echo "The mature real-data scheduler should consume exact immutable parents and build a candidate poverty release only after those upstream gates close."
+            echo "Hosted CI deliberately does **not** reconstruct the large local Census/semantic/predictive-welfare artifacts. Therefore a green run is research-contract liveness, not a newly recomputed official poverty estimate."
+            echo
+            echo "Aggregate uncertainty remains not_supplied, Q8 transport caveats remain active, and publication/approval are separate downstream decisions."
           } >> "$GITHUB_STEP_SUMMARY"
