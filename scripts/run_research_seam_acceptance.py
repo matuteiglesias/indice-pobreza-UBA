@@ -22,12 +22,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from poverty_pipeline.predictive_measurement import (
-    EmpiricalResidualWelfare,
-    PredictiveHouseholdWelfare,
-    expected_fgt_contribution,
-)
 from poverty_pipeline.science import load_poverty_method
+from poverty_pipeline.science.predictive_measurement import (
+    EmpiricalResidualDistribution,
+    _ResidualIndex,
+)
 
 
 REGION_MAP = {
@@ -89,19 +88,22 @@ def fgt_point(welfare: pd.Series, line: pd.Series, alpha: int) -> pd.Series:
 
 
 def predictive_contributions(location: pd.Series, lines: pd.DataFrame, residuals: np.ndarray) -> pd.DataFrame:
-    dist = EmpiricalResidualWelfare(tuple(float(x) for x in np.sort(residuals)))
+    dist = EmpiricalResidualDistribution(tuple(float(x) for x in np.sort(residuals)))
+    index = _ResidualIndex(dist)
     rows = []
     for h, loc in location.items():
         cba = float(lines.at[h, "household_cba"])
         cbt = float(lines.at[h, "household_cbt"])
+        i0, i1, i2 = index.expected_fgt(float(loc), cba)
+        p0, p1, p2 = index.expected_fgt(float(loc), cbt)
         rows.append({
             "household_id": h,
-            "indigence_fgt0": expected_fgt_contribution(float(loc), cba, 0, dist),
-            "indigence_fgt1": expected_fgt_contribution(float(loc), cba, 1, dist),
-            "indigence_fgt2": expected_fgt_contribution(float(loc), cba, 2, dist),
-            "poverty_fgt0": expected_fgt_contribution(float(loc), cbt, 0, dist),
-            "poverty_fgt1": expected_fgt_contribution(float(loc), cbt, 1, dist),
-            "poverty_fgt2": expected_fgt_contribution(float(loc), cbt, 2, dist),
+            "indigence_fgt0": i0,
+            "indigence_fgt1": i1,
+            "indigence_fgt2": i2,
+            "poverty_fgt0": p0,
+            "poverty_fgt1": p1,
+            "poverty_fgt2": p2,
         })
     return pd.DataFrame(rows).set_index("household_id")
 
@@ -118,6 +120,7 @@ def main() -> None:
     ap.add_argument("--q7", type=Path, required=True)
     ap.add_argument("--q8", type=Path, required=True)
     ap.add_argument("--eph", type=Path, required=True)
+    ap.add_argument("--baseline-household-oof", type=Path, required=True)
     ap.add_argument("--baskets", type=Path, required=True)
     ap.add_argument("--department-region", type=Path, required=True)
     ap.add_argument("--output", type=Path, required=True)
@@ -160,15 +163,15 @@ def main() -> None:
         raise RuntimeError(f"unmapped Census departments: {sorted(hh_geo[census_region.isna()].unique())[:20]}")
     census_lines = household_lines(p[["household_id", "sex", "age"]], census_region, baskets, method)
 
-    # residual ECDF is rebuilt from exact EPH/Q8 deployment contract if no promoted artifact exists yet
-    # Q8 uses 5-fold OOF P1-R household residuals on the 12,568 complete cohort.
+    # Residual ECDF is rebuilt from the exact EPH/Q7 deployment evidence when
+    # no promoted predictive-welfare artifact is supplied directly.
     ind = pd.read_csv(args.eph / "individual/usu_individual_t324.txt", sep=";", dtype=str, keep_default_na=False)
     ind["hh"] = ind.CODUSU + "\x1f" + ind.NRO_HOGAR
     ind["y"] = pd.to_numeric(ind.P47T, errors="coerce")
     po = pd.read_json(args.q7.parent.parent / "q2_p1r" / "person_oof.jsonl", lines=True)
     ind["row_id"] = ind.CODUSU + ":" + ind.NRO_HOGAR + ":" + ind.COMPONENTE
     ep = ind.merge(po[["row_id", "pred"]], on="row_id", how="inner", validate="one_to_one")
-    complete = pd.read_json(Path("/home/matias/Downloads/real-eph-2024q3-science-evidence/encuestador-runs/real_eph_2024q3_direct_hurdle_gamma_v1-7f010f6cb22b4d9c/household_oof.jsonl"), lines=True)
+    complete = pd.read_json(args.baseline_household_oof, lines=True)
     complete_hh = {x.split("\x1f")[0] + "\x1f" + x.split("\x1f")[1] for x in complete.loc[complete.observed_household_income.notna(), "household_observation_id"]}
     eg = ep[ep.hh.isin(complete_hh)].groupby("hh").agg(y=("y", "sum"), pred=("pred", "sum"))
     residuals = (eg.y - eg.pred).to_numpy(float) * scalar
@@ -197,6 +200,7 @@ def main() -> None:
 
     # Person-universe estimates are member-count weighted averages of household contributions.
     census_members = p.groupby("household_id").size().rename("members")
+
     def person_summary(frame):
         z = frame.join(census_members, how="inner")
         keys = [f"{c}_fgt{a}" for c in ("indigence", "poverty") for a in range(3)]
