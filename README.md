@@ -110,6 +110,29 @@ make local-artifact-inventory
 make release-index
 ```
 
+### Release predictiva provincial (integración local)
+
+La ruta acotada para promover un artefacto de bienestar predictivo ya aceptado
+a una release v2 provincial/nacional es:
+
+```bash
+PYTHONPATH=src python3 scripts/build_predictive_province_release.py \
+  --welfare-release /ruta/al/research.household-welfare-predictive/v1 \
+  --frame /ruta/al/population-frame.json \
+  --baskets /ruta/al/poverty-basket-slice.csv \
+  --output /ruta/de/salida/poverty-estimate-release-2024-q3-province-predictive-v1 \
+  --expected-provinces 24
+```
+
+El comando consume únicamente el handoff de bienestar, el frame de población
+y las seis líneas regionales gobernadas; no entrena ni recalcula el modelo de
+ingresos. Usa peso analítico unitario, integra FGT0/FGT1/FGT2 para personas y
+hogares, exige 24 provincias más `ARG`, y escribe/verifica el conjunto detached
+`poverty-estimate-release/v2` con `research_estimate`,
+`uncertainty_status=not_supplied`, IDs exactos y checksums. El frame JSON tiene
+arrays `households` (`household_id`, `province_2010_id`, `region_id`,
+`analysis_weight`) y `persons` (`person_id`, `household_id`, `sex`, `age`).
+
 ## Cómo colaborar
 
 Son especialmente útiles contribuciones acotadas que mejoren una superficie que el repositorio realmente posee:
