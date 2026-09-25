@@ -127,6 +127,7 @@ def basket_rows(cba_path: Path, cbt_path: Path) -> list[dict[str, object]]:
         value_name="cbt",
     )
     merged = left.merge(right, on=["_date", "region"], validate="one_to_one")
+    merged = merged.rename(columns={"_date": "date"})
     merged["cba"] = pd.to_numeric(merged.cba, errors="coerce")
     merged["cbt"] = pd.to_numeric(merged.cbt, errors="coerce")
     if (
@@ -139,7 +140,7 @@ def basket_rows(cba_path: Path, cbt_path: Path) -> list[dict[str, object]]:
     out = []
     parent = f"{cba_path.name}+{cbt_path.name}"
     for item in merged.itertuples():
-        period = item._date.strftime("%Y-%m")
+        period = item.date.strftime("%Y-%m")
         out.extend(
             [
                 make_row(
