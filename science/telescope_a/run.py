@@ -166,6 +166,10 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     hh["ITF"] = pd.to_numeric(hh.ITF, errors="coerce"); hh["ITF_valid"] = hh.ITF.notna() & (hh.ITF >= 0)
     hh["IPCF"] = pd.to_numeric(hh.IPCF, errors="coerce").where(lambda x: x >= 0)
     hh["PONDIH"] = pd.to_numeric(hh.PONDIH, errors="coerce")
+    if hh.PONDIH.isna().any():
+        raise TelescopeAError("source PONDIH must be numeric for every household")
+    if (hh.PONDIH < 0).any():
+        raise TelescopeAError("source PONDIH must not be negative")
 
     p["P47T_num"] = pd.to_numeric(p.P47T, errors="coerce"); p["P47T_valid"] = p.P47T_num.notna() & (p.P47T_num >= 0)
     complete = p.groupby("household_id").P47T_valid.all().rename("P47T_complete")
@@ -174,7 +178,10 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     hh.loc[~hh.P47T_complete, "sum_P47T"] = np.nan
 
     raw_weight = hh.PONDIH.where(np.isfinite(hh.PONDIH) & (hh.PONDIH > 0)); raw_weight_mass = float(raw_weight.sum())
-    keep = hh[hh.ITF_valid].copy()
+    hh["PONDIH_income_supported"] = np.isfinite(hh.PONDIH) & (hh.PONDIH > 0)
+    # PONDIH==0 is a source-supported nonresponse state, not a malformed row.
+    # A0 is explicitly the income-estimation support universe under PONDIH.
+    keep = hh[hh.ITF_valid & hh.PONDIH_income_supported].copy()
     if keep.empty: raise TelescopeAError("no valid nonnegative ITF households")
     if keep.PONDIH.isna().any() or (~np.isfinite(keep.PONDIH)).any() or (keep.PONDIH <= 0).any(): raise TelescopeAError("retained PONDIH must be finite and positive")
 
@@ -243,7 +250,9 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     summary = {
         "status": "RESEARCH_VALIDATION_NOT_OFFICIAL_INDEC_STATISTICS", "period": period, "method_release_id": method.release_id,
         "basket_policy": "three_month_arithmetic_mean_of_explicit_nominal_regional_sources",
-        "source_retention": {"raw_households": int(len(hh)), "raw_persons": int(len(p)), "retained_valid_itf_households": int(len(m)), "retained_persons": int(len(selected)), "excluded_invalid_itf_households": int((~hh.ITF_valid).sum()), "raw_positive_pondih_mass": raw_weight_mass, "retained_pondih_mass": hden},
+        "source_universe": {"households": int(len(hh)), "persons": int(len(p)), "zero_pondih_households": int((hh.PONDIH == 0).sum()), "positive_pondih_households": int((hh.PONDIH > 0).sum()), "zero_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH == 0, "household_id"])).sum()), "positive_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH > 0, "household_id"])).sum()), "positive_pondih_mass": raw_weight_mass},
+        "a0_universe": {"rule": "ITF >= 0 and finite PONDIH > 0", "reason": "income-estimation support under the source PONDIH design", "households": int(len(m)), "persons": int(len(selected)), "pondih_mass": hden, "person_weight_mass": pden},
+        "source_retention": {"raw_households": int(len(hh)), "raw_persons": int(len(p)), "retained_valid_itf_households": int(len(m)), "retained_persons": int(len(selected)), "excluded_invalid_itf_households": int((~hh.ITF_valid).sum()), "excluded_zero_pondih_households": int((hh.ITF_valid & ~hh.PONDIH_income_supported).sum()), "raw_positive_pondih_mass": raw_weight_mass, "retained_pondih_mass": hden},
         "accounting": _accounting(m),
         "denominator_reconciliation": {"expected_household_sum_pondih": hden, "estimator_household_denominator": getden("households"), "expected_person_sum_pondih_times_members": pden, "estimator_person_denominator": getden("persons"), "status": "passed"},
         "national_estimates": national, "regional_estimates": [r for r in estimates if r["geography_level"] == "eph_region"],

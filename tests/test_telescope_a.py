@@ -68,6 +68,15 @@ def person_frame() -> pd.DataFrame:
 
 
 class TelescopeAT0T2Tests(unittest.TestCase):
+    def test_valid_itf_zero_pondih_remains_source_diagnostic_but_not_a0(self):
+        households = household_frame()
+        households.loc[households.CODUSU == "C", "PONDIH"] = "0"
+        microscope, summary = TA.build_telescope(households, person_frame(), basket_frame(100.0), basket_frame(200.0))
+        self.assertEqual(microscope.household_id.tolist(), ["2024:3:A:1"])
+        self.assertEqual(summary["source_universe"]["zero_pondih_households"], 1)
+        self.assertEqual(summary["a0_universe"]["households"], 1)
+        self.assertEqual(summary["a0_universe"]["reason"], "income-estimation support under the source PONDIH design")
+
     def test_t3_stage_seams_preserve_the_declared_axes(self):
         people = person_frame()
         # A is incomplete but remains in A0 because its ITF is valid.
