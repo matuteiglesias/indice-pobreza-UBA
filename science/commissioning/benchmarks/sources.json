@@ -1,0 +1,44 @@
+{
+  "schema_version": "poverty-commissioning-benchmark-sources/v1",
+  "retrieved_on": "2026-09-25",
+  "authority": "INDEC",
+  "role": "external_validation_benchmark_only",
+  "sources": {
+    "poverty_2024_s1": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Primer semestre de 2024",
+      "publication_date": "2024-09-26",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/eph_pobreza_09_241C2355AD3A.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "poverty_2024_s2": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Segundo semestre de 2024",
+      "publication_date": "2025-03-31",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/eph_pobreza_03_252282AE14D2.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "poverty_2025_s1": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Primer semestre de 2025",
+      "publication_date": "2025-09-25",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/eph_pobreza_09_25D162CC7BFB.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "poverty_2025_s2": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Segundo semestre de 2025",
+      "publication_date": "2026-03-31",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/eph_pobreza_03_269225CA3217.pdf",
+      "note": "Headline rates and exact totals from Cuadro 1 / report text."
+    },
+    "labor_2024_q4": {
+      "title": "Mercado de trabajo. Tasas e indicadores socioeconómicos (EPH). Cuarto trimestre de 2024",
+      "publication_date": "2025-03-20",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/mercado_trabajo_eph_4trim24083C6B9E41.pdf",
+      "note": "Cuadro 1.1 contains the quarterly 2024 headline activity, employment and unemployment rates."
+    },
+    "labor_2025_q4": {
+      "title": "Mercado de trabajo. Tasas e indicadores socioeconómicos (EPH). Cuarto trimestre de 2025",
+      "publication_date": "2026-03-18",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/mercado_trabajo_eph_4trim25AF451E16DE.pdf",
+      "note": "Headline series for 2025; intermediate quarter values agree with the corresponding quarterly releases."
+    }
+  }
+}
