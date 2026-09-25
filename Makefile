@@ -75,3 +75,10 @@ local-artifact-inventory:
 .PHONY: release-index
 release-index:
 	$(PYTHON) scripts/index_releases.py
+
+
+.PHONY: commissioning-smoke
+commissioning-smoke:
+	rm -rf build/commissioning/benchmark-smoke
+	$(PYTHON) science/commissioning/run.py --config science/commissioning/config.example.json --output build/commissioning/benchmark-smoke
+	$(PYTHON) -m unittest tests.test_commissioning_dashboard
