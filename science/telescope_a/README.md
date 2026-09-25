@@ -6,11 +6,12 @@ Telescope A is a bounded validation harness for one question:
 
 > Starting from one observed EPH quarter, how does the project obtain a poverty estimate from the household/person microdata?
 
-The first implementation covers **T0–T2 only**:
+The implementation covers **T0–T3**:
 
 - **T0 — design closure:** freeze the observed-data poverty contract;
 - **T1 — Q3 raw microscope:** make every retained household auditable from EPH fields to poverty state;
 - **T2 — Q3 estimator:** aggregate those measured household/person contributions with `PONDIH` through the existing v2 estimator.
+- **T3 — Q3 diagnostic waterfall:** A0 preserves T2; A1 isolates P47T completeness, A2 replaces ITF with `sum_P47T` on the identical complete cohort, and A3 replaces PONDIH with unit weights on identical A2 micro contributions.
 
 This is research validation, not an official INDEC poverty publication.
 
@@ -201,11 +202,12 @@ A run writes only:
 
 ```text
 households.parquet
+waterfall.csv
 summary.json
 report.md
 ```
 
-No manifest/checksum/release framework is introduced at T0–T2. If Telescope outputs later become stable inputs to another system, that can be decided separately.
+`waterfall.csv` records the full estimator surface for A0–A3. `summary.json` records adjacent deltas and the selection, reconstruction, and weighting diagnostics. A0 remains canonical; A1–A3 are diagnostic perturbations, not alternative official estimates.
 
 ## Deliberately deferred
 

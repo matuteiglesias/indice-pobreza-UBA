@@ -68,6 +68,28 @@ def person_frame() -> pd.DataFrame:
 
 
 class TelescopeAT0T2Tests(unittest.TestCase):
+    def test_t3_stage_seams_preserve_the_declared_axes(self):
+        people = person_frame()
+        # A is incomplete but remains in A0 because its ITF is valid.
+        people.loc[(people.CODUSU == "A") & (people.COMPONENTE == "2"), "P47T"] = "-9"
+        microscope, summary = TA.build_telescope(household_frame(), people, basket_frame(100.0), basket_frame(200.0))
+        stages = summary["waterfall"]["stages"]
+        self.assertEqual(stages["A0_DIRECT"]["household_count"], 2)
+        self.assertEqual(stages["A1_COMPLETE"]["household_count"], 1)
+        self.assertEqual(stages["A1_COMPLETE"]["welfare_semantics"], "ITF")
+        self.assertEqual(stages["A2_RECONSTRUCTED"]["household_count"], stages["A1_COMPLETE"]["household_count"])
+        self.assertEqual(stages["A2_RECONSTRUCTED"]["welfare_semantics"], "sum_P47T")
+        self.assertEqual(stages["A3_UNWEIGHTED"]["weight_semantics"], "unit")
+        selection = summary["waterfall"]["selection_diagnostics"]
+        self.assertEqual(selection["removed_household_count"], 1)
+        self.assertEqual(selection["a0_household_count"], selection["a1_household_count"] + selection["removed_household_count"])
+
+    def test_t3_equal_reconstruction_and_equal_weights_have_zero_deltas(self):
+        microscope, summary = TA.build_telescope(household_frame(), person_frame(), basket_frame(100.0), basket_frame(200.0))
+        deltas = summary["waterfall"]["deltas"]
+        self.assertTrue(all(value == 0.0 for value in deltas["A2_minus_A1"].values()))
+        # The fixture has unequal PONDIH, so this also proves A3 is a distinct estimator run.
+        self.assertTrue(any(value != 0.0 for value in deltas["A3_minus_A2"].values()))
     def test_period_is_part_of_household_identity(self):
         rows = pd.DataFrame([
             {"ANO4": "2024", "TRIMESTRE": "3", "CODUSU": "A", "NRO_HOGAR": "1"},
