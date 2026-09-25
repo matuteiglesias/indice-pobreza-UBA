@@ -68,6 +68,21 @@ def person_frame() -> pd.DataFrame:
 
 
 class TelescopeAT0T2Tests(unittest.TestCase):
+    def test_ch06_minus1_is_normalized_to_method_age_zero(self):
+        people = person_frame()
+        people.loc[(people.CODUSU == "A") & (people.COMPONENTE == "2"), "CH06"] = "-1"
+        microscope, summary = TA.build_telescope(household_frame(), people, basket_frame(100.0), basket_frame(200.0))
+        self.assertAlmostEqual(float(microscope.loc[microscope.CODUSU == "A", "adult_equivalents"].iloc[0]), 1.35)
+        self.assertEqual(summary["source_universe"]["raw_ch06_minus1_persons"], 1)
+        self.assertEqual(summary["source_universe"]["normalized_to_age0_persons"], 1)
+
+    def test_ch06_below_minus1_and_nonnumeric_still_fail(self):
+        for value in ("-2", "not-an-age"):
+            people = person_frame()
+            people.loc[(people.CODUSU == "A") & (people.COMPONENTE == "2"), "CH06"] = value
+            with self.assertRaisesRegex(TA.TelescopeAError, "invalid sex/age"):
+                TA.build_telescope(household_frame(), people, basket_frame(100.0), basket_frame(200.0))
+
     def test_valid_itf_zero_pondih_remains_source_diagnostic_but_not_a0(self):
         households = household_frame()
         households.loc[households.CODUSU == "C", "PONDIH"] = "0"

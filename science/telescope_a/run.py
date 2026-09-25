@@ -100,7 +100,7 @@ def _accounting(m):
 def _estimate_stage(stage, *, households, persons, welfare_column, cba, cbt, method, period, unit_weights=False):
     """Package one fixed T3 perturbation through the existing kernel/estimator."""
     ids = set(households.household_id)
-    people = tuple(PersonMember(r.person_id, r.household_id, r.sex, int(r.age))
+    people = tuple(PersonMember(r.person_id, r.household_id, r.sex, int(r.age_completed_years))
                    for r in persons[persons.household_id.isin(ids)].itertuples())
     welfare = tuple(HouseholdWelfare(r.household_id, float(getattr(r, welfare_column)))
                     for r in households.itertuples())
@@ -190,18 +190,21 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
 
     selected = p[p.household_id.isin(set(keep.household_id))].copy()
     selected["sex"] = pd.to_numeric(selected.CH04, errors="coerce").map(SEX_MAP)
-    age = pd.to_numeric(selected.CH06, errors="coerce")
-    if selected.sex.isna().any() or age.isna().any() or (age < 0).any() or ((age % 1) != 0).any(): raise TelescopeAError("invalid sex/age in retained households")
-    selected["age"] = age.astype(int)
+    age_raw = pd.to_numeric(selected.CH06, errors="coerce")
+    if selected.sex.isna().any() or age_raw.isna().any() or (age_raw < -1).any() or ((age_raw % 1) != 0).any(): raise TelescopeAError("invalid sex/age in retained households")
+    selected["age_raw"] = age_raw.astype(int)
+    selected["age_completed_years"] = age_raw.mask(age_raw == -1, 0).astype(int)
 
     method = load_poverty_method(method_path)
-    # A0 is deliberately the original T2 path: valid ITF, PONDIH, and all T1 members.
+    # A0 is the PONDIH-supported income-analysis universe: valid ITF and positive source weight.
     measurement, est, measured = _estimate_stage("A0_DIRECT", households=keep, persons=selected,
         welfare_column="ITF", cba=cba, cbt=cbt, method=method, period=period)
 
     cols = ["household_id","CODUSU","NRO_HOGAR","REGION","AGLOMERADO","basket_region","member_count_records","IX_TOT","membership_match","ITF","IPCF","sum_P47T","ITF_valid","P47T_complete","PONDIH"]
     m = keep[cols].merge(measured, on="household_id", validate="one_to_one")
     m["period"] = period; m["itf_minus_sum_p47t"] = m.ITF - m.sum_P47T; m["ipcf_reconstructed"] = m.ITF / m.member_count_records; m["ipcf_delta"] = m.IPCF - m.ipcf_reconstructed
+    age_minus1 = selected.groupby("household_id").age_raw.apply(lambda x: int((x == -1).sum())).rename("raw_ch06_minus1_persons")
+    m = m.merge(age_minus1, on="household_id", how="left", validate="one_to_one").fillna({"raw_ch06_minus1_persons": 0})
     m["cba_per_ae"] = m.basket_region.map(cba); m["cbt_per_ae"] = m.basket_region.map(cbt)
     m["poor_non_indigent"] = m.poor & ~m.indigent; m["nonpoor"] = ~m.poor
 
@@ -217,7 +220,7 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     if tuple(a2_measurement.households) != tuple(a3_measurement.households) or tuple(a2_measurement.persons) != tuple(a3_measurement.persons):
         raise TelescopeAError("A2/A3 micro contributions must be identical")
     stages = {
-        "A0_DIRECT": {"estimation": est, "household_count": len(keep), "person_count": len(selected), "cohort_semantics": "all valid nonnegative ITF households", "welfare_semantics": "ITF", "weight_semantics": "PONDIH"},
+        "A0_DIRECT": {"estimation": est, "household_count": len(keep), "person_count": len(selected), "cohort_semantics": "valid nonnegative ITF households with finite positive PONDIH income-estimation support", "welfare_semantics": "ITF", "weight_semantics": "PONDIH"},
         "A1_COMPLETE": {"estimation": a1_est, "household_count": len(complete), "person_count": len(complete_people), "cohort_semantics": "A0 with complete P47T household membership", "welfare_semantics": "ITF", "weight_semantics": "PONDIH"},
         "A2_RECONSTRUCTED": {"estimation": a2_est, "household_count": len(complete), "person_count": len(complete_people), "cohort_semantics": "exact A1 cohort", "welfare_semantics": "sum_P47T", "weight_semantics": "PONDIH"},
         "A3_UNWEIGHTED": {"estimation": a3_est, "household_count": len(complete), "person_count": len(complete_people), "cohort_semantics": "exact A2 cohort", "welfare_semantics": "sum_P47T", "weight_semantics": "unit"},
@@ -228,7 +231,7 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     getden = lambda u: next(float(r["weighted_denominator"]) for r in national if r["universe"] == u and r["concept"] == "poverty" and r["estimand"] == "fgt0")
     if not math.isclose(hden, getden("households")) or not math.isclose(pden, getden("persons")): raise TelescopeAError("PONDIH denominators do not reconcile")
 
-    ordered = ["period","household_id","CODUSU","NRO_HOGAR","REGION","AGLOMERADO","basket_region","member_count_records","IX_TOT","membership_match","adult_equivalents","ITF","IPCF","sum_P47T","ITF_valid","P47T_complete","itf_minus_sum_p47t","ipcf_reconstructed","ipcf_delta","PONDIH","cba_per_ae","cbt_per_ae","household_cba","household_cbt","indigent","poor","poor_non_indigent","nonpoor","indigence_fgt0","indigence_fgt1","indigence_fgt2","poverty_fgt0","poverty_fgt1","poverty_fgt2","indigence_monetary_shortfall","poverty_monetary_shortfall"]
+    ordered = ["period","household_id","CODUSU","NRO_HOGAR","REGION","AGLOMERADO","basket_region","member_count_records","IX_TOT","membership_match","adult_equivalents","ITF","IPCF","sum_P47T","ITF_valid","P47T_complete","raw_ch06_minus1_persons","itf_minus_sum_p47t","ipcf_reconstructed","ipcf_delta","PONDIH","cba_per_ae","cbt_per_ae","household_cba","household_cbt","indigent","poor","poor_non_indigent","nonpoor","indigence_fgt0","indigence_fgt1","indigence_fgt2","poverty_fgt0","poverty_fgt1","poverty_fgt2","indigence_monetary_shortfall","poverty_monetary_shortfall"]
     m = m[ordered].sort_values("household_id").reset_index(drop=True)
     def national_index(e): return {(r["universe"], r["concept"], r["estimand"]): r["estimate"] for r in _national(e)}
     a0n, a1n, a2n, a3n = (national_index(x) for x in (est, a1_est, a2_est, a3_est))
@@ -250,7 +253,7 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     summary = {
         "status": "RESEARCH_VALIDATION_NOT_OFFICIAL_INDEC_STATISTICS", "period": period, "method_release_id": method.release_id,
         "basket_policy": "three_month_arithmetic_mean_of_explicit_nominal_regional_sources",
-        "source_universe": {"households": int(len(hh)), "persons": int(len(p)), "zero_pondih_households": int((hh.PONDIH == 0).sum()), "positive_pondih_households": int((hh.PONDIH > 0).sum()), "zero_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH == 0, "household_id"])).sum()), "positive_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH > 0, "household_id"])).sum()), "positive_pondih_mass": raw_weight_mass},
+        "source_universe": {"households": int(len(hh)), "persons": int(len(p)), "zero_pondih_households": int((hh.PONDIH == 0).sum()), "positive_pondih_households": int((hh.PONDIH > 0).sum()), "zero_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH == 0, "household_id"])).sum()), "positive_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH > 0, "household_id"])).sum()), "positive_pondih_mass": raw_weight_mass, "raw_ch06_minus1_persons": int((age_raw == -1).sum()), "normalized_to_age0_persons": int((age_raw == -1).sum()), "households_containing_ch06_minus1": int(selected.loc[age_raw == -1, "household_id"].nunique()), "pondih_weighted_persons_ch06_minus1": float(selected.loc[age_raw == -1, "household_id"].map(keep.set_index("household_id")["PONDIH"]).sum())},
         "a0_universe": {"rule": "ITF >= 0 and finite PONDIH > 0", "reason": "income-estimation support under the source PONDIH design", "households": int(len(m)), "persons": int(len(selected)), "pondih_mass": hden, "person_weight_mass": pden},
         "source_retention": {"raw_households": int(len(hh)), "raw_persons": int(len(p)), "retained_valid_itf_households": int(len(m)), "retained_persons": int(len(selected)), "excluded_invalid_itf_households": int((~hh.ITF_valid).sum()), "excluded_zero_pondih_households": int((hh.ITF_valid & ~hh.PONDIH_income_supported).sum()), "raw_positive_pondih_mass": raw_weight_mass, "retained_pondih_mass": hden},
         "accounting": _accounting(m),
