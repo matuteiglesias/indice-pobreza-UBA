@@ -1,0 +1,105 @@
+{
+  "schema_version": "poverty-commissioning-figure-specs/v1",
+  "figures": [
+    {
+      "id": "01",
+      "slug": "headline_poverty",
+      "title": "Headline poverty reality check",
+      "requires": [
+        "poverty_rate"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "02",
+      "slug": "people_below_lines",
+      "title": "People below the poverty and indigence lines",
+      "requires": [
+        "poverty_count"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "03",
+      "slug": "basket_engel",
+      "title": "Basket and Engel mechanics",
+      "requires": [
+        "basket_ratio"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "04",
+      "slug": "income_in_cbt_units",
+      "title": "Household welfare in CBT units",
+      "requires": [
+        "welfare_cbt_ratio_quantile"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "05",
+      "slug": "labor_market",
+      "title": "Labor-market reality check",
+      "requires": [
+        "labor_rate"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "06",
+      "slug": "poverty_by_age",
+      "title": "Poverty by age",
+      "requires": [
+        "poverty_rate_age"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "07",
+      "slug": "poverty_by_region",
+      "title": "Poverty by region",
+      "requires": [
+        "poverty_rate_region"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "08",
+      "slug": "telescope_b_bridge",
+      "title": "Telescope B: observed to point to predictive",
+      "requires": [
+        "telescope_b_rate"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "09",
+      "slug": "telescope_c_transport",
+      "title": "Telescope C: EPH to Census transport",
+      "requires": [
+        "telescope_c_rate"
+      ],
+      "x": "period",
+      "kind": "line"
+    },
+    {
+      "id": "10",
+      "slug": "department_dispersion",
+      "title": "Department poverty dispersion",
+      "requires": [
+        "department_poverty_quantile"
+      ],
+      "x": "period",
+      "kind": "line"
+    }
+  ]
+}
