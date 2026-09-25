@@ -171,14 +171,42 @@ def concept_probability(frame: pd.DataFrame, representation: str, concept: str) 
     raise TelescopeCError(f"unknown concept {concept}")
 
 
+def regional_lines_from_telescope_b(
+    telescope_b_households: pd.DataFrame,
+) -> tuple[dict[str, float], dict[str, float]]:
+    require(
+        telescope_b_households,
+        ["basket_region", "cba_per_ae", "cbt_per_ae"],
+        "Telescope-B regional lines",
+    )
+    frame = telescope_b_households[["basket_region", "cba_per_ae", "cbt_per_ae"]].copy()
+    frame["basket_region"] = frame.basket_region.map(normalize_region)
+    frame["cba_per_ae"] = pd.to_numeric(frame.cba_per_ae, errors="coerce")
+    frame["cbt_per_ae"] = pd.to_numeric(frame.cbt_per_ae, errors="coerce")
+    if frame[["cba_per_ae", "cbt_per_ae"]].isna().any().any():
+        raise TelescopeCError("Telescope-B regional lines must be numeric")
+    cba, cbt = {}, {}
+    for region in REGIONS:
+        rows = frame[frame.basket_region == region]
+        if rows.empty:
+            raise TelescopeCError(f"Telescope-B artifact missing regional line {region}")
+        cba_values = rows.cba_per_ae.unique()
+        cbt_values = rows.cbt_per_ae.unique()
+        if len(cba_values) != 1 or len(cbt_values) != 1:
+            raise TelescopeCError(f"Telescope-B regional line is not unique for {region}")
+        cba[region], cbt[region] = float(cba_values[0]), float(cbt_values[0])
+        if cba[region] <= 0 or cba[region] > cbt[region]:
+            raise TelescopeCError(f"invalid Telescope-B regional line for {region}")
+    return cba, cbt
+
+
 def build_census_lines(
     census_p1: pd.DataFrame,
     selection: pd.DataFrame,
     department_region: pd.DataFrame,
-    cba_raw: pd.DataFrame,
-    cbt_raw: pd.DataFrame,
+    cba: dict[str, float],
+    cbt: dict[str, float],
     *,
-    period: str,
     method_path: str,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     require(census_p1, ["row_id", "household_id", "P02", "P03"], "Census P1")
@@ -254,7 +282,6 @@ def build_census_lines(
     if unknown:
         raise TelescopeCError(f"unknown Census basket regions: {unknown}")
 
-    cba, cbt = quarter_basket(cba_raw, period, "CBA"), quarter_basket(cbt_raw, period, "CBT")
     hh["cba_per_ae"] = hh.basket_region.map(cba)
     hh["cbt_per_ae"] = hh.basket_region.map(cbt)
     hh["household_cba"] = hh.adult_equivalents * hh.cba_per_ae
@@ -981,13 +1008,12 @@ def run(args: argparse.Namespace) -> dict:
     census_p1 = pd.read_parquet(args.census_p1)
     selection = pd.read_parquet(args.census_selection)
     department_region = pd.read_csv(args.department_region, dtype=str, keep_default_na=False)
-    cba_raw = pd.read_csv(args.cba, dtype=str, keep_default_na=False)
-    cbt_raw = pd.read_csv(args.cbt, dtype=str, keep_default_na=False)
     residuals = pd.read_parquet(args.fold_residuals)
 
+    cba, cbt = regional_lines_from_telescope_b(b_hh)
     census_hh_lines, census_people = build_census_lines(
-        census_p1, selection, department_region, cba_raw, cbt_raw,
-        period=args.period, method_path=args.method,
+        census_p1, selection, department_region, cba, cbt,
+        method_path=args.method,
     )
     eph_hh, eph_people, fold_mix = build_eph_validation(
         b_hh, eph_raw, eph_scores, eph_support, residuals, period=args.period
@@ -1066,8 +1092,6 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--census-p1", type=Path, required=True)
     p.add_argument("--census-selection", type=Path, required=True)
     p.add_argument("--department-region", type=Path, required=True)
-    p.add_argument("--cba", type=Path, required=True)
-    p.add_argument("--cbt", type=Path, required=True)
     p.add_argument("--fold-residuals", type=Path, required=True)
     p.add_argument("--period", default="2024-Q3")
     p.add_argument("--method", default=DEFAULT_METHOD)
