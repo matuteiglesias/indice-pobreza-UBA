@@ -21,7 +21,7 @@ from poverty_pipeline.science import (
 REGION_MAP = {1: "gran_buenos_aires", 40: "noroeste", 41: "noreste", 42: "cuyo", 43: "pampeana", 44: "patagonia"}
 REGIONS = tuple(sorted(REGION_MAP.values()))
 SEX_MAP = {1: "male", 2: "female"}
-HH_COLS = ("CODUSU", "NRO_HOGAR", "ANO4", "TRIMESTRE", "REGION", "AGLOMERADO", "IX_TOT", "ITF", "IPCF")
+HH_COLS = ("CODUSU", "NRO_HOGAR", "ANO4", "TRIMESTRE", "REGION", "AGLOMERADO", "IX_TOT", "ITF", "IPCF", "PONDIH")
 P_COLS = ("CODUSU", "NRO_HOGAR", "COMPONENTE", "ANO4", "TRIMESTRE", "CH04", "CH06", "P47T")
 DEFAULT_METHOD = "configs/poverty_methods/indec-line-poverty-2016-v1.json"
 
@@ -148,19 +148,6 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     _assert_period(hh, year, quarter, "households"); _assert_period(p, year, quarter, "persons")
 
     hh["household_id"] = _household_ids(hh); p["household_id"] = _household_ids(p); p["person_id"] = _person_ids(p)
-    # Official EPH extracts may carry PONDIH on person records. It is a
-    # household weight, so accept that transport only when it is identical for
-    # every member; never average or otherwise construct a replacement weight.
-    hh_weight = pd.to_numeric(hh["PONDIH"], errors="coerce") if "PONDIH" in hh else pd.Series(np.nan, index=hh.index)
-    if hh_weight.isna().all():
-        if "PONDIH" not in p:
-            raise TelescopeAError("PONDIH is absent from both household and person inputs")
-        p_weight = pd.to_numeric(p.PONDIH, errors="coerce")
-        grouped = p.assign(_pondih=p_weight).groupby("household_id")._pondih
-        counts = grouped.nunique(dropna=True)
-        if not (counts == 1).all():
-            raise TelescopeAError("person-carried PONDIH is not one unambiguous household weight")
-        hh["PONDIH"] = hh.household_id.map(grouped.first())
     if hh.household_id.duplicated().any(): raise TelescopeAError("duplicate household identity")
     if p.person_id.duplicated().any(): raise TelescopeAError("duplicate person identity")
     hset, pset = set(hh.household_id), set(p.household_id)
