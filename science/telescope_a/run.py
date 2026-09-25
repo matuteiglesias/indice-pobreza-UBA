@@ -97,6 +97,47 @@ def _accounting(m):
     }
 
 
+def _estimate_stage(stage, *, households, persons, welfare_column, cba, cbt, method, period, unit_weights=False):
+    """Package one fixed T3 perturbation through the existing kernel/estimator."""
+    ids = set(households.household_id)
+    people = tuple(PersonMember(r.person_id, r.household_id, r.sex, int(r.age_completed_years))
+                   for r in persons[persons.household_id.isin(ids)].itertuples())
+    welfare = tuple(HouseholdWelfare(r.household_id, float(getattr(r, welfare_column)))
+                    for r in households.itertuples())
+    lines = tuple(HouseholdPovertyLines(r.household_id, cba[r.basket_region], cbt[r.basket_region])
+                  for r in households.itertuples())
+    measurement = measure_poverty(people, welfare, lines, method)
+    region = dict(zip(households.household_id, households.basket_region))
+    weights = dict(zip(households.household_id, households.PONDIH.astype(float)))
+    design = EstimationDesign(
+        f"telescope-a-{stage.lower()}-{period.lower()}",
+        "unit household weights" if unit_weights else "EPH PONDIH household-income nonresponse-adjusted expansion factor",
+        tuple(HouseholdWeight(h, 1.0 if unit_weights else weights[h]) for h in sorted(ids)),
+    )
+    estimation = estimate_poverty(
+        measurement,
+        tuple(HouseholdDomain(h, "eph_region", region[h]) for h in sorted(ids)), design,
+        EstimationContext(f"telescope-a-{stage.lower()}-{period.lower()}", period, f"EPH-{period}"),
+    )
+    measured = pd.DataFrame(asdict(row) for row in measurement.households)
+    measured["stage"] = stage
+    return measurement, estimation, measured
+
+
+def _national(estimation):
+    return [asdict(row) for row in estimation.estimates if row.geography_level == "national"]
+
+
+def _waterfall_rows(stages):
+    rows = []
+    for stage, payload in stages.items():
+        for row in payload["estimation"].estimates:
+            item = asdict(row)
+            item.update(stage=stage, household_count=payload["household_count"], person_count=payload["person_count"])
+            rows.append(item)
+    return rows
+
+
 def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method_path=DEFAULT_METHOD):
     """Return (household microscope, T2 summary) for exactly one EPH quarter."""
     year, quarter, _ = period_parts(period)
@@ -125,6 +166,10 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     hh["ITF"] = pd.to_numeric(hh.ITF, errors="coerce"); hh["ITF_valid"] = hh.ITF.notna() & (hh.ITF >= 0)
     hh["IPCF"] = pd.to_numeric(hh.IPCF, errors="coerce").where(lambda x: x >= 0)
     hh["PONDIH"] = pd.to_numeric(hh.PONDIH, errors="coerce")
+    if hh.PONDIH.isna().any():
+        raise TelescopeAError("source PONDIH must be numeric for every household")
+    if (hh.PONDIH < 0).any():
+        raise TelescopeAError("source PONDIH must not be negative")
 
     p["P47T_num"] = pd.to_numeric(p.P47T, errors="coerce"); p["P47T_valid"] = p.P47T_num.notna() & (p.P47T_num >= 0)
     complete = p.groupby("household_id").P47T_valid.all().rename("P47T_complete")
@@ -133,7 +178,10 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
     hh.loc[~hh.P47T_complete, "sum_P47T"] = np.nan
 
     raw_weight = hh.PONDIH.where(np.isfinite(hh.PONDIH) & (hh.PONDIH > 0)); raw_weight_mass = float(raw_weight.sum())
-    keep = hh[hh.ITF_valid].copy()
+    hh["PONDIH_income_supported"] = np.isfinite(hh.PONDIH) & (hh.PONDIH > 0)
+    # PONDIH==0 is a source-supported nonresponse state, not a malformed row.
+    # A0 is explicitly the income-estimation support universe under PONDIH.
+    keep = hh[hh.ITF_valid & hh.PONDIH_income_supported].copy()
     if keep.empty: raise TelescopeAError("no valid nonnegative ITF households")
     if keep.PONDIH.isna().any() or (~np.isfinite(keep.PONDIH)).any() or (keep.PONDIH <= 0).any(): raise TelescopeAError("retained PONDIH must be finite and positive")
 
@@ -142,46 +190,81 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
 
     selected = p[p.household_id.isin(set(keep.household_id))].copy()
     selected["sex"] = pd.to_numeric(selected.CH04, errors="coerce").map(SEX_MAP)
-    age = pd.to_numeric(selected.CH06, errors="coerce")
-    if selected.sex.isna().any() or age.isna().any() or (age < 0).any() or ((age % 1) != 0).any(): raise TelescopeAError("invalid sex/age in retained households")
-    selected["age"] = age.astype(int)
+    age_raw = pd.to_numeric(selected.CH06, errors="coerce")
+    if selected.sex.isna().any() or age_raw.isna().any() or (age_raw < -1).any() or ((age_raw % 1) != 0).any(): raise TelescopeAError("invalid sex/age in retained households")
+    selected["age_raw"] = age_raw.astype(int)
+    selected["age_completed_years"] = age_raw.mask(age_raw == -1, 0).astype(int)
 
     method = load_poverty_method(method_path)
-    people = tuple(PersonMember(r.person_id, r.household_id, r.sex, int(r.age)) for r in selected.itertuples())
-    welfare = tuple(HouseholdWelfare(r.household_id, float(r.ITF)) for r in keep.itertuples())
-    lines = tuple(HouseholdPovertyLines(r.household_id, cba[r.basket_region], cbt[r.basket_region]) for r in keep.itertuples())
-    measurement = measure_poverty(people, welfare, lines, method)
+    # A0 is the PONDIH-supported income-analysis universe: valid ITF and positive source weight.
+    measurement, est, measured = _estimate_stage("A0_DIRECT", households=keep, persons=selected,
+        welfare_column="ITF", cba=cba, cbt=cbt, method=method, period=period)
 
-    measured = pd.DataFrame(asdict(r) for r in measurement.households)
     cols = ["household_id","CODUSU","NRO_HOGAR","REGION","AGLOMERADO","basket_region","member_count_records","IX_TOT","membership_match","ITF","IPCF","sum_P47T","ITF_valid","P47T_complete","PONDIH"]
     m = keep[cols].merge(measured, on="household_id", validate="one_to_one")
     m["period"] = period; m["itf_minus_sum_p47t"] = m.ITF - m.sum_P47T; m["ipcf_reconstructed"] = m.ITF / m.member_count_records; m["ipcf_delta"] = m.IPCF - m.ipcf_reconstructed
+    age_minus1 = selected.groupby("household_id").age_raw.apply(lambda x: int((x == -1).sum())).rename("raw_ch06_minus1_persons")
+    m = m.merge(age_minus1, on="household_id", how="left", validate="one_to_one").fillna({"raw_ch06_minus1_persons": 0})
     m["cba_per_ae"] = m.basket_region.map(cba); m["cbt_per_ae"] = m.basket_region.map(cbt)
     m["poor_non_indigent"] = m.poor & ~m.indigent; m["nonpoor"] = ~m.poor
 
-    region = dict(zip(keep.household_id, keep.basket_region)); weight = dict(zip(keep.household_id, keep.PONDIH.astype(float)))
-    ids = sorted(region)
-    est = estimate_poverty(
-        measurement,
-        tuple(HouseholdDomain(h, "eph_region", region[h]) for h in ids),
-        EstimationDesign(f"eph-pondih-{period.lower()}", "EPH PONDIH household-income nonresponse-adjusted expansion factor", tuple(HouseholdWeight(h, weight[h]) for h in ids)),
-        EstimationContext(f"telescope-a-{period.lower()}-observed-eph", period, f"EPH-{period}"),
-    )
+    # The remaining stages deliberately vary exactly one axis each.
+    complete = keep[keep.P47T_complete].copy()
+    complete_people = selected[selected.household_id.isin(set(complete.household_id))].copy()
+    a1_measurement, a1_est, a1_measured = _estimate_stage("A1_COMPLETE", households=complete, persons=complete_people,
+        welfare_column="ITF", cba=cba, cbt=cbt, method=method, period=period)
+    a2_measurement, a2_est, a2_measured = _estimate_stage("A2_RECONSTRUCTED", households=complete, persons=complete_people,
+        welfare_column="sum_P47T", cba=cba, cbt=cbt, method=method, period=period)
+    a3_measurement, a3_est, a3_measured = _estimate_stage("A3_UNWEIGHTED", households=complete, persons=complete_people,
+        welfare_column="sum_P47T", cba=cba, cbt=cbt, method=method, period=period, unit_weights=True)
+    if tuple(a2_measurement.households) != tuple(a3_measurement.households) or tuple(a2_measurement.persons) != tuple(a3_measurement.persons):
+        raise TelescopeAError("A2/A3 micro contributions must be identical")
+    stages = {
+        "A0_DIRECT": {"estimation": est, "household_count": len(keep), "person_count": len(selected), "cohort_semantics": "valid nonnegative ITF households with finite positive PONDIH income-estimation support", "welfare_semantics": "ITF", "weight_semantics": "PONDIH"},
+        "A1_COMPLETE": {"estimation": a1_est, "household_count": len(complete), "person_count": len(complete_people), "cohort_semantics": "A0 with complete P47T household membership", "welfare_semantics": "ITF", "weight_semantics": "PONDIH"},
+        "A2_RECONSTRUCTED": {"estimation": a2_est, "household_count": len(complete), "person_count": len(complete_people), "cohort_semantics": "exact A1 cohort", "welfare_semantics": "sum_P47T", "weight_semantics": "PONDIH"},
+        "A3_UNWEIGHTED": {"estimation": a3_est, "household_count": len(complete), "person_count": len(complete_people), "cohort_semantics": "exact A2 cohort", "welfare_semantics": "sum_P47T", "weight_semantics": "unit"},
+    }
     estimates = [asdict(r) for r in est.estimates]
     national = [r for r in estimates if r["geography_level"] == "national"]
     hden = float(m.PONDIH.sum()); pden = float((m.PONDIH * m.member_count_records).sum())
     getden = lambda u: next(float(r["weighted_denominator"]) for r in national if r["universe"] == u and r["concept"] == "poverty" and r["estimand"] == "fgt0")
     if not math.isclose(hden, getden("households")) or not math.isclose(pden, getden("persons")): raise TelescopeAError("PONDIH denominators do not reconcile")
 
-    ordered = ["period","household_id","CODUSU","NRO_HOGAR","REGION","AGLOMERADO","basket_region","member_count_records","IX_TOT","membership_match","adult_equivalents","ITF","IPCF","sum_P47T","ITF_valid","P47T_complete","itf_minus_sum_p47t","ipcf_reconstructed","ipcf_delta","PONDIH","cba_per_ae","cbt_per_ae","household_cba","household_cbt","indigent","poor","poor_non_indigent","nonpoor","indigence_fgt0","indigence_fgt1","indigence_fgt2","poverty_fgt0","poverty_fgt1","poverty_fgt2","indigence_monetary_shortfall","poverty_monetary_shortfall"]
+    ordered = ["period","household_id","CODUSU","NRO_HOGAR","REGION","AGLOMERADO","basket_region","member_count_records","IX_TOT","membership_match","adult_equivalents","ITF","IPCF","sum_P47T","ITF_valid","P47T_complete","raw_ch06_minus1_persons","itf_minus_sum_p47t","ipcf_reconstructed","ipcf_delta","PONDIH","cba_per_ae","cbt_per_ae","household_cba","household_cbt","indigent","poor","poor_non_indigent","nonpoor","indigence_fgt0","indigence_fgt1","indigence_fgt2","poverty_fgt0","poverty_fgt1","poverty_fgt2","indigence_monetary_shortfall","poverty_monetary_shortfall"]
     m = m[ordered].sort_values("household_id").reset_index(drop=True)
+    def national_index(e): return {(r["universe"], r["concept"], r["estimand"]): r["estimate"] for r in _national(e)}
+    a0n, a1n, a2n, a3n = (national_index(x) for x in (est, a1_est, a2_est, a3_est))
+    excluded = keep[~keep.P47T_complete]
+    def weighted_rate(frame, col):
+        return None if frame.empty else float(np.average(frame[col].astype(float), weights=frame.PONDIH.astype(float)))
+    transitions = {}
+    a1_by, a2_by = a1_measured.set_index("household_id"), a2_measured.set_index("household_id")
+    for concept, col in (("indigence", "indigent"), ("poverty", "poor")):
+        cells = {}
+        for before in (False, True):
+            for after in (False, True):
+                ids = a1_by.index[(a1_by[col] == before) & (a2_by[col] == after)]
+                frame = complete.set_index("household_id").loc[ids]
+                cells[f"{str(before).lower()}_to_{str(after).lower()}"] = {"household_count": int(len(frame)), "pondih_mass": float(frame.PONDIH.sum()), "person_weight_mass": float((frame.PONDIH * frame.member_count_records).sum())}
+        transitions[concept] = cells
+    def stats(x):
+        return {"mean": float(x.mean()), "median": float(x.median())}
     summary = {
         "status": "RESEARCH_VALIDATION_NOT_OFFICIAL_INDEC_STATISTICS", "period": period, "method_release_id": method.release_id,
         "basket_policy": "three_month_arithmetic_mean_of_explicit_nominal_regional_sources",
-        "source_retention": {"raw_households": int(len(hh)), "raw_persons": int(len(p)), "retained_valid_itf_households": int(len(m)), "retained_persons": int(len(selected)), "excluded_invalid_itf_households": int((~hh.ITF_valid).sum()), "raw_positive_pondih_mass": raw_weight_mass, "retained_pondih_mass": hden},
+        "source_universe": {"households": int(len(hh)), "persons": int(len(p)), "zero_pondih_households": int((hh.PONDIH == 0).sum()), "positive_pondih_households": int((hh.PONDIH > 0).sum()), "zero_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH == 0, "household_id"])).sum()), "positive_pondih_persons": int(p.household_id.isin(set(hh.loc[hh.PONDIH > 0, "household_id"])).sum()), "positive_pondih_mass": raw_weight_mass, "raw_ch06_minus1_persons": int((age_raw == -1).sum()), "normalized_to_age0_persons": int((age_raw == -1).sum()), "households_containing_ch06_minus1": int(selected.loc[age_raw == -1, "household_id"].nunique()), "pondih_weighted_persons_ch06_minus1": float(selected.loc[age_raw == -1, "household_id"].map(keep.set_index("household_id")["PONDIH"]).sum())},
+        "a0_universe": {"rule": "ITF >= 0 and finite PONDIH > 0", "reason": "income-estimation support under the source PONDIH design", "households": int(len(m)), "persons": int(len(selected)), "pondih_mass": hden, "person_weight_mass": pden},
+        "source_retention": {"raw_households": int(len(hh)), "raw_persons": int(len(p)), "retained_valid_itf_households": int(len(m)), "retained_persons": int(len(selected)), "excluded_invalid_itf_households": int((~hh.ITF_valid).sum()), "excluded_zero_pondih_households": int((hh.ITF_valid & ~hh.PONDIH_income_supported).sum()), "raw_positive_pondih_mass": raw_weight_mass, "retained_pondih_mass": hden},
         "accounting": _accounting(m),
         "denominator_reconciliation": {"expected_household_sum_pondih": hden, "estimator_household_denominator": getden("households"), "expected_person_sum_pondih_times_members": pden, "estimator_person_denominator": getden("persons"), "status": "passed"},
         "national_estimates": national, "regional_estimates": [r for r in estimates if r["geography_level"] == "eph_region"],
+        "waterfall": {"stages": {key: {k: v for k, v in value.items() if k != "estimation"} | {"national_estimates": _national(value["estimation"])} for key, value in stages.items()},
+            "deltas": {"A1_minus_A0": {"%s/%s/%s" % k: a1n[k]-a0n[k] for k in a0n}, "A2_minus_A1": {"%s/%s/%s" % k: a2n[k]-a1n[k] for k in a1n}, "A3_minus_A2": {"%s/%s/%s" % k: a3n[k]-a2n[k] for k in a2n}},
+            "selection_diagnostics": {"a0_household_count": len(keep), "a1_household_count": len(complete), "removed_household_count": len(excluded), "a0_person_count": len(selected), "a1_person_count": len(complete_people), "removed_person_count": int(len(selected)-len(complete_people)), "pondih_mass_retained": float(complete.PONDIH.sum()), "pondih_mass_removed": float(excluded.PONDIH.sum()), "person_weight_mass_retained": float((complete.PONDIH*complete.member_count_records).sum()), "person_weight_mass_removed": float((excluded.PONDIH*excluded.member_count_records).sum()), "complete_household_share": float(len(complete)/len(keep)), "retained_a0_fgt0": {"poverty": weighted_rate(m[m.P47T_complete], "poverty_fgt0"), "indigence": weighted_rate(m[m.P47T_complete], "indigence_fgt0")}, "excluded_a0_fgt0": {"poverty": weighted_rate(m[~m.P47T_complete], "poverty_fgt0"), "indigence": weighted_rate(m[~m.P47T_complete], "indigence_fgt0")}},
+            "reconstruction_diagnostics": {"accounting": _accounting(m), "transitions": transitions, "crossing_cba": transitions["indigence"]["false_to_true"]["household_count"] + transitions["indigence"]["true_to_false"]["household_count"], "crossing_cbt": transitions["poverty"]["false_to_true"]["household_count"] + transitions["poverty"]["true_to_false"]["household_count"]},
+            "weighting_diagnostics": {"overall_pondih": stats(complete.PONDIH), "poor_pondih": stats(complete.set_index("household_id").loc[a2_by.index[a2_by.poor]].PONDIH), "nonpoor_pondih": stats(complete.set_index("household_id").loc[a2_by.index[~a2_by.poor]].PONDIH), "indigent_pondih": stats(complete.set_index("household_id").loc[a2_by.index[a2_by.indigent]].PONDIH), "nonindigent_pondih": stats(complete.set_index("household_id").loc[a2_by.index[~a2_by.indigent]].PONDIH)}},
+        "waterfall_rows": _waterfall_rows(stages),
         "limitations": ["quarter-mean basket timing is a research approximation", "aggregate uncertainty is not supplied", "P47T is diagnostic only"],
     }
     return m, summary
@@ -190,7 +273,12 @@ def build_telescope(hh_raw, p_raw, cba_raw, cbt_raw, *, period="2024-Q3", method
 def render_report(s):
     n = {(r["universe"],r["concept"],r["estimand"]): r["estimate"] for r in s["national_estimates"]}
     r = s["source_retention"]
-    return f"""# Telescope A — {s['period']}\n\n> Research validation only; not official INDEC statistics.\n\n## Cohort\n- raw households: {r['raw_households']}\n- retained valid-ITF households: {r['retained_valid_itf_households']}\n- raw persons: {r['raw_persons']}\n- retained persons: {r['retained_persons']}\n\n## National weighted incidence\n| Universe | Indigence | Poverty |\n|---|---:|---:|\n| households | {100*n[('households','indigence','fgt0')]:.3f}% | {100*n[('households','poverty','fgt0')]:.3f}% |\n| persons | {100*n[('persons','indigence','fgt0')]:.3f}% | {100*n[('persons','poverty','fgt0')]:.3f}% |\n\nT2 denominators reconcile to `sum(PONDIH)` and `sum(PONDIH * member_count)`. See `summary.json` for accounting diagnostics and regional estimates.\n"""
+    stages = s["waterfall"]["stages"]
+    def incidence(stage, universe, concept):
+        rows = stages[stage]["national_estimates"]
+        return next(x["estimate"] for x in rows if x["universe"] == universe and x["concept"] == concept and x["estimand"] == "fgt0")
+    rows = "\n".join(f"| {stage} | {100*incidence(stage, 'households', 'indigence'):.3f}% | {100*incidence(stage, 'households', 'poverty'):.3f}% | {100*incidence(stage, 'persons', 'indigence'):.3f}% | {100*incidence(stage, 'persons', 'poverty'):.3f}% |" for stage in stages)
+    return f"""# Telescope A — {s['period']}\n\n> Research validation only; not official INDEC statistics.\n\n## Q3 diagnostic waterfall\n| Stage | Household indigence | Household poverty | Person indigence | Person poverty |\n|---|---:|---:|---:|---:|\n{rows}\n\nA0 is the canonical observed-EPH result. A1 changes only completeness, A2 changes only ITF to `sum_P47T`, and A3 changes only PONDIH to unit weights. See `summary.json` for exact deltas, selection mass, reconstruction transitions, and weighting diagnostics.\n"""
 
 
 def main():
@@ -203,6 +291,8 @@ def main():
     cba = pd.read_csv(a.cba, dtype=str, keep_default_na=False); cbt = pd.read_csv(a.cbt, dtype=str, keep_default_na=False)
     microscope, summary = build_telescope(hh, p, cba, cbt, period=a.period, method_path=a.method)
     a.output.mkdir(parents=True, exist_ok=True); microscope.to_parquet(a.output / "households.parquet", index=False)
+    waterfall = summary.pop("waterfall_rows")
+    pd.DataFrame(waterfall).to_csv(a.output / "waterfall.csv", index=False)
     (a.output / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True)); (a.output / "report.md").write_text(render_report(summary))
     print(json.dumps({"status": summary["status"], "period": a.period, "retained_households": len(microscope), "output": str(a.output)}, indent=2))
 
