@@ -1,0 +1,80 @@
+{
+  "schema_version": "predictive-poverty-batch/v1",
+  "batch_id": "department-poverty-2024q1-2025q4",
+  "geography_level": "department_2010",
+  "frame_vintage": "2010",
+  "periods": [
+    {
+      "period": "2024-Q1",
+      "target_year": 2024,
+      "census_sample_release_ref": "census-sample:2024",
+      "frame_ref": "population-frame:2024",
+      "semantic_plane_release_ref": "semantic-plane:2024-Q1",
+      "predictive_welfare_release_ref": "predictive-welfare:2024-Q1",
+      "basket_slice_ref": "basket:2024-Q1"
+    },
+    {
+      "period": "2024-Q2",
+      "target_year": 2024,
+      "census_sample_release_ref": "census-sample:2024",
+      "frame_ref": "population-frame:2024",
+      "semantic_plane_release_ref": "semantic-plane:2024-Q2",
+      "predictive_welfare_release_ref": "predictive-welfare:2024-Q2",
+      "basket_slice_ref": "basket:2024-Q2"
+    },
+    {
+      "period": "2024-Q3",
+      "target_year": 2024,
+      "census_sample_release_ref": "census-sample:2024",
+      "frame_ref": "population-frame:2024",
+      "semantic_plane_release_ref": "semantic-plane:2024-Q3",
+      "predictive_welfare_release_ref": "predictive-welfare:2024-Q3",
+      "basket_slice_ref": "basket:2024-Q3"
+    },
+    {
+      "period": "2024-Q4",
+      "target_year": 2024,
+      "census_sample_release_ref": "census-sample:2024",
+      "frame_ref": "population-frame:2024",
+      "semantic_plane_release_ref": "semantic-plane:2024-Q4",
+      "predictive_welfare_release_ref": "predictive-welfare:2024-Q4",
+      "basket_slice_ref": "basket:2024-Q4"
+    },
+    {
+      "period": "2025-Q1",
+      "target_year": 2025,
+      "census_sample_release_ref": "census-sample:2025",
+      "frame_ref": "population-frame:2025",
+      "semantic_plane_release_ref": "semantic-plane:2025-Q1",
+      "predictive_welfare_release_ref": "predictive-welfare:2025-Q1",
+      "basket_slice_ref": "basket:2025-Q1"
+    },
+    {
+      "period": "2025-Q2",
+      "target_year": 2025,
+      "census_sample_release_ref": "census-sample:2025",
+      "frame_ref": "population-frame:2025",
+      "semantic_plane_release_ref": "semantic-plane:2025-Q2",
+      "predictive_welfare_release_ref": "predictive-welfare:2025-Q2",
+      "basket_slice_ref": "basket:2025-Q2"
+    },
+    {
+      "period": "2025-Q3",
+      "target_year": 2025,
+      "census_sample_release_ref": "census-sample:2025",
+      "frame_ref": "population-frame:2025",
+      "semantic_plane_release_ref": "semantic-plane:2025-Q3",
+      "predictive_welfare_release_ref": "predictive-welfare:2025-Q3",
+      "basket_slice_ref": "basket:2025-Q3"
+    },
+    {
+      "period": "2025-Q4",
+      "target_year": 2025,
+      "census_sample_release_ref": "census-sample:2025",
+      "frame_ref": "population-frame:2025",
+      "semantic_plane_release_ref": "semantic-plane:2025-Q4",
+      "predictive_welfare_release_ref": "predictive-welfare:2025-Q4",
+      "basket_slice_ref": "basket:2025-Q4"
+    }
+  ]
+}
