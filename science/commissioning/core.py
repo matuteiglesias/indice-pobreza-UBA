@@ -145,6 +145,15 @@ def validate_frame(frame: pd.DataFrame) -> pd.DataFrame:
     ).reset_index(drop=True)
 
 
+def _set_period_ticks(ax, data: pd.DataFrame) -> None:
+    ticks = (
+        data[["period_position", "period"]]
+        .drop_duplicates()
+        .sort_values("period_position")
+    )
+    ax.set_xticks(ticks.period_position, ticks.period, rotation=35, ha="right")
+
+
 def plot_lines(
     data: pd.DataFrame,
     path: Path,
@@ -174,12 +183,84 @@ def plot_lines(
     ax.set_xlabel("Period")
     ax.grid(alpha=0.2)
     ax.legend(fontsize=8, ncol=2)
-    ticks = (
-        data[["period_position", "period"]]
-        .drop_duplicates()
-        .sort_values("period_position")
-    )
-    ax.set_xticks(ticks.period_position, ticks.period, rotation=35, ha="right")
+    _set_period_ticks(ax, data)
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
+
+
+def plot_basket_mechanics(data: pd.DataFrame, path: Path, title: str) -> None:
+    levels = data[data.diagnostic_id == "basket_level"].copy()
+    ratios = data[data.diagnostic_id == "basket_ratio"].copy()
+    fig, axes = plt.subplots(2, 1, figsize=(11, 9), sharex=True)
+
+    for series, group in levels.groupby("series_id", sort=True):
+        group = group.sort_values("period_position")
+        axes[0].plot(
+            group.period_position,
+            group.value.astype(float),
+            linewidth=1.7,
+            label=series.replace("_", " "),
+        )
+    axes[0].set_title(title)
+    axes[0].set_ylabel("ARS per adult equivalent")
+    axes[0].grid(alpha=0.2)
+    axes[0].legend(fontsize=7, ncol=3)
+
+    for series, group in ratios.groupby("series_id", sort=True):
+        group = group.sort_values("period_position")
+        axes[1].plot(
+            group.period_position,
+            group.value.astype(float),
+            linewidth=1.8,
+            label=series.replace("cbt_over_cba:", ""),
+        )
+    axes[1].set_ylabel("CBT / CBA")
+    axes[1].set_xlabel("Period")
+    axes[1].grid(alpha=0.2)
+    axes[1].legend(fontsize=7, ncol=3)
+    _set_period_ticks(axes[1], data)
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
+
+
+def plot_labor_reality(data: pd.DataFrame, path: Path, title: str) -> None:
+    rates = data[data.diagnostic_id == "labor_rate"].copy()
+    stocks = data[data.diagnostic_id == "labor_stock"].copy()
+    if stocks.empty:
+        plot_lines(rates, path, title, "Percent", percent=True)
+        return
+
+    fig, axes = plt.subplots(2, 1, figsize=(11, 9), sharex=True)
+    for series, group in rates.groupby("series_id", sort=True):
+        group = group.sort_values("period_position")
+        axes[0].plot(
+            group.period_position,
+            100 * group.value.astype(float),
+            marker="o",
+            linewidth=1.8,
+            label=series.replace("_", " "),
+        )
+    axes[0].set_title(title)
+    axes[0].set_ylabel("Percent")
+    axes[0].grid(alpha=0.2)
+    axes[0].legend(fontsize=7, ncol=3)
+
+    for series, group in stocks.groupby("series_id", sort=True):
+        group = group.sort_values("period_position")
+        axes[1].plot(
+            group.period_position,
+            group.value.astype(float) / 1_000_000,
+            marker="o",
+            linewidth=1.8,
+            label=series.replace("_", " "),
+        )
+    axes[1].set_ylabel("Millions of persons")
+    axes[1].set_xlabel("Period")
+    axes[1].grid(alpha=0.2)
+    axes[1].legend(fontsize=8, ncol=3)
+    _set_period_ticks(axes[1], data)
     fig.tight_layout()
     fig.savefig(path, dpi=180)
     plt.close(fig)
@@ -201,7 +282,12 @@ def render_figure(spec: dict, frame: pd.DataFrame, output: Path) -> dict[str, ob
         "10": ("department_poverty_quantile", "Person poverty (%)", True, False),
     }
     diagnostic, ylabel, percent, millions = selectors[figure_id]
-    data = frame[frame.diagnostic_id == diagnostic].copy()
+    if figure_id == "03":
+        data = frame[frame.diagnostic_id.isin(["basket_level", "basket_ratio"])].copy()
+    elif figure_id == "05":
+        data = frame[frame.diagnostic_id.isin(["labor_rate", "labor_stock"])].copy()
+    else:
+        data = frame[frame.diagnostic_id == diagnostic].copy()
     if figure_id in {"01", "02"}:
         data = data[data.universe == "persons"]
     if data.empty:
@@ -215,14 +301,19 @@ def render_figure(spec: dict, frame: pd.DataFrame, output: Path) -> dict[str, ob
     csv_path = output / f"{figure_id}_{slug}.csv"
     png_path = output / f"{figure_id}_{slug}.png"
     data.to_csv(csv_path, index=False)
-    plot_lines(
-        data,
-        png_path,
-        spec["title"],
-        ylabel,
-        percent=percent,
-        millions=millions,
-    )
+    if figure_id == "03":
+        plot_basket_mechanics(data, png_path, spec["title"])
+    elif figure_id == "05":
+        plot_labor_reality(data, png_path, spec["title"])
+    else:
+        plot_lines(
+            data,
+            png_path,
+            spec["title"],
+            ylabel,
+            percent=percent,
+            millions=millions,
+        )
     return {
         "id": figure_id,
         "slug": slug,
@@ -230,4 +321,8 @@ def render_figure(spec: dict, frame: pd.DataFrame, output: Path) -> dict[str, ob
         "rows": int(len(data)),
         "csv": csv_path.name,
         "png": png_path.name,
+        "csv_sha256": sha256(csv_path),
+        "png_sha256": sha256(png_path),
+        "csv_bytes": csv_path.stat().st_size,
+        "png_bytes": png_path.stat().st_size,
     }
