@@ -238,8 +238,12 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
                 "p,2024-Q1,2010,households,national,ARG,poverty,fgt0,"
                 "0.25,proportion,25,100,1,design,unit_analysis_weight,not_supplied\n"
             )
+            department_national_row = (
+                "d,2024-Q1,2010,households,national,ARG,poverty,fgt0,"
+                "0.25,proportion,25,100,1,design,unit_analysis_weight,not_supplied\\n"
+            )
             (departments / "poverty_estimates.csv").write_text(
-                header + department_row, encoding="utf-8"
+                header + department_row + department_national_row, encoding="utf-8"
             )
             (provinces / "poverty_estimates.csv").write_text(
                 header + province_row + national_row, encoding="utf-8"
