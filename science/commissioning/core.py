@@ -335,7 +335,7 @@ def plot_welfare_cbt(data: pd.DataFrame, path: Path, title: str) -> None:
     table["stage"] = table.series_id.str.split(":").str[0]
     table["quantile"] = table.series_id.str.split(":").str[1]
     order = ["q10", "q25", "q50", "q75", "q90"]
-    table["quantile"] = pd.Categorical(table.quantile, categories=order, ordered=True)
+    table["quantile"] = pd.Categorical(table["quantile"], categories=order, ordered=True)
     pivot = table.pivot(index="quantile", columns="stage", values="value").reindex(order)
 
     fig, ax = plt.subplots(figsize=(9, 6))
