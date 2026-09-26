@@ -1,0 +1,17 @@
+period,universe,concept,rate,count,total_population,source_id
+2024-S1,persons,poverty,0.529,15685603,29648168,poverty_2024_s1
+2024-S1,persons,indigence,0.181,5379588,29648168,poverty_2024_s1
+2024-S1,households,poverty,0.425,4319760,10156495,poverty_2024_s1
+2024-S1,households,indigence,0.136,1378142,10156495,poverty_2024_s1
+2024-S2,persons,poverty,0.381,11337979,29775722,poverty_2024_s2
+2024-S2,persons,indigence,0.082,2451657,29775722,poverty_2024_s2
+2024-S2,households,poverty,0.286,2921811,10205861,poverty_2024_s2
+2024-S2,households,indigence,0.064,649671,10205861,poverty_2024_s2
+2025-S1,persons,poverty,0.316,9451018,29900963,poverty_2025_s1
+2025-S1,persons,indigence,0.069,2051984,29900963,poverty_2025_s1
+2025-S1,households,poverty,0.241,2456090,10175586,poverty_2025_s1
+2025-S1,households,indigence,0.056,565821,10175586,poverty_2025_s1
+2025-S2,persons,poverty,0.282,8474136,30017559,poverty_2025_s2
+2025-S2,persons,indigence,0.063,1884110,30017559,poverty_2025_s2
+2025-S2,households,poverty,0.210,2145024,10201205,poverty_2025_s2
+2025-S2,households,indigence,0.048,494488,10201205,poverty_2025_s2

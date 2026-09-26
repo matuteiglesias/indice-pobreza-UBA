@@ -28,6 +28,8 @@ jobs:
         run: make poverty-release-smoke
       - name: Run full unit suite including predictive measurement
         run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py'
+      - name: Run commissioning benchmark smoke
+        run: make commissioning-smoke
       - name: Prove predictive-welfare research seam remains callable
         run: |
           test -f scripts/run_research_seam_acceptance.py
