@@ -41,6 +41,14 @@ DEFAULT_PROFILE_PATH = ROOT / "configs/geographies/predictive_geography_profiles
 FRAME_VINTAGE = "2010"
 DESIGN_ID = "unit_weight_target_year_sample_research_v1"
 WEIGHT_SEMANTICS = "unit_analysis_weight"
+BASKET_REGIONS = {
+    "cuyo",
+    "gran_buenos_aires",
+    "noreste",
+    "noroeste",
+    "pampeana",
+    "patagonia",
+}
 
 
 def sha256(path: Path) -> str:
@@ -109,6 +117,38 @@ def load_profiles(path: Path = DEFAULT_PROFILE_PATH) -> dict[str, dict[str, Any]
     return profiles
 
 
+def _load_threshold_area_binding(
+    path: Path,
+    *,
+    geography_level: str,
+    governed_ids: set[str],
+) -> tuple[dict[str, str], dict[str, Any]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != "poverty-threshold-area-binding/eph-agglomerate-v1":
+        raise ValueError("unsupported threshold-area binding schema")
+    if payload.get("geography_level") != geography_level:
+        raise ValueError("threshold-area binding geography level mismatch")
+    rows = payload.get("rows")
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("threshold-area binding rows must be nonempty")
+    mapping: dict[str, str] = {}
+    for row in rows:
+        geography_id = str(row.get("geography_id", ""))
+        region = str(row.get("poverty_region_id", ""))
+        if geography_id in mapping:
+            raise ValueError(f"duplicate threshold-area binding: {geography_id}")
+        if region not in BASKET_REGIONS:
+            raise ValueError(f"unsupported poverty region in binding: {region!r}")
+        mapping[geography_id] = region
+    if set(mapping) != governed_ids:
+        missing = sorted(governed_ids - set(mapping))
+        extra = sorted(set(mapping) - governed_ids)
+        raise ValueError(
+            f"threshold-area binding inventory mismatch: missing={missing} extra={extra}"
+        )
+    return mapping, payload
+
+
 def _load_frame(path: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if (
@@ -156,7 +196,7 @@ def _load_baskets(path: Path, basket_period: str) -> dict[str, tuple[float, floa
                 _num(row, "CBA_2016_01" if "CBA_2016_01" in row else "CBA"),
                 _num(row, "CBT_2016_01" if "CBT_2016_01" in row else "CBT"),
             )
-    required = {"cuyo", "gran_buenos_aires", "noreste", "noroeste", "pampeana", "patagonia"}
+    required = BASKET_REGIONS
     if set(result) != required or any(cba is None or cbt is None for cba, cbt in result.values()):
         raise ValueError(
             f"basket slice {basket_period!r} must contain exactly six complete regions; "
@@ -226,6 +266,7 @@ def build_release(
     expected_geography_ids: set[str] | None = None,
     expected_households: int | None = None,
     expected_persons: int | None = None,
+    threshold_area_binding_path: Path | None = None,
 ) -> Path:
     profiles = load_profiles(profile_path)
     if geography_level not in profiles:
@@ -243,6 +284,50 @@ def build_release(
     welfare_rows, residual_rows, welfare_manifest = _load_welfare(welfare_path)
     baskets = _load_baskets(baskets_path, basket_period or period)
     method = load_poverty_method(method_path)
+
+    threshold_binding: dict[str, str] | None = None
+    threshold_binding_manifest: dict[str, Any] | None = None
+    requires_binding = bool(profile.get("requires_threshold_area_binding", False))
+    if requires_binding:
+        if threshold_area_binding_path is None:
+            raise ValueError(
+                f"{geography_level} requires an explicit threshold-area binding"
+            )
+        threshold_binding, threshold_binding_manifest = _load_threshold_area_binding(
+            threshold_area_binding_path,
+            geography_level=geography_level,
+            governed_ids=governed_ids,
+        )
+    elif threshold_area_binding_path is not None:
+        raise ValueError(
+            f"{geography_level} does not accept an external threshold-area binding"
+        )
+
+    subset_policy = str(profile.get("subset_policy", "all"))
+    source_household_count = len(households)
+    source_person_count = len(persons)
+    if subset_policy == "mapped_nonnull":
+        mapped_field = str(profile.get("mapped_flag_field", "mapped_to_eph_frame"))
+        kept_households = []
+        for row in households:
+            mapped = row.get(mapped_field)
+            geography_value = row.get(geography_field)
+            if mapped is True and isinstance(geography_value, str) and geography_value:
+                kept_households.append(row)
+            elif mapped not in (False, None) or geography_value not in (None, ""):
+                raise ValueError(
+                    f"inconsistent mapped/null geography state for household {row.get('household_id')}"
+                )
+        kept_ids = {str(row["household_id"]) for row in kept_households}
+        households = kept_households
+        persons = [row for row in persons if str(row.get("household_id", "")) in kept_ids]
+        welfare_rows = [
+            row for row in welfare_rows if str(row.get("household_id", "")) in kept_ids
+        ]
+        if not households or not persons:
+            raise ValueError(f"{geography_level} mapped subset must be nonempty")
+    elif subset_policy != "all":
+        raise ValueError(f"unsupported subset_policy: {subset_policy!r}")
 
     household_by_id = {str(row["household_id"]): row for row in households}
     welfare_ids = [str(row.get("household_id", "")) for row in welfare_rows]
@@ -269,12 +354,15 @@ def build_release(
     domains: list[HouseholdDomain] = []
     weights: list[HouseholdWeight] = []
     for household_id, row in sorted(household_by_id.items()):
-        region = str(row["region_id"]).strip().lower().replace(" ", "_")
+        geography_id = _geography_id(row, field=geography_field, pattern=id_pattern)
+        if threshold_binding is None:
+            region = str(row["region_id"]).strip().lower().replace(" ", "_")
+        else:
+            region = threshold_binding[geography_id]
         if region not in baskets:
             raise ValueError(f"household {household_id} has unknown basket region {region!r}")
         cba, cbt = baskets[region]
         lines.append(HouseholdPovertyLines(household_id, cba, cbt))
-        geography_id = _geography_id(row, field=geography_field, pattern=id_pattern)
         domains.append(HouseholdDomain(household_id, geography_level, geography_id))
         analysis_weight = _num(row, "analysis_weight")
         if analysis_weight != 1.0:
@@ -312,7 +400,15 @@ def build_release(
         measurement,
         domains,
         design,
-        EstimationContext(release_id, period, frame_vintage),
+        EstimationContext(
+            release_id,
+            period,
+            frame_vintage,
+            aggregate_geography_level=str(
+                profile.get("aggregate_geography_level", "national")
+            ),
+            aggregate_geography_id=profile.get("aggregate_geography_id"),
+        ),
     )
     expected_facts = len(governed_ids) * 12 + 12
     if len(estimation.estimates) != expected_facts:
@@ -338,8 +434,21 @@ def build_release(
         ParentReleaseRef("poverty_lines", f"basket-slice-{basket_period or period}", basket_hash),
         ParentReleaseRef(
             "threshold_area_binding",
-            f"{geography_level}-region-binding-{period}",
-            content_hash(sorted((household_id, row["region_id"]) for household_id, row in household_by_id.items())),
+            (
+                str(threshold_binding_manifest.get("release_id"))
+                if threshold_binding_manifest is not None
+                else f"{geography_level}-region-binding-{period}"
+            ),
+            (
+                sha256(threshold_area_binding_path)
+                if threshold_area_binding_path is not None
+                else content_hash(
+                    sorted(
+                        (household_id, row["region_id"])
+                        for household_id, row in household_by_id.items()
+                    )
+                )
+            ),
         ),
         ParentReleaseRef("poverty_method", method.release_id, method_hash),
     )
@@ -370,6 +479,11 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--expected-households", type=int)
     parser.add_argument("--expected-persons", type=int)
+    parser.add_argument(
+        "--threshold-area-binding",
+        type=Path,
+        help="required only for profiles that declare requires_threshold_area_binding",
+    )
     args = parser.parse_args()
     root = build_release(
         welfare_path=args.welfare_release,
@@ -384,6 +498,7 @@ def main() -> int:
         profile_path=args.profile,
         expected_households=args.expected_households,
         expected_persons=args.expected_persons,
+        threshold_area_binding_path=args.threshold_area_binding,
     )
     print(root)
     return 0
