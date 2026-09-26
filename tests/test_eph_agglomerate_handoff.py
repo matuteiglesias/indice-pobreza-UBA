@@ -101,6 +101,39 @@ class EphAgglomerateHandoffTests(unittest.TestCase):
         ):
             PF.augment_population_frame(frame, patch)
 
+    def test_region_binding_reader_accepts_governed_parquet_and_csv(self):
+        import tempfile
+
+        frame = pd.DataFrame(
+            {
+                "AGLOMERADO": [32, 33],
+                "basket_region": ["gran_buenos_aires", "pampeana"],
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            parquet_path = root / "households.parquet"
+            csv_path = root / "households.csv"
+            frame.to_parquet(parquet_path, index=False)
+            frame.to_csv(csv_path, index=False)
+
+            parquet = RB._read_household_microscope(parquet_path)
+            csv_frame = RB._read_household_microscope(csv_path)
+
+            self.assertEqual(parquet["AGLOMERADO"].tolist(), [32, 33])
+            self.assertEqual(csv_frame["AGLOMERADO"].tolist(), ["32", "33"])
+            self.assertEqual(
+                parquet["basket_region"].astype(str).tolist(),
+                csv_frame["basket_region"].astype(str).tolist(),
+            )
+
+    def test_region_binding_reader_rejects_unknown_format(self):
+        with self.assertRaisesRegex(
+            RB.AgglomerateRegionBindingError,
+            "unsupported Telescope-A household artifact format",
+        ):
+            RB._read_household_microscope(Path("households.json"))
+
     def test_region_binding_reuses_telescope_a_semantics_and_requires_exact_inventory(self):
         q1 = pd.DataFrame(
             {
