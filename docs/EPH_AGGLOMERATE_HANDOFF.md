@@ -48,5 +48,8 @@ The A7/G1 ID inventory must match exactly. Conflicts or missing IDs fail closed.
 - zero GIS inference;
 - zero duplication of REGION-to-basket semantics.
 
-The result is a geography/policy handoff ready for a later
-`geography_level=eph_agglomerate` release producer.
+The result is the active geography/policy handoff consumed by
+`scripts/build_predictive_geography_release.py --geography-level eph_agglomerate`.
+The observed EPH reference surface is produced separately by
+`scripts/build_observed_agglomerate_release.py`; both releases use
+`eph_coverage/EPH_TOTAL` as their explicit non-spatial aggregate.
