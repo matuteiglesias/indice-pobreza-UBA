@@ -465,3 +465,47 @@ def calibrate_census_domains(
     if not np.allclose(probability_sum, 1.0, atol=1e-12, rtol=0):
         raise LaborContractError("calibrated labor probabilities do not sum to one")
     return out, pd.DataFrame(qa_rows)
+
+
+def calibration_targets_from_microscope(
+    microscope: pd.DataFrame,
+    period: str,
+    *,
+    dimension: str = "agglomerate",
+    estimator: str = "pondera",
+    domain_col: str = "calibration_domain_id",
+) -> pd.DataFrame:
+    """Promote governed EPH microscope A/E/U rows into precise L3 domain targets."""
+    required = {"period", "dimension", "group_id", "estimator", "metric", "rate"}
+    missing = sorted(required - set(microscope.columns))
+    if missing:
+        raise LaborContractError(f"labor microscope missing columns: {missing}")
+    subset = microscope[
+        (microscope["period"].astype(str) == str(period))
+        & (microscope["dimension"].astype(str) == dimension)
+        & (microscope["estimator"].astype(str) == estimator)
+        & microscope["metric"].isin(["activity", "employment", "unemployment"])
+    ].copy()
+    if subset.empty:
+        raise LaborContractError(
+            f"no {dimension}/{estimator} labor microscope rows for {period}"
+        )
+    if subset.duplicated(["group_id", "metric"]).any():
+        raise LaborContractError("labor microscope has duplicate domain/metric rows")
+    pivot = subset.pivot(index="group_id", columns="metric", values="rate")
+    needed = {"activity", "employment", "unemployment"}
+    if set(pivot.columns) != needed or pivot[list(sorted(needed))].isna().any().any():
+        raise LaborContractError(
+            "every calibration domain must expose activity/employment/unemployment"
+        )
+    out = pivot.reset_index().rename(
+        columns={
+            "group_id": domain_col,
+            "activity": "activity_rate",
+            "employment": "employment_rate",
+            "unemployment": "unemployment_rate",
+        }
+    )
+    out.insert(0, "period", str(period))
+    out[domain_col] = out[domain_col].astype(str)
+    return out.sort_values(domain_col, kind="stable").reset_index(drop=True)

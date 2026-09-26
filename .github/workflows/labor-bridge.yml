@@ -5,6 +5,7 @@ on:
     paths:
       - "science/labor/**"
       - "scripts/build_eph_labor_truth.py"
+      - "scripts/build_labor_calibration_targets.py"
       - "scripts/calibrate_census_labor_probabilities.py"
       - "tests/test_labor_bridge.py"
       - "docs/LABOR_BRIDGE_LOCAL_COMMISSIONING.md"
@@ -24,4 +25,4 @@ jobs:
       - name: Unit contracts
         run: PYTHONPATH=. python -m unittest discover -s tests -p 'test_labor_bridge.py'
       - name: Compile entrypoints
-        run: python -m py_compile science/labor/core.py scripts/build_eph_labor_truth.py scripts/calibrate_census_labor_probabilities.py
+        run: python -m py_compile science/labor/core.py scripts/build_eph_labor_truth.py scripts/build_labor_calibration_targets.py scripts/calibrate_census_labor_probabilities.py

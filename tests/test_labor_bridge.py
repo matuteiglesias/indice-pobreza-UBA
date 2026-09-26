@@ -15,6 +15,7 @@ from science.labor.core import (  # noqa: E402
     LaborContractError,
     benchmark_deltas,
     calibrate_census_domains,
+    calibration_targets_from_microscope,
     calibrate_logit_offset,
     microscope_rows,
     summarize_eph,
@@ -79,6 +80,39 @@ class LaborBridgeTest(unittest.TestCase):
             "32",
             set(frame.loc[frame.dimension == "agglomerate", "group_id"]),
         )
+
+
+    def test_calibration_targets_promote_weighted_agglomerate_microscope(self):
+        microscope = pd.DataFrame(
+            [
+                {
+                    "period": "2025-Q4",
+                    "dimension": "agglomerate",
+                    "group_id": domain,
+                    "estimator": "pondera",
+                    "metric": metric,
+                    "rate": value,
+                }
+                for domain, values in {
+                    "32": {"activity": 0.51, "employment": 0.47, "unemployment": 0.078},
+                    "33": {"activity": 0.49, "employment": 0.45, "unemployment": 0.082},
+                }.items()
+                for metric, value in values.items()
+            ]
+        )
+        targets = calibration_targets_from_microscope(microscope, "2025-Q4")
+        self.assertEqual(
+            list(targets.columns),
+            [
+                "period",
+                "calibration_domain_id",
+                "activity_rate",
+                "employment_rate",
+                "unemployment_rate",
+            ],
+        )
+        self.assertEqual(set(targets.calibration_domain_id), {"32", "33"})
+        self.assertTrue((targets.period == "2025-Q4").all())
 
     def test_logit_offset_hits_requested_mean(self):
         calibrated, offset = calibrate_logit_offset([0.1, 0.2, 0.4, 0.8], 0.55)

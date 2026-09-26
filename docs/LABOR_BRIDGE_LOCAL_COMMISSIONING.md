@@ -127,3 +127,21 @@ Subemployment, employment demand, informality, hours and occupational category
 belong to a later labor-state extension. L1 may measure them after a
 period-stable microdata contract is frozen, but L3 v1 transports only the
 activity/employment/unemployment core.
+
+
+## L2 → L3 governed target handoff
+
+Do not manually transcribe per-agglomerate rates. Promote the weighted native
+agglomerate rows already emitted by L1:
+
+```bash
+python scripts/build_labor_calibration_targets.py \
+  --microscope /home/matias/data/eph-labor-truth-2022-2025/labor_microscope.csv \
+  --period 2024-Q3 \
+  --output /home/matias/data/labor-targets-2024-q3.csv
+```
+
+This preserves native EPH agglomerate identity and non-rounded microdata precision.
+The published national INDEC series remains the external validation gate; it is not
+retyped as a calibration parent. A domain missing any of activity, employment or
+unemployment fails closed rather than fabricating a target.
