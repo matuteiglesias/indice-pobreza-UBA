@@ -19,6 +19,7 @@ from science.labor.core import (  # noqa: E402
     calibrate_logit_offset,
     microscope_rows,
     summarize_eph,
+    validate_census_identity,
 )
 
 
@@ -124,6 +125,10 @@ class LaborBridgeTest(unittest.TestCase):
         probabilities = pd.DataFrame(
             {
                 "sample_person_id": ["a", "b", "c", "d", "e"],
+                "frame_person_id": ["fa", "fb", "fc", "fd", "fe"],
+                "sample_household_id": ["ha", "ha", "hb", "hb", "hc"],
+                "frame_household_id": ["fha", "fha", "fhb", "fhb", "fhc"],
+                "frame_dwelling_id": ["da", "da", "db", "db", "dc"],
                 "calibration_domain_id": ["32", "32", "33", "33", None],
                 "p_active_raw": [0.2, 0.8, 0.4, 0.6, 0.3],
                 "p_unemployed_given_active_raw": [0.1, 0.2, 0.3, 0.1, 0.4],
@@ -155,9 +160,44 @@ class LaborBridgeTest(unittest.TestCase):
         self.assertAlmostEqual(
             calibrated.loc["33", "unemployment_rate"], 0.20, places=10
         )
+        for column in (
+            "sample_person_id",
+            "frame_person_id",
+            "sample_household_id",
+            "frame_household_id",
+            "frame_dwelling_id",
+        ):
+            self.assertEqual(out[column].astype(str).tolist(), probabilities[column].astype(str).tolist())
+        identity = validate_census_identity(out)
+        self.assertEqual(
+            identity["identity_columns"],
+            [
+                "sample_person_id",
+                "frame_person_id",
+                "sample_household_id",
+                "frame_household_id",
+                "frame_dwelling_id",
+            ],
+        )
+
         outside = out[out.calibration_domain_id.isna()].iloc[0]
         self.assertEqual(outside.calibration_status, "MODELLED_UNBENCHMARKED")
         self.assertAlmostEqual(outside.p_active, outside.p_active_raw)
+
+
+    def test_census_identity_fails_when_one_sample_household_maps_to_two_frame_households(self):
+        probabilities = pd.DataFrame(
+            {
+                "sample_person_id": ["a", "b"],
+                "sample_household_id": ["h1", "h1"],
+                "frame_household_id": ["fh1", "fh2"],
+                "calibration_domain_id": ["32", "32"],
+                "p_active_raw": [0.5, 0.6],
+                "p_unemployed_given_active_raw": [0.1, 0.2],
+            }
+        )
+        with self.assertRaisesRegex(LaborContractError, "sample_household_to_frame_household"):
+            validate_census_identity(probabilities)
 
     def test_domain_calibration_fails_closed_on_missing_target(self):
         probabilities = pd.DataFrame(
