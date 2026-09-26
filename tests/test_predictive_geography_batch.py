@@ -113,7 +113,7 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
                 },
             )
             frame_paths = {}
-            for year in ("2022", "2023", "2024", "2025")
+            for year in ("2022", "2023", "2024", "2025"):
                 frame_paths[year] = _write_json(
                     root / f"frame-{year}.json",
                     {
@@ -169,18 +169,18 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
             )
             census_paths = {
                 year: _write_json(root / f"census-{year}.json", {"release_id": f"census-{year}"})
-                for year in ("2024", "2025")
+                for year in ("2022", "2023", "2024", "2025")
             }
             semantic_paths = {
                 period: _write_json(
                     root / f"semantic-{period}.json",
                     {"release_id": f"semantic-{period}"},
                 )
-                for period in PERIODS
+                for period in PERIODS_16
             }
 
             refs = {}
-            for year in ("2024", "2025"):
+            for year in ("2022", "2023", "2024", "2025"):
                 refs[f"census-sample:{year}"] = {
                     "path": str(census_paths[year]),
                     "sha256": _sha(census_paths[year]),
