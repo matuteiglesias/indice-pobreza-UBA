@@ -53,6 +53,17 @@ def _read_inventory(path: Path) -> pd.DataFrame:
     return frame
 
 
+def _read_household_microscope(path: Path) -> pd.DataFrame:
+    suffix = path.suffix.lower()
+    if suffix in {".parquet", ".pq"}:
+        return pd.read_parquet(path)
+    if suffix == ".csv":
+        return pd.read_csv(path, dtype=str, keep_default_na=False)
+    raise AgglomerateRegionBindingError(
+        f"unsupported Telescope-A household artifact format: {path.name}"
+    )
+
+
 def derive_binding(
     microscopes: list[pd.DataFrame],
     expected_ids: set[str],
@@ -130,7 +141,7 @@ def main() -> int:
         type=Path,
         action="append",
         required=True,
-        help="Repeat for each governed Telescope-A household_microscope.csv.",
+        help="Repeat for each governed Telescope-A household artifact (.parquet/.pq/.csv).",
     )
     parser.add_argument("--agglomerate-inventory", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -139,7 +150,7 @@ def main() -> int:
     inventory = _read_inventory(args.agglomerate_inventory)
     expected_ids = set(inventory["eph_agglomerate_id"])
     microscopes = [
-        pd.read_csv(path, dtype=str, keep_default_na=False)
+        _read_household_microscope(path)
         for path in args.telescope_a_households
     ]
     rows, qa = derive_binding(microscopes, expected_ids)
