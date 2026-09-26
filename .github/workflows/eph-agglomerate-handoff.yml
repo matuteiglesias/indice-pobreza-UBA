@@ -1,0 +1,33 @@
+name: eph-agglomerate-handoff
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["feat/eph-agglomerate-binding-seam"]
+    paths:
+      - "scripts/augment_population_frame_agglomerate.py"
+      - "scripts/build_eph_agglomerate_region_binding.py"
+      - "tests/test_eph_agglomerate_handoff.py"
+      - "docs/EPH_AGGLOMERATE_HANDOFF.md"
+      - ".github/workflows/eph-agglomerate-handoff.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/augment_population_frame_agglomerate.py"
+      - "scripts/build_eph_agglomerate_region_binding.py"
+      - "tests/test_eph_agglomerate_handoff.py"
+      - "docs/EPH_AGGLOMERATE_HANDOFF.md"
+      - ".github/workflows/eph-agglomerate-handoff.yml"
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: python -m pip install pandas
+      - name: Prove agglomerate frame and binding seams
+        run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_eph_agglomerate_handoff.py'
