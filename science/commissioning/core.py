@@ -300,16 +300,16 @@ def plot_headline_poverty(data: pd.DataFrame, path: Path, title: str) -> None:
     for series, group in official.groupby("series_id", sort=True):
         group = group.sort_values("period_position")
         ax.plot(
-            group.period_position,
-            100 * group.value.astype(float),
+            group.period_position.to_numpy(),
+            (100 * group.value.astype(float)).to_numpy(),
             marker="o",
             linewidth=2.2,
             label=series.replace("_", " "),
         )
     for series, group in project.groupby("series_id", sort=True):
         ax.scatter(
-            group.period_position,
-            100 * group.value.astype(float),
+            group.period_position.to_numpy(),
+            (100 * group.value.astype(float)).to_numpy(),
             s=70,
             label=series.replace("_", " "),
             zorder=4,
@@ -345,11 +345,11 @@ def plot_welfare_cbt(data: pd.DataFrame, path: Path, title: str) -> None:
             left = float(pivot.loc[quantile, "observed"])
             right = float(pivot.loc[quantile, "point"])
             ax.plot([left, right], [idx, idx], linewidth=2, alpha=0.55)
-        ax.scatter(pivot["observed"], y, s=70, label="Observed EPH")
-        ax.scatter(pivot["point"], y, s=70, label="OOF point")
+        ax.scatter(pivot["observed"].to_numpy(), y, s=70, label="Observed EPH")
+        ax.scatter(pivot["point"].to_numpy(), y, s=70, label="OOF point")
     else:
         for stage in pivot.columns:
-            ax.scatter(pivot[stage], y, s=70, label=stage)
+            ax.scatter(pivot[stage].to_numpy(), y, s=70, label=stage)
 
     ax.axvline(1.0, linewidth=1.5, linestyle="--", label="Poverty line (CBT)")
     ax.set_yticks(y, order)
@@ -402,7 +402,7 @@ def plot_region_cross_section(data: pd.DataFrame, path: Path, title: str) -> Non
     fig, axes = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
     for ax, concept in zip(axes, ("poverty", "indigence")):
         subset = frame[frame.concept == concept].set_index("region").reindex(regions)
-        ax.barh(regions, 100 * subset.value.astype(float))
+        ax.barh(regions, (100 * subset.value.astype(float)).to_numpy())
         ax.set_title(concept.capitalize())
         ax.set_xlabel("Percent of persons")
         ax.grid(axis="x", alpha=0.2)
@@ -425,7 +425,13 @@ def plot_telescope_b_bridge(data: pd.DataFrame, path: Path, title: str) -> None:
     x = np.arange(3)
     for concept in ("poverty", "indigence"):
         subset = frame[frame.concept == concept].set_index("stage").reindex(stage_order)
-        ax.plot(x, 100 * subset.value.astype(float), marker="o", linewidth=2.4, label=concept)
+        ax.plot(
+            x,
+            (100 * subset.value.astype(float)).to_numpy(),
+            marker="o",
+            linewidth=2.4,
+            label=concept,
+        )
     ax.set_xticks(x, labels)
     ax.set_ylabel("Percent of persons")
     ax.set_title(f"{title} — {data.period.iloc[0]}")
