@@ -27,10 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
       - name: Install test dependencies
-        run: |
-          python -m pip install -e .
-          python -m pip install pytest pandas
+        run: python -m pip install pytest pandas
       - name: Prove agglomerate frame and binding seams
         run: python -m pytest -q tests/test_eph_agglomerate_handoff.py
