@@ -39,6 +39,42 @@
       "publication_date": "2026-03-18",
       "url": "https://www.indec.gob.ar/uploads/informesdeprensa/mercado_trabajo_eph_4trim25AF451E16DE.pdf",
       "note": "Headline series for 2025; intermediate quarter values agree with the corresponding quarterly releases."
+    },
+    "poverty_2022_s1": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Primer semestre de 2022",
+      "publication_date": "2022-09-28",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/eph_pobreza_09_2223ECC71AE4.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "poverty_2022_s2": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Segundo semestre de 2022",
+      "publication_date": "2023-03-30",
+      "url": "https://biblioteca.indec.gob.ar/bases/minde/eph_pobreza_03_23.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "poverty_2023_s1": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Primer semestre de 2023",
+      "publication_date": "2023-09-27",
+      "url": "https://biblioteca.indec.gob.ar/bases/minde/eph_pobreza_09_23.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "poverty_2023_s2": {
+      "title": "Incidencia de la pobreza y la indigencia en 31 aglomerados urbanos. Segundo semestre de 2023",
+      "publication_date": "2024-03-27",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/eph_pobreza_03_2442F61D046F.pdf",
+      "note": "Headline rates and exact total/poor/indigent household/person counts."
+    },
+    "labor_2022_q4": {
+      "title": "Mercado de trabajo. Tasas e indicadores socioeconómicos (EPH). Cuarto trimestre de 2022",
+      "publication_date": "2023-03-22",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/mercado_trabajo_eph_4trim22BE2C110849.pdf",
+      "note": "Cuadro 1.3 reports 2022 Q1-Q4 activity, employment, unemployment, job-seeker and underemployment headline series for the 31 agglomerates."
+    },
+    "labor_2023_q4": {
+      "title": "Mercado de trabajo. Tasas e indicadores socioeconómicos (EPH). Cuarto trimestre de 2023",
+      "publication_date": "2024-03-20",
+      "url": "https://www.indec.gob.ar/uploads/informesdeprensa/mercado_trabajo_eph_4trim23BB05224E02.pdf",
+      "note": "Cuadro 1.3 reports 2023 Q1-Q4 activity, employment, unemployment, job-seeker and underemployment headline series for the 31 agglomerates."
     }
   }
 }
