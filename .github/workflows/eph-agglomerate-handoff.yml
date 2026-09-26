@@ -10,6 +10,14 @@ on:
       - "tests/test_eph_agglomerate_handoff.py"
       - "docs/EPH_AGGLOMERATE_HANDOFF.md"
       - ".github/workflows/eph-agglomerate-handoff.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/augment_population_frame_agglomerate.py"
+      - "scripts/build_eph_agglomerate_region_binding.py"
+      - "tests/test_eph_agglomerate_handoff.py"
+      - "docs/EPH_AGGLOMERATE_HANDOFF.md"
+      - ".github/workflows/eph-agglomerate-handoff.yml"
 
 jobs:
   contract:
