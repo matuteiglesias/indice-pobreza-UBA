@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the governed eight-period predictive poverty batch from resolved parent refs.
+"""Run a governed longitudinal predictive poverty batch from resolved parent refs.
 
 The committed batch spec contains logical refs only.  A separate resolution file
 supplies local/fixture paths plus hashes; it is intentionally not committed by
@@ -21,9 +21,14 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
 DEFAULT_SPEC = ROOT / "configs/releases/predictive-poverty-2024q1-2025q4.json"
 DEFAULT_PROFILE = ROOT / "configs/geographies/predictive_geography_profiles_v1.json"
-CANONICAL_PERIODS = (
+LEGACY_PERIODS = (
     "2024-Q1", "2024-Q2", "2024-Q3", "2024-Q4",
     "2025-Q1", "2025-Q2", "2025-Q3", "2025-Q4",
+)
+SUPPORTED_PERIODS = tuple(
+    f"{year}-Q{quarter}"
+    for year in range(2022, 2026)
+    for quarter in range(1, 5)
 )
 
 _GEOGRAPHY_SPEC = importlib.util.spec_from_file_location(
@@ -65,11 +70,19 @@ def validate_batch_spec(spec: dict[str, Any]) -> None:
     if spec.get("geography_level") != "department_2010":
         raise ValueError("commissioning batch must target department_2010")
     rows = spec.get("periods")
-    if not isinstance(rows, list):
-        raise ValueError("batch periods must be an array")
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("batch periods must be a nonempty array")
     periods = tuple(str(row.get("period")) for row in rows)
-    if periods != CANONICAL_PERIODS:
-        raise ValueError(f"batch period set/order must equal {CANONICAL_PERIODS!r}")
+    if len(set(periods)) != len(periods):
+        raise ValueError("batch periods must be unique")
+    unsupported = [period for period in periods if period not in SUPPORTED_PERIODS]
+    if unsupported:
+        raise ValueError(f"unsupported batch periods: {unsupported}")
+    expected_order = tuple(period for period in SUPPORTED_PERIODS if period in set(periods))
+    if periods != expected_order:
+        raise ValueError(
+            "batch periods must be strictly chronological within 2022-Q1..2025-Q4"
+        )
     required_refs = (
         "census_sample_release_ref",
         "frame_ref",
@@ -259,8 +272,14 @@ def run_batch(
             }
         )
 
+    periods_tuple = tuple(item["period"] for item in period_entries)
+    manifest_schema = (
+        "department-poverty-batch-2024q1-2025q4/v1"
+        if periods_tuple == LEGACY_PERIODS
+        else "department-poverty-batch/v2"
+    )
     batch_manifest = {
-        "schema_version": "department-poverty-batch-2024q1-2025q4/v1",
+        "schema_version": manifest_schema,
         "batch_id": spec["batch_id"],
         "geography_level": "department_2010",
         "periods": period_entries,
