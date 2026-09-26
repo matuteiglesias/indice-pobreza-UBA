@@ -55,6 +55,7 @@ upstream:
 - repo.sampler-censo-arg
 - repo.canastasindec
 - repo.income-modeling-eph
+- repo.encuestador-de-hogares
 - repo.argentina-geography
 downstream:
 - repo.argentina-poverty-atlas
@@ -65,6 +66,9 @@ canonical_commands:
 - name: prove-atlas-consumer-boundary
   command: make atlas-contract-smoke
   output: province_2010 synthetic consumer fixture
+- name: verify-commissioning-surface
+  command: make commissioning-smoke
+  output: benchmark-backed commissioning smoke with capability blocking
 - name: produce-legacy-v1-release
   command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
   input: poverty-slice-lock/v1
@@ -74,13 +78,13 @@ generated_paths:
 - artifacts/
 - figures/
 verification:
-  status: v2-fixture-proven
-  last_verified: '2026-08-26'
-  command: make v2-release-smoke && make atlas-contract-smoke
-  next_real_gates:
-  - exact population-frame release from sampler/inference ecosystem
-  - exact deployable welfare release from promoted-model Census scoring
-  - governed poverty-line release and threshold-area binding
-  - uncertainty input before uncertainty statistics can be published
+  status: active-v2-commissioning
+  last_verified: '2026-09-26'
+  command: make v2-release-smoke && make atlas-contract-smoke && make commissioning-smoke
+  current_real_gates:
+  - run G5 Census-target eph_agglomerate release for 2024-Q3 against exact governed parents
+  - commission the Q3 full-frame -> EPH-footprint -> EPH observed/point/predictive bridge before expanding G5 longitudinally
+  - expand G5/G7 to other quarters only after the Q3 bridge passes
+  - supply a justified uncertainty representation before publishing uncertainty statistics
 maintenance:
   cadence: active-development
