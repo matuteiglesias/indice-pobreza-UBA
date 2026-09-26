@@ -68,7 +68,7 @@ def validate_batch_spec(spec: dict[str, Any]) -> None:
     periods = tuple(str(row.get("period")) for row in rows)
     if len(periods) != len(set(periods)):
         raise ValueError("batch periods must be unique")
-    pattern = re.compile(r"^(20\\d{2})-Q([1-4])$")
+    pattern = re.compile(r"^(20\d{2})-Q([1-4])$")
     parsed: list[tuple[int, int]] = []
     for period in periods:
         match = pattern.fullmatch(period)
