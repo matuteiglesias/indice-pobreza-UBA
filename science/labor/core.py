@@ -18,6 +18,13 @@ STATE_LABELS = {
 VALID_STATES = frozenset(STATE_LABELS)
 ACTIVE_STATES = frozenset({1, 2})
 NON_ACTIVE_STATES = frozenset({3, 4})
+CENSUS_IDENTITY_COLUMNS = (
+    "sample_person_id",
+    "frame_person_id",
+    "sample_household_id",
+    "frame_household_id",
+    "frame_dwelling_id",
+)
 
 
 class LaborContractError(ValueError):
@@ -341,6 +348,48 @@ def calibrate_logit_offset(
     return shifted, (lo + hi) / 2.0
 
 
+def validate_census_identity(frame: pd.DataFrame) -> dict[str, object]:
+    """Validate all Census entity identities present on a person-level surface."""
+    if "sample_person_id" not in frame:
+        raise LaborContractError("labor probability frame missing columns: ['sample_person_id']")
+    if frame["sample_person_id"].astype(str).duplicated().any():
+        raise LaborContractError("sample_person_id must be unique")
+
+    present = [column for column in CENSUS_IDENTITY_COLUMNS if column in frame.columns]
+    if "frame_person_id" in frame and frame["frame_person_id"].astype(str).duplicated().any():
+        raise LaborContractError("frame_person_id must be unique")
+
+    relationships: dict[str, object] = {}
+    pairs = (
+        ("sample_person_id", "sample_household_id", "person_to_sample_household"),
+        ("frame_person_id", "frame_household_id", "frame_person_to_household"),
+        ("sample_household_id", "frame_household_id", "sample_household_to_frame_household"),
+        ("frame_household_id", "frame_dwelling_id", "frame_household_to_dwelling"),
+    )
+    for child, parent, label in pairs:
+        if child not in frame or parent not in frame:
+            continue
+        pair = frame[[child, parent]].astype("string").drop_duplicates()
+        if pair[[child, parent]].isna().any().any():
+            raise LaborContractError(f"{label} contains missing identity values")
+        parent_counts = pair.groupby(child, dropna=False)[parent].nunique(dropna=False)
+        violating = int((parent_counts != 1).sum())
+        if violating:
+            raise LaborContractError(
+                f"{label} must be many-to-one: violating_children={violating}"
+            )
+        relationships[label] = {
+            "child": child,
+            "parent": parent,
+            "status": "validated",
+        }
+    return {
+        "identity_columns": present,
+        "person_key": ["sample_person_id"],
+        "relationships": relationships,
+    }
+
+
 def validate_probability_frame(frame: pd.DataFrame) -> pd.DataFrame:
     required = {
         "sample_person_id",
@@ -350,8 +399,7 @@ def validate_probability_frame(frame: pd.DataFrame) -> pd.DataFrame:
     missing = sorted(required - set(frame.columns))
     if missing:
         raise LaborContractError(f"labor probability frame missing columns: {missing}")
-    if frame["sample_person_id"].astype(str).duplicated().any():
-        raise LaborContractError("sample_person_id must be unique")
+    validate_census_identity(frame)
     out = frame.copy()
     for column in ("p_active_raw", "p_unemployed_given_active_raw"):
         values = pd.to_numeric(out[column], errors="coerce")
