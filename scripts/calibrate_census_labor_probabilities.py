@@ -13,7 +13,11 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from science.labor.core import calibrate_census_domains  # noqa: E402
+from science.labor.core import (  # noqa: E402
+    CENSUS_IDENTITY_COLUMNS,
+    calibrate_census_domains,
+    validate_census_identity,
+)
 
 
 def sha256(path: Path) -> str:
@@ -43,6 +47,7 @@ def run(
 ) -> dict[str, object]:
     raw = load_frame(probabilities_path, domain_column=domain_column)
     targets = pd.read_csv(targets_path, dtype={domain_column: str})
+    identity_audit = validate_census_identity(raw)
     calibrated, qa = calibrate_census_domains(
         raw, targets, domain_col=domain_column
     )
@@ -68,6 +73,12 @@ def run(
         "source_probabilities": {
             "path": str(probabilities_path.resolve()),
             "sha256": sha256(probabilities_path),
+        },
+        "identity": {
+            **identity_audit,
+            "preserved_columns": [
+                column for column in CENSUS_IDENTITY_COLUMNS if column in calibrated.columns
+            ],
         },
         "targets": {
             "path": str(targets_path.resolve()),
