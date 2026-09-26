@@ -1,10 +1,10 @@
-# Poverty Estimation v2 — target architecture
+# Poverty Estimation v2 — active architecture
 
 ## Status
 
-This document defines the target scientific boundary for the next evolution of `indice-pobreza-UBA`. It is an architecture authority, not a claim that every v2 contract or estimator already exists.
+This document is the active scientific architecture authority for `indice-pobreza-UBA`.
 
-The current v1 runtime remains valid while v2 capabilities are introduced behind explicit contracts and regression tests.
+P0-P4 and the detached `poverty-estimate-release/v2` path are implemented on `main`. The v1 lock/runtime remains only as a compatibility and regression surface. Validation and commissioning now have explicit Telescope A/B/C and dashboard harnesses. Predictive production is governed for province, department and EPH-agglomerate domains. Uncertainty remains deliberately unavailable unless an upstream representation justifies it.
 
 ## Mission
 
@@ -198,12 +198,21 @@ If uncertainty inputs are absent, the release must say so and must not synthesiz
 
 Validation is first-class scientific output, not only software QA.
 
-Two important gates are planned:
+The two validation gates are now represented by bounded executable harnesses:
 
 1. **method parity**: apply this repository's method to direct EPH observed welfare/weights and compare compatible aggregates with INDEC publications;
 2. **model-to-poverty validation**: evaluate whether a promoted welfare model recovers poverty/indigence patterns where direct EPH estimates can be computed.
 
 The second gate evaluates the downstream object of interest, not only income prediction error.
+
+Current implementation:
+
+- **Telescope A** measures direct observed EPH poverty with the governed method and survey weights.
+- **Telescope B** holds the EPH household cohort fixed and decomposes observed → OOF point → predictive behavior, including residual-flow and calibration diagnostics.
+- **Telescope C** carries the same frozen model/residual system from EPH into the governed Census-derived target frame and decomposes transport from residual effects.
+- **Commissioning dashboard** assembles those exact parents plus pinned external benchmarks without becoming a new estimator.
+
+These harnesses are scientific evidence surfaces. They do not relax the core runtime boundary or make EPH/Census acquisition part of the poverty kernel.
 
 ## Canonical output
 
@@ -247,6 +256,32 @@ No active scientific runtime should:
 - construct a map.
 
 A publication consumer may join a poverty-estimate table to an exact `argentina-geography` release after the scientific estimate is complete.
+
+## Implemented geography and aggregate semantics
+
+The estimator remains geography-generic, but three governed production profiles are currently implemented:
+
+```text
+province_2010
+department_2010
+eph_agglomerate
+```
+
+Administrative profiles reconcile to the default non-spatial aggregate:
+
+```text
+geography_level = national
+geography_id    = ARG
+```
+
+EPH agglomerates use a different explicit coverage universe:
+
+```text
+geography_level = eph_coverage
+geography_id    = EPH_TOTAL
+```
+
+This distinction is scientific, not cosmetic. `eph_agglomerate` is defined by the official Census-2010 radio → EPH-agglomerate relation, may cross provincial/departmental boundaries, and must not be forced under an administrative parent. Census-target agglomerate estimates therefore filter to households explicitly mapped into the EPH frame, preserve their existing weights/welfare, and use a separate governed agglomerate → poverty-threshold-area binding.
 
 ## Legacy disposition
 
