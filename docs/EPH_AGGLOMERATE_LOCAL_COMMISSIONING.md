@@ -16,16 +16,32 @@ geography_level = eph_coverage
 geography_id    = EPH_TOTAL
 ~~~
 
-## Repositories / branches
+## Repository state
 
-Use clean worktrees if main checkouts are dirty.
+The cloud implementation is merged to `main` in all four participating repositories:
 
-- argentina-geography: feat/eph-agglomerate-first-class / PR #42
-- samplerCensoARG: feat/eph-agglomerate-g1-parent / PR #18
-- indice-pobreza-UBA: feat/eph-agglomerate-g3-g5 / PR #38
-- argentina-poverty-atlas: feat/eph-agglomerate-third-level / PR #34
+- `argentina-geography` PR #42 — first-class EPH agglomerate geography;
+- `samplerCensoARG` PR #18 — governed G1 relation consumed by the Census sample handoff;
+- `indice-pobreza-UBA` PR #38 — observed/predictive agglomerate releases and G7 comparator;
+- `argentina-poverty-atlas` PR #34 — third Atlas geography level with `eph_coverage/EPH_TOTAL` aggregate semantics.
 
-Never merge as part of this mission.
+Use current `main`; do not recreate the old feature branches unless reproducing historical evidence.
+
+## Current local commissioning status — 2026-09-26
+
+Completed gates:
+
+- **G1 passed:** exactly 32 native EPH agglomerates on the official Census-2010 radio frame, with no spatial membership inference.
+- **G2 passed:** the governed relation maps 91,329 of 141,863 selected 2024 Census households and 92,023 of 143,025 selected 2025 Census households into the EPH frame while retaining outside-frame households.
+- **G3 passed:** all eight 2024-Q1…2025-Q4 observed EPH agglomerate releases reproduce the corresponding Telescope-A EPH coverage aggregate exactly to numerical tolerance.
+
+Resume point:
+
+- run **G5 for 2024-Q3 first** with the exact already-commissioned welfare/frame/basket parents;
+- compare Census full-frame vs Census EPH-footprint and EPH point/predictive/observed surfaces before expanding G5 to the other seven quarters;
+- only after the Q3 bridge passes, expand G5 longitudinally and run G7 comparisons.
+
+Phases 1–6 below are retained as reproducibility instructions. Do not rerun them merely because this runbook is opened; rerun only when an exact parent identity changes or evidence must be regenerated.
 
 ## Phase 1 — G1 exact-source geography
 
@@ -155,7 +171,7 @@ python scripts/augment_population_frame_agglomerate.py \
 Hard gates: exact household identity; persons unchanged; weights unchanged; outside-frame
 households retained with null agglomerate.
 
-## Phase 7 — G5 predictive releases
+## Phase 7 — G5 predictive releases — next gate: 2024-Q3
 
 Start with 2024-Q3 using the exact welfare and basket parents of the commissioned real
 predictive province release:

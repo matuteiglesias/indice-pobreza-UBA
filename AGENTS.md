@@ -62,7 +62,7 @@ Compatibility must be explicit. CPV-2010 may serve as a frame for a later resear
 
 ## Geography invariant
 
-The scientific kernel consumes geographic IDs as grouping/domain keys only. It must not load shapefiles, perform spatial joins, choose a geography provider or construct poverty-region mappings. Geometry belongs to `argentina-geography` and publication consumers.
+The scientific kernel consumes geographic IDs as grouping/domain keys only. It must not load shapefiles, perform spatial joins, choose a geography provider or infer threshold areas from geometry/administrative fallback. Boundary adapters may materialize an explicit versioned threshold-area binding from governed non-geometric evidence (for example, EPH agglomerate → basket region) and must fail closed on conflicts or missing IDs. Geometry belongs to `argentina-geography` and publication consumers.
 
 ## Method invariant
 

@@ -50,6 +50,16 @@ blocked_missing_parent
 failed_gate
 ```
 
+## Agglomerate commissioning bridge
+
+`compare_agglomerates.py` is a separate G7 diagnostic for the first-class EPH-agglomerate surface. It compares already-released observed EPH and Census-target predictive releases and requires:
+
+- exact 32-ID `eph_agglomerate` inventory;
+- exact `eph_coverage/EPH_TOTAL` aggregate declaration on both releases;
+- person FGT0 poverty/indigence facts from the same period.
+
+It emits deltas only. It does not recompute poverty, recalibrate weights, invent an administrative parent, or convert EPH coverage into a national estimate. This comparator is intentionally outside the ten frozen dashboard figure intents until the longitudinal G5/G7 commissioning surface is stable.
+
 ## Outputs
 
 A run writes:

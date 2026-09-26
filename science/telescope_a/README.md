@@ -209,9 +209,9 @@ report.md
 
 `waterfall.csv` records the full estimator surface for A0–A3. `summary.json` records adjacent deltas and the selection, reconstruction, and weighting diagnostics. A0 remains canonical; A1–A3 are diagnostic perturbations, not alternative official estimates.
 
-## Deliberately deferred
+## Deliberately outside Telescope A
 
-Not part of this branch:
+These remain outside Telescope A itself:
 
 - A1/A2/A3 diagnostic waterfall;
 - multiple quarters;
@@ -222,3 +222,5 @@ Not part of this branch:
 - ML/predictive welfare;
 - Census inference;
 - uncertainty estimation.
+
+The broader repository now covers several of these questions in separate bounded surfaces: Telescope B owns the same-household observed → OOF point → predictive bridge; Telescope C owns EPH → Census transport diagnostics; `science/commissioning/` owns multi-period/external-benchmark observability. Keeping those seams separate prevents Telescope A from becoming an all-purpose estimator.

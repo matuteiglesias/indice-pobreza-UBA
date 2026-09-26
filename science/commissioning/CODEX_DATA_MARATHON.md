@@ -3,12 +3,24 @@
 This document defines bounded local-agent missions that feed
 \`science/commissioning/\` without changing poverty/model semantics.
 
+## Status — 2026-09-26
+
+This is now a **reproducibility/backlog packet**, not an unstarted commissioning plan. PR #35 is merged.
+
+Known commissioned state:
+- Mission B's eight-quarter Telescope-A backbone exists;
+- Telescope B and Telescope C are commissioned for 2024-Q3; additional anchor quarters remain separate work;
+- the governed eight-quarter department release path exists and is consumed downstream;
+- agglomerate commissioning has moved to `docs/EPH_AGGLOMERATE_LOCAL_COMMISSIONING.md`, with G1-G3 complete and Q3 G5 next.
+
+Do not reopen or recreate PR #35. Adapter/renderer changes discovered by these missions belong in a bounded follow-up PR from current `main`.
+
 Run missions independently when their parents exist. Each mission must:
 - preserve existing scientific contracts;
 - write local artifacts only;
 - report exact parent identities and counts;
 - stop on contract failure rather than silently intersecting/coercing;
-- update PR #35 only for narrow adapter/render integration fixes.
+- open a bounded follow-up PR only for narrow adapter/render integration fixes.
 
 ## Mission A — 8-quarter EPH labor reality surface
 
@@ -64,8 +76,7 @@ Acceptance per quarter:
 - national person poverty/indigence present;
 - household state columns retained for age grouping.
 
-After completion, add all eight Telescope-A paths to the commissioning config and rerun
-PR #35. Figures 1, 4, 6 and 7 should become genuine time-series/cross-period views.
+After completion/reproduction, add all eight Telescope-A paths to the commissioning config and rerun the current commissioning surface. Figures 1, 4, 6 and 7 should become genuine time-series/cross-period views.
 
 Do not modify Telescope-A science merely to harmonize quarters.
 
@@ -180,5 +191,4 @@ Expected maturity sequence:
 4. D -> Figure 9 becomes a transport time panel.
 5. E -> Figure 10 unlocks.
 
-Large generated artifacts remain local. Do not merge PR #35 until the real-data
-renderers and adapters have been exercised and reviewed.
+Large generated artifacts remain local. PR #35 is already merged; any new real-data adapter or renderer correction must be reviewed in a new bounded follow-up PR.

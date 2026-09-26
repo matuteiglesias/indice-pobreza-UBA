@@ -1,11 +1,12 @@
 # Poverty Estimate Release v2
 
-`poverty-estimate-release/v2` is the first target public/scientific artifact of the v2 architecture. It is intentionally a **fact-table release**, not a map.
+`poverty-estimate-release/v2` is the canonical detached scientific output of the active v2 architecture. It is intentionally a **fact-table release**, not a map.
 
 ## Files
 
 ```text
 poverty_estimates.csv
+capabilities.json
 release_manifest.json
 run_qa.json
 LIMITATIONS.md
@@ -57,23 +58,39 @@ fgt2
 
 `geography_level` + `geography_id` are foreign keys only. Poverty does not own the polygon represented by the ID and does not load geometry to produce the estimate.
 
-The initial synthetic/acceptance application uses:
+Current governed spatial levels are:
 
 ```text
-geography_level = department_2010
-geography_id    = stable department_2010_id
+province_2010
+department_2010
+eph_agglomerate
 ```
+
+The estimator also emits one explicit non-spatial aggregate identity. Administrative profiles use:
+
+```text
+national / ARG
+```
+
+The EPH-agglomerate profile instead uses:
+
+```text
+eph_coverage / EPH_TOTAL
+```
+
+For non-default aggregates, the manifest declares `aggregate_geography`. `national` and `eph_coverage` are both non-spatial release rows and must never be joined to polygons.
 
 A mapping or web consumer should:
 
 1. verify this Poverty release;
-2. choose a measure, typically `universe=persons`, `concept=poverty`, `estimand=fgt0`;
-3. retain rows with `geography_level=department_2010`;
-4. resolve those exact IDs against a pinned compatible Geography Release from `matuteiglesias/argentina-geography`;
-5. join by exact governed ID;
-6. own rendering, projections, tiles, legends and web interaction itself.
+2. read `capabilities.json` rather than assume a geography inventory;
+3. choose a measure, typically `universe=persons`, `concept=poverty`, `estimand=fgt0`;
+4. retain the requested governed spatial level;
+5. resolve those exact IDs against a pinned compatible Geography Release from `matuteiglesias/argentina-geography`;
+6. join by exact governed ID;
+7. own rendering, projections, tiles, legends and web interaction itself.
 
-The `national` rows are explicitly non-spatial.
+For `eph_agglomerate`, consumers must preserve the distinct `eph_coverage/EPH_TOTAL` aggregate semantics. A cross-province agglomerate is not assigned an administrative parent by Poverty.
 
 ## Example consumer query
 
