@@ -1,6 +1,6 @@
 # Índice de pobreza UBA
 
-Infraestructura de investigación para clasificar hogares/personas de una muestra Census a partir de insumos **ya materializados, versionados y aprobados**. El runner de pobreza es deliberadamente un consumidor: no descarga EPH, no entrena modelos y no ejecuta sklearn.
+Infraestructura científica terminal para medir y estimar pobreza a partir de insumos **ya materializados, versionados y aprobados**. El estimador productivo es deliberadamente consumidor: no adquiere EPH/Census, no entrena modelos y no ejecuta sklearn. Los harnesses bajo `science/` sí pueden leer evidencia EPH/Census explícita para validación y commissioning sin convertirse en productores upstream.
 
 > **v2 es la arquitectura científica activa.** El repositorio recibe un frame/población gobernado, bienestar ya desplegado, un método de pobreza versionado, líneas compatibles y, cuando hace falta, un binding explícito de área de umbral; produce medición/estimación FGT, releases verificables y evidencia de validación/commissioning. La interfaz v1 se conserva sólo como compatibilidad y evidencia de regresión. Ver [`docs/ARCHITECTURE_V2.md`](docs/ARCHITECTURE_V2.md), [`docs/DEVELOPMENT_PROGRAM_V2.md`](docs/DEVELOPMENT_PROGRAM_V2.md) y [`docs/UPSTREAM_HANDOFFS_V2.md`](docs/UPSTREAM_HANDOFFS_V2.md).
 
