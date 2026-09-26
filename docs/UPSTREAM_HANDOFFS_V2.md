@@ -1,8 +1,20 @@
 # Poverty Estimation v2 — upstream handoff specification
 
-This document tells upstream producers what Poverty needs next. It is intentionally written from the consumer boundary outward so tomorrow's work on `samplerCensoARG` and income-model promotion/inference has a concrete target.
+This document defines Poverty's current consumer boundary outward: what upstream producers must supply, which seams are already accepted by the active v2 runtime, and what hardening remains.
 
-The names below are target contract families, not a demand that sibling repositories immediately rename their current artifacts. During migration, an adapter may prove compatibility between an existing release and the target semantics.
+The names below are logical contract families, not a demand that sibling repositories rename working artifacts. An adapter may prove compatibility between a producer release and these semantics, but Poverty must still see exact identities, clocks, monetary references and limitations.
+
+## Current accepted seams
+
+The active implementation already consumes these semantic handoffs:
+
+- governed population-frame JSONs with stable household/person identity and explicit analysis-weight semantics;
+- governed predictive household-welfare releases in approved linear monetary units;
+- the versioned Poverty method owned in this repository;
+- governed regional CBA/CBT inputs plus an explicit threshold-area binding when geography does not intrinsically identify a basket region;
+- for EPH-agglomerate production, a lossless sampler sidecar that appends nullable `eph_agglomerate_id` and `mapped_to_eph_frame` without changing membership, weights or existing geography.
+
+The agglomerate seam is deliberately non-administrative. Official radio → EPH-agglomerate identity comes from `argentina-geography`; `samplerCensoARG` attaches that identity to the selected Census frame; Poverty separately resolves agglomerate → poverty threshold area. No layer may infer a province/department parent for a cross-province agglomerate.
 
 ## Handoff A — population/frame
 
@@ -156,7 +168,7 @@ It should package:
 - supported demographic domain;
 - known deviations/limitations.
 
-P1 creates the first contract.
+P1 created the first active contract; subsequent method changes require an explicit version change and regression evidence.
 
 ## Handoff D — poverty lines
 
@@ -208,7 +220,7 @@ poverty_line_period
 estimation_period
 ```
 
-## Tomorrow's producer acceptance checklist
+## Remaining producer hardening checklist
 
 ### For `samplerCensoARG`
 
