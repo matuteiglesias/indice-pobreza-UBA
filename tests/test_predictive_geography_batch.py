@@ -24,9 +24,14 @@ run_batch = _BATCH_MODULE.run_batch
 validate_batch_spec = _BATCH_MODULE.validate_batch_spec
 reconcile_releases = _RECONCILE_MODULE.reconcile_releases
 
-PERIODS = [
+PERIODS_8 = [
     "2024-Q1", "2024-Q2", "2024-Q3", "2024-Q4",
     "2025-Q1", "2025-Q2", "2025-Q3", "2025-Q4",
+]
+PERIODS_16 = [
+    *[f"2022-Q{q}" for q in range(1, 5)],
+    *[f"2023-Q{q}" for q in range(1, 5)],
+    *PERIODS_8,
 ]
 
 
@@ -40,7 +45,7 @@ def _write_json(path: Path, value) -> Path:
     return path
 
 
-def _batch_spec() -> dict:
+def _batch_spec(periods=PERIODS_16) -> dict:
     return {
         "schema_version": "predictive-poverty-batch/v1",
         "batch_id": "department-poverty-2024q1-2025q4",
@@ -56,7 +61,7 @@ def _batch_spec() -> dict:
                 "predictive_welfare_release_ref": f"predictive-welfare:{period}",
                 "basket_slice_ref": f"basket:{period}",
             }
-            for period in PERIODS
+            for period in periods
         ],
     }
 
@@ -66,7 +71,7 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
         path = Path("configs/releases/predictive-poverty-2024q1-2025q4.json")
         spec = json.loads(path.read_text(encoding="utf-8"))
         validate_batch_spec(spec)
-        self.assertEqual([row["period"] for row in spec["periods"]], PERIODS)
+        self.assertEqual([row["period"] for row in spec["periods"]], PERIODS_8)
         self.assertEqual(
             {row["census_sample_release_ref"] for row in spec["periods"][:4]},
             {"census-sample:2024"},
@@ -76,8 +81,16 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
             {"census-sample:2025"},
         )
         self.assertNotIn('"/', path.read_text(encoding="utf-8"))
+        extended = Path("configs/releases/predictive-poverty-2022q1-2025q4.json")
+        extended_spec = json.loads(extended.read_text(encoding="utf-8"))
+        validate_batch_spec(extended_spec)
+        self.assertEqual(
+            [row["period"] for row in extended_spec["periods"]],
+            PERIODS_16,
+        )
+        self.assertNotIn('"/', extended.read_text(encoding="utf-8"))
 
-    def test_fixture_batch_executes_all_eight_periods_and_reconciles(self):
+    def test_fixture_batch_executes_all_sixteen_periods_and_reconciles(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             spec_path = _write_json(root / "batch.json", _batch_spec())
@@ -100,7 +113,7 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
                 },
             )
             frame_paths = {}
-            for year in ("2024", "2025"):
+            for year in ("2022", "2023", "2024", "2025"):
                 frame_paths[year] = _write_json(
                     root / f"frame-{year}.json",
                     {
@@ -149,25 +162,25 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
                         "measure": measure,
                         "value_2016_01": value,
                     }
-                    for period in PERIODS
+                    for period in PERIODS_16
                     for region in regions
                     for measure, value in (("CBA", 100.0), ("CBT", 180.0))
                 ],
             )
             census_paths = {
                 year: _write_json(root / f"census-{year}.json", {"release_id": f"census-{year}"})
-                for year in ("2024", "2025")
+                for year in ("2022", "2023", "2024", "2025")
             }
             semantic_paths = {
                 period: _write_json(
                     root / f"semantic-{period}.json",
                     {"release_id": f"semantic-{period}"},
                 )
-                for period in PERIODS
+                for period in PERIODS_16
             }
 
             refs = {}
-            for year in ("2024", "2025"):
+            for year in ("2022", "2023", "2024", "2025"):
                 refs[f"census-sample:{year}"] = {
                     "path": str(census_paths[year]),
                     "sha256": _sha(census_paths[year]),
@@ -176,7 +189,7 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
                     "path": str(frame_paths[year]),
                     "sha256": _sha(frame_paths[year]),
                 }
-            for period in PERIODS:
+            for period in PERIODS_16:
                 refs[f"semantic-plane:{period}"] = {
                     "path": str(semantic_paths[period]),
                     "sha256": _sha(semantic_paths[period]),
@@ -204,15 +217,28 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
                 profile_path=profile_path,
             )
             manifest = json.loads(batch_path.read_text(encoding="utf-8"))
-            self.assertEqual(len(manifest["periods"]), 8)
+            self.assertEqual(len(manifest["periods"]), 16)
             self.assertEqual(manifest["all_period_qa"]["reconciliation_status"], "PASS")
             self.assertEqual(manifest["all_period_qa"]["geography_count_each"], 2)
-            self.assertEqual(manifest["all_period_qa"]["department_fact_count"], 192)
-            self.assertEqual(manifest["all_period_qa"]["national_fact_count"], 96)
-            self.assertEqual(manifest["all_period_qa"]["fact_count"], 288)
+            self.assertEqual(manifest["all_period_qa"]["department_fact_count"], 384)
+            self.assertEqual(manifest["all_period_qa"]["national_fact_count"], 192)
+            self.assertEqual(manifest["all_period_qa"]["fact_count"], 576)
             self.assertTrue((root / "output" / "parent_resolution_report.json").is_file())
             self.assertTrue((root / "output" / "reconciliation_report.json").is_file())
             self.assertTrue((root / "output" / "checksums.sha256").is_file())
+
+    def test_batch_period_envelope_must_be_ordered_unique_and_contiguous(self):
+        spec = _batch_spec(["2022-Q1", "2022-Q3"])
+        with self.assertRaisesRegex(ValueError, "contiguous"):
+            validate_batch_spec(spec)
+
+        spec = _batch_spec(["2022-Q2", "2022-Q1"])
+        with self.assertRaisesRegex(ValueError, "chronological"):
+            validate_batch_spec(spec)
+
+        spec = _batch_spec(["2022-Q1", "2022-Q1"])
+        with self.assertRaisesRegex(ValueError, "unique"):
+            validate_batch_spec(spec)
 
     def test_reconciliation_detects_oracle_drift(self):
         with tempfile.TemporaryDirectory() as tmp:
