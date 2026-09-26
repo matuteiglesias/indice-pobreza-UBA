@@ -1,6 +1,6 @@
 .PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check v2-release-smoke atlas-contract-smoke
 
-PYTHON := PYTHONPATH=src python
+PYTHON ?= PYTHONPATH=src python3
 
 status:
 	git status --short --branch
@@ -81,4 +81,4 @@ release-index:
 commissioning-smoke:
 	rm -rf build/commissioning/benchmark-smoke
 	$(PYTHON) science/commissioning/run.py --config science/commissioning/config.example.json --output build/commissioning/benchmark-smoke
-	$(PYTHON) -m unittest tests.test_commissioning_dashboard
+	$(PYTHON) -m unittest discover -s tests -p 'test_commissioning_dashboard.py'

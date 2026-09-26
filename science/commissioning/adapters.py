@@ -347,7 +347,9 @@ def telescope_a_rows(
             "Telescope A state surface",
         )
         joined = people.merge(
-            households[["household_id", "PONDIH", "poor", "indigent"]],
+            households[["household_id", "PONDIH", "poor", "indigent"]].rename(
+                columns={"PONDIH": "household_PONDIH"}
+            ),
             on="household_id",
             how="inner",
             validate="many_to_one",
@@ -356,7 +358,9 @@ def telescope_a_rows(
             raise CommissioningError(
                 f"missing age in retained Telescope-A persons for {period}"
             )
-        joined["PONDIH"] = pd.to_numeric(joined.PONDIH, errors="coerce")
+        joined["household_PONDIH"] = pd.to_numeric(
+            joined.household_PONDIH, errors="coerce"
+        )
         for label, lo, hi in AGE_GROUPS:
             group = joined[(joined.age >= lo) & (joined.age <= hi)]
             if group.empty:
@@ -364,7 +368,7 @@ def telescope_a_rows(
             for concept, column in (("poverty", "poor"), ("indigence", "indigent")):
                 estimate = weighted_mean(
                     group[column].astype(float),
-                    group.PONDIH,
+                    group.household_PONDIH,
                 )
                 out.append(
                     make_row(

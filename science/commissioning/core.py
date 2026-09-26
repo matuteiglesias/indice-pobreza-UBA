@@ -145,12 +145,17 @@ def validate_frame(frame: pd.DataFrame) -> pd.DataFrame:
     ).reset_index(drop=True)
 
 
-def _set_period_ticks(ax, data: pd.DataFrame) -> None:
+def _set_period_ticks(
+    ax, data: pd.DataFrame, *, max_ticks: int | None = None
+) -> None:
     ticks = (
         data[["period_position", "period"]]
         .drop_duplicates()
         .sort_values("period_position")
     )
+    if max_ticks is not None and len(ticks) > max_ticks:
+        stride = math.ceil((len(ticks) - 1) / (max_ticks - 1))
+        ticks = pd.concat([ticks.iloc[::stride], ticks.iloc[[-1]]]).drop_duplicates()
     ax.set_xticks(ticks.period_position, ticks.period, rotation=35, ha="right")
 
 
@@ -172,7 +177,7 @@ def plot_lines(
         if millions:
             values = values / 1_000_000
         ax.plot(
-            group.period_position,
+            group.period_position.to_numpy(),
             values,
             marker="o",
             linewidth=2,
@@ -197,8 +202,8 @@ def plot_basket_mechanics(data: pd.DataFrame, path: Path, title: str) -> None:
     for series, group in levels.groupby("series_id", sort=True):
         group = group.sort_values("period_position")
         axes[0].plot(
-            group.period_position,
-            group.value.astype(float),
+            group.period_position.to_numpy(),
+            group.value.astype(float).to_numpy(),
             linewidth=1.7,
             label=series.replace("_", " "),
         )
@@ -210,8 +215,8 @@ def plot_basket_mechanics(data: pd.DataFrame, path: Path, title: str) -> None:
     for series, group in ratios.groupby("series_id", sort=True):
         group = group.sort_values("period_position")
         axes[1].plot(
-            group.period_position,
-            group.value.astype(float),
+            group.period_position.to_numpy(),
+            group.value.astype(float).to_numpy(),
             linewidth=1.8,
             label=series.replace("cbt_over_cba:", ""),
         )
@@ -219,7 +224,7 @@ def plot_basket_mechanics(data: pd.DataFrame, path: Path, title: str) -> None:
     axes[1].set_xlabel("Period")
     axes[1].grid(alpha=0.2)
     axes[1].legend(fontsize=7, ncol=3)
-    _set_period_ticks(axes[1], data)
+    _set_period_ticks(axes[1], data, max_ticks=12)
     fig.tight_layout()
     fig.savefig(path, dpi=180)
     plt.close(fig)
@@ -236,8 +241,8 @@ def plot_labor_reality(data: pd.DataFrame, path: Path, title: str) -> None:
     for series, group in rates.groupby("series_id", sort=True):
         group = group.sort_values("period_position")
         axes[0].plot(
-            group.period_position,
-            100 * group.value.astype(float),
+            group.period_position.to_numpy(),
+            (100 * group.value.astype(float)).to_numpy(),
             marker="o",
             linewidth=1.8,
             label=series.replace("_", " "),
@@ -250,8 +255,8 @@ def plot_labor_reality(data: pd.DataFrame, path: Path, title: str) -> None:
     for series, group in stocks.groupby("series_id", sort=True):
         group = group.sort_values("period_position")
         axes[1].plot(
-            group.period_position,
-            group.value.astype(float) / 1_000_000,
+            group.period_position.to_numpy(),
+            (group.value.astype(float) / 1_000_000).to_numpy(),
             marker="o",
             linewidth=1.8,
             label=series.replace("_", " "),
