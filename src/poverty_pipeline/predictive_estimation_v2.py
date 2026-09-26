@@ -92,6 +92,7 @@ def estimate_predictive_poverty(
     if not isinstance(geography_level, str) or not geography_level:
         raise EstimationError("geography level must be nonempty")
     weights = {key: _positive(row.analysis_weight, "analysis weight") for key, row in weight_by_household.items()}
+    aggregate_level, aggregate_id = context.aggregate_identity()
 
     for person in persons.values():
         if person.household_id not in households:
@@ -131,13 +132,13 @@ def estimate_predictive_poverty(
                     and row.geography_level == geography_level
                 ]
                 if not children:
-                    raise EstimationError("national reconciliation has no domain children")
+                    raise EstimationError("aggregate reconciliation has no domain children")
                 estimates.append(_row(
                     context,
                     design,
                     universe,
-                    "national",
-                    context.national_geography_id,
+                    aggregate_level,
+                    aggregate_id,
                     concept,
                     alpha,
                     sum(row.weighted_numerator for row in children),

@@ -1,6 +1,6 @@
 {
   "schema_version": "poverty-geography-profiles/v1",
-  "source_note": "department_2010 inventory commissioned from samplerCensoARG data/info/dptos.csv; IDs normalized only by zero-padding to the declared five-digit Census-2010 width",
+  "source_note": "department_2010 inventory commissioned from samplerCensoARG data/info/dptos.csv; IDs normalized only by zero-padding to the declared five-digit Census-2010 width; eph_agglomerate inventory preserves the 32 native A7 eph_codagl identities",
   "profiles": {
     "province_2010": {
       "field": "province_2010_id",
@@ -562,6 +562,49 @@
         "94007",
         "94014"
       ]
+    },
+    "eph_agglomerate": {
+      "field": "eph_agglomerate_id",
+      "id_regex": "^[0-9]{2}$",
+      "expected_ids": [
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "12",
+        "13",
+        "14",
+        "15",
+        "17",
+        "18",
+        "19",
+        "20",
+        "22",
+        "23",
+        "25",
+        "26",
+        "27",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "36",
+        "38",
+        "91",
+        "93"
+      ],
+      "subset_policy": "mapped_nonnull",
+      "mapped_flag_field": "mapped_to_eph_frame",
+      "aggregate_geography_level": "eph_coverage",
+      "aggregate_geography_id": "EPH_TOTAL",
+      "requires_threshold_area_binding": true
     }
   }
 }

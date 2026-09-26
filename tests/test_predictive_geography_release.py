@@ -84,6 +84,11 @@ class PredictiveGeographyReleaseTest(unittest.TestCase):
         profiles = load_profiles()
         self.assertEqual(len(profiles["province_2010"]["expected_ids"]), 24)
         self.assertEqual(len(profiles["department_2010"]["expected_ids"]), 525)
+        self.assertEqual(len(profiles["eph_agglomerate"]["expected_ids"]), 32)
+        self.assertEqual(
+            profiles["eph_agglomerate"]["aggregate_geography_id"],
+            "EPH_TOTAL",
+        )
         self.assertIn("02001", profiles["department_2010"]["expected_ids"])
         self.assertTrue(
             all(len(value) == 5 for value in profiles["department_2010"]["expected_ids"])
@@ -130,6 +135,97 @@ class PredictiveGeographyReleaseTest(unittest.TestCase):
                     else "-department-predictive-v1"
                 )
                 self.assertTrue(manifest["release_id"].endswith(suffix))
+
+
+    def test_agglomerate_profile_filters_outside_frame_and_uses_explicit_binding(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            frame, welfare, baskets = _write_fixture(
+                root,
+                field="eph_agglomerate_id",
+                ids=["32", "33", "91"],
+            )
+            frame_payload = json.loads(frame.read_text(encoding="utf-8"))
+            frame_payload["households"][0]["mapped_to_eph_frame"] = True
+            frame_payload["households"][1]["mapped_to_eph_frame"] = True
+            frame_payload["households"][2]["mapped_to_eph_frame"] = False
+            frame_payload["households"][2]["eph_agglomerate_id"] = None
+            frame.write_text(json.dumps(frame_payload), encoding="utf-8")
+
+            binding = root / "binding.json"
+            binding.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "poverty-threshold-area-binding/eph-agglomerate-v1",
+                        "release_id": "aglo-binding-test",
+                        "geography_level": "eph_agglomerate",
+                        "rows": [
+                            {
+                                "geography_level": "eph_agglomerate",
+                                "geography_id": "32",
+                                "poverty_region_id": "gran_buenos_aires",
+                            },
+                            {
+                                "geography_level": "eph_agglomerate",
+                                "geography_id": "33",
+                                "poverty_region_id": "pampeana",
+                            },
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            output = root / "release"
+            built = build_release(
+                welfare_path=welfare,
+                frame_path=frame,
+                baskets_path=baskets,
+                method_path=Path(
+                    "configs/poverty_methods/indec-line-poverty-2016-v1.json"
+                ),
+                output=output,
+                period="2024-Q3",
+                geography_level="eph_agglomerate",
+                expected_geography_ids={"32", "33"},
+                threshold_area_binding_path=binding,
+            )
+            verify_estimate_release(built)
+            rows = list(
+                __import__("csv").DictReader(
+                    (built / "poverty_estimates.csv").open(
+                        newline="", encoding="utf-8"
+                    )
+                )
+            )
+            territorial = [row for row in rows if row["geography_level"] == "eph_agglomerate"]
+            aggregate = [row for row in rows if row["geography_level"] == "eph_coverage"]
+            self.assertEqual({row["geography_id"] for row in territorial}, {"32", "33"})
+            self.assertEqual({row["geography_id"] for row in aggregate}, {"EPH_TOTAL"})
+            self.assertEqual(len(territorial), 24)
+            self.assertEqual(len(aggregate), 12)
+            manifest = json.loads(
+                (built / "release_manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                manifest["aggregate_geography"],
+                {"level": "eph_coverage", "id": "EPH_TOTAL"},
+            )
+            # Unit weights over the retained mapped subset: 2 households / 2 persons.
+            household_poverty = next(
+                row for row in aggregate
+                if row["universe"] == "households"
+                and row["concept"] == "poverty"
+                and row["estimand"] == "fgt0"
+            )
+            person_poverty = next(
+                row for row in aggregate
+                if row["universe"] == "persons"
+                and row["concept"] == "poverty"
+                and row["estimand"] == "fgt0"
+            )
+            self.assertEqual(float(household_poverty["weighted_denominator"]), 2.0)
+            self.assertEqual(float(person_poverty["weighted_denominator"]), 2.0)
 
     def test_department_id_must_already_be_zero_preserving_string(self):
         with tempfile.TemporaryDirectory() as tmp:

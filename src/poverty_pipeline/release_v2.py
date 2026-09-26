@@ -24,6 +24,7 @@ class EstimateReleaseError(ValueError):
 
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _ALLOWED_STATUS = {"synthetic_fixture", "research_estimate"}
+_NON_SPATIAL_LEVELS = {"national", "eph_coverage"}
 
 
 @dataclass(frozen=True)
@@ -147,8 +148,14 @@ def write_estimate_release(
             writer.writerow({field: getattr(row, field) for field in ESTIMATE_FIELDS})
 
     availability = _availability(rows)
-    joinable_levels = sorted({row.geography_level for row in rows if row.geography_level != "national"})
-    non_spatial_levels = sorted({row.geography_level for row in rows if row.geography_level == "national"})
+    joinable_levels = sorted({
+        row.geography_level for row in rows
+        if row.geography_level not in _NON_SPATIAL_LEVELS
+    })
+    non_spatial_levels = sorted({
+        row.geography_level for row in rows
+        if row.geography_level in _NON_SPATIAL_LEVELS
+    })
     capabilities = {
         "schema_version": "poverty-estimate-capabilities/v1",
         "release_id": rows[0].release_id,
@@ -203,6 +210,22 @@ def write_estimate_release(
         "uncertainty_status": estimation.qa.uncertainty_status,
         "geometry_embedded": False,
     }
+    aggregate_rows = [
+        row for row in rows if row.geography_level in _NON_SPATIAL_LEVELS
+    ]
+    aggregate_identities = sorted({
+        (row.geography_level, row.geography_id) for row in aggregate_rows
+    })
+    if len(aggregate_identities) != 1:
+        raise EstimateReleaseError(
+            "release must expose exactly one aggregate geography identity"
+        )
+    aggregate_level, aggregate_id = aggregate_identities[0]
+    if (aggregate_level, aggregate_id) != ("national", "ARG"):
+        manifest["aggregate_geography"] = {
+            "level": aggregate_level,
+            "id": aggregate_id,
+        }
     _write_json(root / "release_manifest.json", manifest)
 
     qa = asdict(estimation.qa) | {
@@ -319,9 +342,32 @@ def verify_estimate_release(root: str | Path) -> None:
         if not rows:
             raise EstimateReleaseError("poverty estimate table must be nonempty")
 
-    joinable_levels = sorted({row["geography_level"] for row in rows if row["geography_level"] != "national"})
+    joinable_levels = sorted({
+        row["geography_level"] for row in rows
+        if row["geography_level"] not in _NON_SPATIAL_LEVELS
+    })
     if join.get("joinable_geography_levels") != joinable_levels:
         raise EstimateReleaseError("geography join levels do not match estimate facts")
+    non_spatial_levels = sorted({
+        row["geography_level"] for row in rows
+        if row["geography_level"] in _NON_SPATIAL_LEVELS
+    })
+    if join.get("non_spatial_levels") != non_spatial_levels:
+        raise EstimateReleaseError("non-spatial geography levels do not match estimate facts")
+    aggregate_ids = {
+        (row["geography_level"], row["geography_id"])
+        for row in rows
+        if row["geography_level"] in _NON_SPATIAL_LEVELS
+    }
+    if len(aggregate_ids) != 1:
+        raise EstimateReleaseError("estimate facts require one aggregate geography identity")
+    aggregate_level, aggregate_id = next(iter(aggregate_ids))
+    declared_aggregate = manifest.get("aggregate_geography")
+    if (aggregate_level, aggregate_id) == ("national", "ARG"):
+        if declared_aggregate is not None:
+            raise EstimateReleaseError("legacy national/ARG release must not add aggregate metadata")
+    elif declared_aggregate != {"level": aggregate_level, "id": aggregate_id}:
+        raise EstimateReleaseError("aggregate geography metadata does not match facts")
     availability = capabilities.get("availability")
     if not isinstance(availability, list) or not availability:
         raise EstimateReleaseError("capabilities must expose nonempty availability")
