@@ -44,6 +44,20 @@ class EstimationContext:
     estimation_period: str
     frame_vintage: str
     national_geography_id: str = "ARG"
+    aggregate_geography_level: str = "national"
+    aggregate_geography_id: str | None = None
+
+    def aggregate_identity(self) -> tuple[str, str]:
+        level = _text(self.aggregate_geography_level, "aggregate geography level")
+        if self.aggregate_geography_id is None:
+            if level != "national":
+                raise EstimationError(
+                    "non-national aggregate geography requires explicit aggregate_geography_id"
+                )
+            geography_id = _text(self.national_geography_id, "national geography ID")
+        else:
+            geography_id = _text(self.aggregate_geography_id, "aggregate geography ID")
+        return level, geography_id
 
 
 @dataclass(frozen=True)
@@ -136,6 +150,7 @@ def estimate_poverty(
                          ("frame vintage", context.frame_vintage),
                          ("national geography ID", context.national_geography_id)):
         _text(value, label)
+    aggregate_level, aggregate_id = context.aggregate_identity()
 
     households = _unique(measurement.households, lambda x: x.household_id, "measured household")
     persons = _unique(measurement.persons, lambda x: x.person_id, "measured person")
@@ -188,9 +203,9 @@ def estimate_poverty(
                             if row.universe == universe and row.concept == concept
                             and row.estimand == f"fgt{alpha}" and row.geography_level == geography_level]
                 if not children:
-                    raise EstimationError("national reconciliation has no domain children")
+                    raise EstimationError("aggregate reconciliation has no domain children")
                 estimates.append(_row(
-                    context, design, universe, "national", context.national_geography_id, concept, alpha,
+                    context, design, universe, aggregate_level, aggregate_id, concept, alpha,
                     sum(row.weighted_numerator for row in children),
                     sum(row.weighted_denominator for row in children),
                 ))
