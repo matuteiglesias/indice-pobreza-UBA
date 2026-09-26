@@ -299,12 +299,12 @@ Do not delete them opportunistically during P0-P2. First establish the new autho
 
 ## Compatibility with v1
 
-P0-P2 are evolutionary.
+v1 is now a compatibility/regression surface, not the canonical architecture.
 
 - v1 locks/releases/tests remain regression evidence;
-- the current pure household kernel may be wrapped or reused while v2 semantics are proven;
-- new FGT primitives should not silently change existing v1 release outputs;
-- producer migrations happen only after concrete handoff contracts are proven.
+- the active v2 measurement kernel and estimator must not silently change supported v1 release outputs;
+- new capabilities land through explicit v2 contracts rather than widening the v1 lock;
+- v1 functionality may be retired only in an explicit decommission wave after no supported consumer depends on it.
 
 ## Success criterion
 
