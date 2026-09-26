@@ -2,9 +2,23 @@
 
 Infraestructura de investigación para clasificar hogares/personas de una muestra Census a partir de insumos **ya materializados, versionados y aprobados**. El runner de pobreza es deliberadamente un consumidor: no descarga EPH, no entrena modelos y no ejecuta sklearn.
 
-> **Evolución v2 en curso.** El destino del repositorio es una autoridad científica más fina: recibir un frame/población gobernado, estimaciones de bienestar ya desplegadas, un método de pobreza versionado y líneas compatibles; producir medición/estimación de pobreza, FGT, incertidumbre propagada cuando exista evidencia para ello y validación científica. Ver [`docs/ARCHITECTURE_V2.md`](docs/ARCHITECTURE_V2.md), [`docs/DEVELOPMENT_PROGRAM_V2.md`](docs/DEVELOPMENT_PROGRAM_V2.md) y [`docs/UPSTREAM_HANDOFFS_V2.md`](docs/UPSTREAM_HANDOFFS_V2.md). La interfaz v1 descripta abajo sigue siendo la superficie ejecutable mientras esa evolución se prueba.
+> **v2 es la arquitectura científica activa.** El repositorio recibe un frame/población gobernado, bienestar ya desplegado, un método de pobreza versionado, líneas compatibles y, cuando hace falta, un binding explícito de área de umbral; produce medición/estimación FGT, releases verificables y evidencia de validación/commissioning. La interfaz v1 se conserva sólo como compatibilidad y evidencia de regresión. Ver [`docs/ARCHITECTURE_V2.md`](docs/ARCHITECTURE_V2.md), [`docs/DEVELOPMENT_PROGRAM_V2.md`](docs/DEVELOPMENT_PROGRAM_V2.md) y [`docs/UPSTREAM_HANDOFFS_V2.md`](docs/UPSTREAM_HANDOFFS_V2.md).
 
-## Interfaz canónica actual (v1)
+## Superficie científica actual (v2)
+
+La superficie activa ya no es un runner atado a una única geografía. En `main` están implementados y probados:
+
+- contrato de método y kernel puro de medición FGT0/FGT1/FGT2;
+- estimación separada de la medición, con pesos/diseño explícitos y dominios gobernados;
+- `poverty-estimate-release/v2` detached, con `capabilities.json`, contrato de join geográfico, QA, limitaciones y checksums;
+- productores predictivos gobernados para `province_2010`, `department_2010` y `eph_agglomerate`;
+- agregados no espaciales explícitos: `national/ARG` para las superficies administrativas y `eph_coverage/EPH_TOTAL` para la cobertura EPH;
+- Telescope A (EPH observado), Telescope B (observado → OOF point → predictivo) y Telescope C (transporte EPH → Census);
+- dashboard de commissioning y comparador observado-vs-predictivo por aglomerado.
+
+La geografía sigue siendo una clave, nunca una geometría calculada dentro de Poverty. `eph_agglomerate` es una geografía de cobertura EPH de primer nivel: puede cruzar provincias/departamentos y no recibe un padre administrativo inventado.
+
+## Interfaz legacy compatible (v1)
 
 Una corrida científica recibe un único lock `poverty-slice-lock/v1`:
 
@@ -59,7 +73,7 @@ Los roles mínimos del bundle son:
 
 Los joins fallan ante namespaces incompatibles, cobertura incompleta, cardinalidades inválidas o referencias monetarias incompatibles.
 
-## Universo soportado actualmente
+## Universo de la interfaz legacy v1
 
 La interfaz v1 soporta `department_2010` / CPV-2010. La tabla nacional reconcilia esos departamentos. Radios, fracciones, provincias, aglomerados EPH, geografía electoral, publicación web, empleo, nowcasts y estadísticas oficiales quedan fuera de esta interfaz salvo una evolución explícita del contrato.
 
@@ -110,28 +124,26 @@ make local-artifact-inventory
 make release-index
 ```
 
-### Release predictiva provincial (integración local)
+### Releases predictivas por geografía gobernada (v2)
 
-La ruta acotada para promover un artefacto de bienestar predictivo ya aceptado
-a una release v2 provincial/nacional es:
+El productor canónico es `scripts/build_predictive_geography_release.py`. Los perfiles versionados en `configs/geographies/predictive_geography_profiles_v1.json` fijan inventario, campo de dominio, política de subconjunto y semántica del agregado.
+
+Ejemplo administrativo:
 
 ```bash
-PYTHONPATH=src python3 scripts/build_predictive_province_release.py \
+PYTHONPATH=src python3 scripts/build_predictive_geography_release.py \
+  --period 2024-Q3 \
+  --geography-level department_2010 \
   --welfare-release /ruta/al/research.household-welfare-predictive/v1 \
   --frame /ruta/al/population-frame.json \
   --baskets /ruta/al/poverty-basket-slice.csv \
-  --output /ruta/de/salida/poverty-estimate-release-2024-q3-province-predictive-v1 \
-  --expected-provinces 24
+  --output /ruta/de/salida/poverty-department-2024-q3
 ```
 
-El comando consume únicamente el handoff de bienestar, el frame de población
-y las seis líneas regionales gobernadas; no entrena ni recalcula el modelo de
-ingresos. Usa peso analítico unitario, integra FGT0/FGT1/FGT2 para personas y
-hogares, exige 24 provincias más `ARG`, y escribe/verifica el conjunto detached
-`poverty-estimate-release/v2` con `research_estimate`,
-`uncertainty_status=not_supplied`, IDs exactos y checksums. El frame JSON tiene
-arrays `households` (`household_id`, `province_2010_id`, `region_id`,
-`analysis_weight`) y `persons` (`person_id`, `household_id`, `sex`, `age`).
+Para `eph_agglomerate`, el frame debe haber sido augmentado con el handoff gobernado de `samplerCensoARG` y el productor exige un binding explícito `eph_agglomerate_id -> poverty_region_id`. Sólo contribuyen hogares con `mapped_to_eph_frame=true`; no se redistribuyen pesos ni se calibra masa poblacional. El agregado de la release es `eph_coverage/EPH_TOTAL`, nunca `national/ARG`.
+
+`scripts/build_predictive_province_release.py` permanece como oracle de regresión de la primera integración provincial; no es la frontera general de geografía.
+
 
 ## Cómo colaborar
 
