@@ -155,6 +155,16 @@ class CommissioningDashboardTest(unittest.TestCase):
             ROOT / "science" / "commissioning" / "benchmarks" / "indec_poverty_semester.csv"
         )
         people = frame[frame.universe == "persons"].set_index(["period", "concept"])
+        self.assertAlmostEqual(people.loc[("2022-S1", "poverty"), "rate"], 0.365)
+        self.assertEqual(
+            int(people.loc[("2022-S2", "indigence"), "count"]),
+            2_356_435,
+        )
+        self.assertAlmostEqual(people.loc[("2023-S2", "poverty"), "rate"], 0.417)
+        self.assertEqual(
+            int(people.loc[("2023-S1", "poverty"), "count"]),
+            11_769_747,
+        )
         self.assertAlmostEqual(people.loc[("2024-S1", "poverty"), "rate"], 0.529)
         self.assertEqual(
             int(people.loc[("2024-S1", "poverty"), "count"]),
@@ -166,14 +176,14 @@ class CommissioningDashboardTest(unittest.TestCase):
             1_884_110,
         )
 
-    def test_labor_benchmark_spans_eight_quarters(self):
+    def test_labor_benchmark_spans_sixteen_quarters(self):
         frame = pd.read_csv(
             ROOT / "science" / "commissioning" / "benchmarks" / "indec_labor_quarter.csv"
         )
-        self.assertEqual(len(frame), 8)
-        self.assertEqual(frame.period.iloc[0], "2024-Q1")
+        self.assertEqual(len(frame), 16)
+        self.assertEqual(frame.period.iloc[0], "2022-Q1")
         self.assertEqual(frame.period.iloc[-1], "2025-Q4")
-        self.assertAlmostEqual(frame.unemployment_rate.iloc[0], 0.077)
+        self.assertAlmostEqual(frame.unemployment_rate.iloc[0], 0.070)
         self.assertAlmostEqual(frame.unemployment_rate.iloc[-1], 0.075)
 
 

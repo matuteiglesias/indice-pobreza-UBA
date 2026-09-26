@@ -77,6 +77,36 @@ class PredictiveGeographyBatchTest(unittest.TestCase):
         )
         self.assertNotIn('"/', path.read_text(encoding="utf-8"))
 
+    def test_committed_2022_2025_batch_envelope_is_valid_and_path_free(self):
+        path = Path("configs/releases/predictive-poverty-2022q1-2025q4.json")
+        spec = json.loads(path.read_text(encoding="utf-8"))
+        validate_batch_spec(spec)
+        expected = [
+            f"{year}-Q{quarter}"
+            for year in range(2022, 2026)
+            for quarter in range(1, 5)
+        ]
+        self.assertEqual([row["period"] for row in spec["periods"]], expected)
+        for year in range(2022, 2026):
+            rows = [row for row in spec["periods"] if row["target_year"] == year]
+            self.assertEqual(
+                {row["census_sample_release_ref"] for row in rows},
+                {f"census-sample:{year}"},
+            )
+        self.assertNotIn('"/', path.read_text(encoding="utf-8"))
+
+    def test_batch_rejects_out_of_order_or_out_of_window_periods(self):
+        spec = _batch_spec()
+        spec["periods"][0], spec["periods"][1] = spec["periods"][1], spec["periods"][0]
+        with self.assertRaisesRegex(ValueError, "strictly chronological"):
+            validate_batch_spec(spec)
+
+        spec = _batch_spec()
+        spec["periods"][0]["period"] = "2021-Q4"
+        spec["periods"][0]["target_year"] = 2021
+        with self.assertRaisesRegex(ValueError, "unsupported batch periods"):
+            validate_batch_spec(spec)
+
     def test_fixture_batch_executes_all_eight_periods_and_reconciles(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
