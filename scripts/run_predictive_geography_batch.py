@@ -12,6 +12,7 @@ import csv
 import hashlib
 import importlib.util
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -21,11 +22,6 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
 DEFAULT_SPEC = ROOT / "configs/releases/predictive-poverty-2024q1-2025q4.json"
 DEFAULT_PROFILE = ROOT / "configs/geographies/predictive_geography_profiles_v1.json"
-CANONICAL_PERIODS = (
-    "2024-Q1", "2024-Q2", "2024-Q3", "2024-Q4",
-    "2025-Q1", "2025-Q2", "2025-Q3", "2025-Q4",
-)
-
 _GEOGRAPHY_SPEC = importlib.util.spec_from_file_location(
     "predictive_geography_release",
     SCRIPT_DIR / "build_predictive_geography_release.py",
@@ -67,9 +63,23 @@ def validate_batch_spec(spec: dict[str, Any]) -> None:
     rows = spec.get("periods")
     if not isinstance(rows, list):
         raise ValueError("batch periods must be an array")
+    if not rows:
+        raise ValueError("batch periods must be nonempty")
     periods = tuple(str(row.get("period")) for row in rows)
-    if periods != CANONICAL_PERIODS:
-        raise ValueError(f"batch period set/order must equal {CANONICAL_PERIODS!r}")
+    if len(periods) != len(set(periods)):
+        raise ValueError("batch periods must be unique")
+    pattern = re.compile(r"^(20\\d{2})-Q([1-4])$")
+    parsed: list[tuple[int, int]] = []
+    for period in periods:
+        match = pattern.fullmatch(period)
+        if match is None:
+            raise ValueError(f"invalid batch period: {period!r}")
+        parsed.append((int(match.group(1)), int(match.group(2))))
+    if parsed != sorted(parsed):
+        raise ValueError("batch periods must be in chronological order")
+    ordinal = [year * 4 + quarter for year, quarter in parsed]
+    if any(right != left + 1 for left, right in zip(ordinal, ordinal[1:])):
+        raise ValueError("batch periods must form one contiguous quarterly envelope")
     required_refs = (
         "census_sample_release_ref",
         "frame_ref",
@@ -260,7 +270,7 @@ def run_batch(
         )
 
     batch_manifest = {
-        "schema_version": "department-poverty-batch-2024q1-2025q4/v1",
+        "schema_version": "department-poverty-batch/v1",
         "batch_id": spec["batch_id"],
         "geography_level": "department_2010",
         "periods": period_entries,
