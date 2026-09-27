@@ -85,6 +85,9 @@ def validate_batch_spec(spec: dict[str, Any]) -> None:
         if match is None:
             raise ValueError(f"invalid batch period: {period!r}")
         parsed.append((int(match.group(1)), int(match.group(2))))
+    unsupported = [period for period in periods if period not in SUPPORTED_PERIODS]
+    if unsupported:
+        raise ValueError(f"unsupported batch periods: {unsupported}")
     if parsed != sorted(parsed):
         raise ValueError("batch periods must be strictly chronological")
     ordinal = [year * 4 + quarter for year, quarter in parsed]
