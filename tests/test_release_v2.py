@@ -81,7 +81,21 @@ class V2ReleaseTest(unittest.TestCase):
             self.assertEqual(join["geometry_owner"], "matuteiglesias/argentina-geography")
             self.assertEqual(join["join_key"], ["geography_level", "geography_id"])
             self.assertEqual(join["joinable_geography_levels"], ["department_2010"])
+            self.assertEqual(capabilities["schema_version"], "poverty-estimate-capabilities/v2")
             self.assertEqual(capabilities["scientific_status"], "synthetic_fixture")
+            self.assertTrue(capabilities["not_for_interpretation"])
+            self.assertEqual(capabilities["estimand_contract"]["measure"], "proportion")
+            self.assertIsNone(capabilities["estimand_contract"]["population_mass_authority"])
+            self.assertFalse(capabilities["estimand_contract"]["household_total_authority"])
+            self.assertEqual(capabilities["permissions"]["interpretation"], "demo_only")
+            self.assertEqual(
+                capabilities["permissions"]["operations"]["population_counts"],
+                "not_authorized",
+            )
+            self.assertEqual(
+                capabilities["permissions"]["operations"]["uncertainty_intervals"],
+                "not_authorized",
+            )
             self.assertEqual(capabilities["dimensions"]["geography_levels"], ["department_2010", "national"])
             self.assertIn("capabilities", manifest["output_roles"])
             with (root / "poverty_estimates.csv").open(newline="") as handle:
@@ -154,6 +168,48 @@ class V2ReleaseTest(unittest.TestCase):
                     estimation,
                     parents=wrong,
                     method_release_id=method.release_id,
+                )
+
+
+    def test_interpretable_research_release_requires_explicit_permission_mode(self):
+        method, estimation, parents = self._estimation()
+        with TemporaryDirectory() as tmp:
+            root = write_estimate_release(
+                Path(tmp) / "release",
+                estimation,
+                parents=parents,
+                method_release_id=method.release_id,
+                status="research_estimate",
+                not_for_interpretation=False,
+            )
+            capabilities = json.loads((root / "capabilities.json").read_text())
+            manifest = json.loads((root / "release_manifest.json").read_text())
+            self.assertFalse(manifest["not_for_interpretation"])
+            self.assertEqual(
+                capabilities["permissions"]["interpretation"],
+                "research_public",
+            )
+            self.assertEqual(
+                capabilities["permissions"]["operations"]["temporal_comparison"],
+                "descriptive_only",
+            )
+            self.assertEqual(
+                capabilities["permissions"]["operations"]["population_counts"],
+                "not_authorized",
+            )
+
+    def test_synthetic_fixture_cannot_be_marked_interpretable(self):
+        method, estimation, parents = self._estimation()
+        with TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(
+                EstimateReleaseError, "synthetic fixtures must remain"
+            ):
+                write_estimate_release(
+                    Path(tmp) / "release",
+                    estimation,
+                    parents=parents,
+                    method_release_id=method.release_id,
+                    not_for_interpretation=False,
                 )
 
 
