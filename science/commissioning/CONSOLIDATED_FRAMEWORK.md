@@ -199,6 +199,58 @@ There are only three bounded reruns in the active registry:
 Everything else should be treated as closed or diagnostic for its stated scope,
 not as a standing invitation to extend the experiment.
 
+## Mechanical Q3 closure packet
+
+The bounded Q3 revalidation is governed by the registry program
+`2024-Q3-commissioning-closure-v1`. It covers only `D-1`, `L2`, `L3` and
+`L4`.
+
+Create a deterministic empty receipt before the local real-data run:
+
+```bash
+python science/commissioning/registry.py \
+  --init-closure 2024-Q3-commissioning-closure-v1 \
+  --output /home/matias/data/COMMISSIONING_CLOSURE_2024Q3.json
+```
+
+The local run fills exact producer commits, artifact identities, parent identities,
+evidence identities and the existing experiment-specific acceptance result. The
+registry validator deliberately does **not** infer scientific success from a new
+metric threshold.
+
+Validate and render the completed receipt with:
+
+```bash
+python science/commissioning/registry.py \
+  --validate-closure /home/matias/data/COMMISSIONING_CLOSURE_2024Q3.json
+
+python science/commissioning/registry.py \
+  --render-closure /home/matias/data/COMMISSIONING_CLOSURE_2024Q3.json
+```
+
+Structural closure fails closed when:
+
+- a terminal question lacks exact producer/artifact/evidence identity;
+- evidence or parents come from the wrong period;
+- a dependency is still `revalidate` / `blocked`;
+- L3 does not consume the exact L2 artifact declared in the same packet;
+- the corrected L2 feature contract still contains `H06`;
+- the L3 packet does not retain the governed 32-domain gate;
+- the three L4 arms differ in row universe, folds, welfare target, scoring,
+  model family or non-labor feature contract.
+
+For L4, `closed_negative` is permitted only after the receipt explicitly
+records the governed adjudication that oracle labor is useful and the
+transportable bridge does not improve the welfare result. The validator checks
+that declaration; it does not manufacture it from metrics.
+
+Hosted CI exercises only synthetic closure receipts. Real Census/EPH evidence
+remains local and is never fabricated by CI.
+
+Once a question reaches a terminal state, it is **not a recurring pipeline
+stage**. It reruns only after the explicit upstream invalidation trigger already
+recorded in the registry.
+
 ## Registry check
 
 ```bash
