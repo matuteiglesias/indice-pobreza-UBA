@@ -25,6 +25,15 @@ class EstimateReleaseError(ValueError):
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _ALLOWED_STATUS = {"synthetic_fixture", "research_estimate"}
 _NON_SPATIAL_LEVELS = {"national", "eph_coverage"}
+_CAPABILITY_SCHEMA = "poverty-estimate-capabilities/v2"
+_PERMISSION_VALUES = {
+    "point_estimates": {"authorized", "demo_only"},
+    "population_counts": {"not_authorized"},
+    "uncertainty_intervals": {"not_authorized"},
+    "inferential_ranking": {"not_authorized"},
+    "temporal_comparison": {"descriptive_only", "demo_only"},
+}
+_INTERPRETATION_MODES = {"demo_only", "commissioning_only", "research_public"}
 
 
 @dataclass(frozen=True)
@@ -81,6 +90,33 @@ def _availability(rows: list[object]) -> list[dict[str, object]]:
     return [groups[key] for key in sorted(groups)]
 
 
+def _capability_permissions(
+    *,
+    status: str,
+    not_for_interpretation: bool,
+) -> dict[str, object]:
+    if status == "synthetic_fixture":
+        interpretation = "demo_only"
+        point_estimates = "demo_only"
+        temporal_comparison = "demo_only"
+    else:
+        interpretation = (
+            "commissioning_only" if not_for_interpretation else "research_public"
+        )
+        point_estimates = "authorized"
+        temporal_comparison = "descriptive_only"
+    return {
+        "interpretation": interpretation,
+        "operations": {
+            "point_estimates": point_estimates,
+            "population_counts": "not_authorized",
+            "uncertainty_intervals": "not_authorized",
+            "inferential_ranking": "not_authorized",
+            "temporal_comparison": temporal_comparison,
+        },
+    }
+
+
 def _recommended_map_measure(availability: list[dict[str, object]]) -> dict[str, str] | None:
     candidates = [cell for cell in availability if cell["geography_level"] != "national"]
     preferred = [cell for cell in candidates
@@ -103,6 +139,7 @@ def write_estimate_release(
     parents: tuple[ParentReleaseRef, ...],
     method_release_id: str,
     status: str = "synthetic_fixture",
+    not_for_interpretation: bool = True,
 ) -> Path:
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
@@ -112,6 +149,10 @@ def write_estimate_release(
         raise EstimateReleaseError("poverty estimation must contain rows")
     if status not in _ALLOWED_STATUS:
         raise EstimateReleaseError(f"unsupported scientific status: {status!r}")
+    if not isinstance(not_for_interpretation, bool):
+        raise EstimateReleaseError("not_for_interpretation must be boolean")
+    if status == "synthetic_fixture" and not_for_interpretation is not True:
+        raise EstimateReleaseError("synthetic fixtures must remain not_for_interpretation")
     if not parents:
         raise EstimateReleaseError("estimate release requires exact parent refs")
     roles: set[str] = set()
@@ -156,11 +197,31 @@ def write_estimate_release(
         row.geography_level for row in rows
         if row.geography_level in _NON_SPATIAL_LEVELS
     })
+    weight_semantics = sorted({row.weight_semantics for row in rows})
+    design_ids = sorted({row.design_id for row in rows})
+    units = sorted({row.unit for row in rows})
+    if units != ["proportion"]:
+        raise EstimateReleaseError("capability contract currently authorizes proportions only")
+    if len(weight_semantics) != 1:
+        raise EstimateReleaseError("release must have one analysis-weight semantics")
     capabilities = {
-        "schema_version": "poverty-estimate-capabilities/v1",
+        "schema_version": _CAPABILITY_SCHEMA,
         "release_id": rows[0].release_id,
         "scientific_status": status,
+        "not_for_interpretation": not_for_interpretation,
         "geometry_embedded": False,
+        "estimand_contract": {
+            "measure": "proportion",
+            "universes": sorted({row.universe for row in rows}),
+            "analysis_weight_semantics": weight_semantics[0],
+            "design_ids": design_ids,
+            "population_mass_authority": None,
+            "household_total_authority": False,
+        },
+        "permissions": _capability_permissions(
+            status=status,
+            not_for_interpretation=not_for_interpretation,
+        ),
         "dimensions": {
             "estimation_periods": sorted(periods),
             "universes": sorted({row.universe for row in rows}),
@@ -197,6 +258,7 @@ def write_estimate_release(
         "estimation_period": first.estimation_period,
         "frame_vintage": first.frame_vintage,
         "scientific_status": status,
+        "not_for_interpretation": not_for_interpretation,
         "method_release_id": method_release_id,
         "parents": [asdict(parent) for parent in parents],
         "output_roles": {
@@ -249,6 +311,11 @@ def write_estimate_release(
     ]
     if status == "synthetic_fixture":
         limitations.insert(2, "- Values are synthetic fixture data and are not interpretable poverty estimates.")
+    elif not_for_interpretation:
+        limitations.insert(
+            2,
+            "- This release is restricted to commissioning/inspection and is not authorized for ordinary public interpretation.",
+        )
     if estimation.qa.uncertainty_status == "not_supplied":
         limitations.append("- No uncertainty input was supplied; standard errors and confidence intervals are unavailable.")
     (root / "LIMITATIONS.md").write_text("\n".join(limitations) + "\n", encoding="utf-8")
@@ -306,14 +373,64 @@ def verify_estimate_release(root: str | Path) -> None:
         raise EstimateReleaseError("unsupported geography join semantics")
 
     capabilities = json.loads((root / "capabilities.json").read_text(encoding="utf-8"))
-    if capabilities.get("schema_version") != "poverty-estimate-capabilities/v1":
+    if capabilities.get("schema_version") != _CAPABILITY_SCHEMA:
         raise EstimateReleaseError("unsupported capabilities schema")
     if capabilities.get("release_id") != manifest.get("release_id"):
         raise EstimateReleaseError("capabilities release identity mismatch")
     if capabilities.get("scientific_status") != manifest.get("scientific_status"):
         raise EstimateReleaseError("capabilities scientific status mismatch")
+    if capabilities.get("not_for_interpretation") != manifest.get("not_for_interpretation"):
+        raise EstimateReleaseError("capabilities interpretation status mismatch")
     if capabilities.get("geometry_embedded") is not False:
         raise EstimateReleaseError("capabilities must remain geometry-free")
+
+    estimand_contract = capabilities.get("estimand_contract")
+    if not isinstance(estimand_contract, dict):
+        raise EstimateReleaseError("capabilities require estimand_contract")
+    if estimand_contract.get("measure") != "proportion":
+        raise EstimateReleaseError("only proportion estimands are authorized")
+    if estimand_contract.get("population_mass_authority") is not None:
+        raise EstimateReleaseError("current release contract has no population-mass authority")
+    if estimand_contract.get("household_total_authority") is not False:
+        raise EstimateReleaseError("current release contract has no household-total authority")
+
+    permissions = capabilities.get("permissions")
+    if not isinstance(permissions, dict):
+        raise EstimateReleaseError("capabilities require permissions")
+    interpretation = permissions.get("interpretation")
+    if interpretation not in _INTERPRETATION_MODES:
+        raise EstimateReleaseError("unsupported interpretation permission")
+    operations = permissions.get("operations")
+    if not isinstance(operations, dict):
+        raise EstimateReleaseError("capabilities permissions require operations")
+    if set(operations) != set(_PERMISSION_VALUES):
+        raise EstimateReleaseError("capability operation set mismatch")
+    for name, allowed in _PERMISSION_VALUES.items():
+        if operations.get(name) not in allowed:
+            raise EstimateReleaseError(f"unsupported {name} permission")
+    if operations.get("population_counts") != "not_authorized":
+        raise EstimateReleaseError("counts require a future population-mass authority")
+    if manifest.get("uncertainty_status") == "not_supplied" and (
+        operations.get("uncertainty_intervals") != "not_authorized"
+        or operations.get("inferential_ranking") != "not_authorized"
+    ):
+        raise EstimateReleaseError(
+            "uncertainty/ranking cannot be authorized when uncertainty is not supplied"
+        )
+    if manifest.get("scientific_status") == "synthetic_fixture":
+        if manifest.get("not_for_interpretation") is not True:
+            raise EstimateReleaseError("synthetic fixture must be not_for_interpretation")
+        if interpretation != "demo_only":
+            raise EstimateReleaseError("synthetic fixture must use demo_only interpretation")
+    elif manifest.get("not_for_interpretation") is True:
+        if interpretation != "commissioning_only":
+            raise EstimateReleaseError(
+                "not_for_interpretation research release must be commissioning_only"
+            )
+    elif interpretation != "research_public":
+        raise EstimateReleaseError(
+            "interpretable research release must use research_public interpretation"
+        )
 
     with (root / "poverty_estimates.csv").open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
@@ -368,6 +485,16 @@ def verify_estimate_release(root: str | Path) -> None:
             raise EstimateReleaseError("legacy national/ARG release must not add aggregate metadata")
     elif declared_aggregate != {"level": aggregate_level, "id": aggregate_id}:
         raise EstimateReleaseError("aggregate geography metadata does not match facts")
+    observed_weight_semantics = sorted({row["weight_semantics"] for row in rows})
+    observed_design_ids = sorted({row["design_id"] for row in rows})
+    observed_universes = sorted({row["universe"] for row in rows})
+    if estimand_contract.get("analysis_weight_semantics") != observed_weight_semantics[0]:
+        raise EstimateReleaseError("estimand analysis-weight semantics differ from facts")
+    if estimand_contract.get("design_ids") != observed_design_ids:
+        raise EstimateReleaseError("estimand design IDs differ from facts")
+    if estimand_contract.get("universes") != observed_universes:
+        raise EstimateReleaseError("estimand universes differ from facts")
+
     availability = capabilities.get("availability")
     if not isinstance(availability, list) or not availability:
         raise EstimateReleaseError("capabilities must expose nonempty availability")
