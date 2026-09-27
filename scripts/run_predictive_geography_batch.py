@@ -12,6 +12,7 @@ import csv
 import hashlib
 import importlib.util
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -70,19 +71,25 @@ def validate_batch_spec(spec: dict[str, Any]) -> None:
     if spec.get("geography_level") != "department_2010":
         raise ValueError("commissioning batch must target department_2010")
     rows = spec.get("periods")
-    if not isinstance(rows, list) or not rows:
-        raise ValueError("batch periods must be a nonempty array")
+    if not isinstance(rows, list):
+        raise ValueError("batch periods must be an array")
+    if not rows:
+        raise ValueError("batch periods must be nonempty")
     periods = tuple(str(row.get("period")) for row in rows)
-    if len(set(periods)) != len(periods):
+    if len(periods) != len(set(periods)):
         raise ValueError("batch periods must be unique")
-    unsupported = [period for period in periods if period not in SUPPORTED_PERIODS]
-    if unsupported:
-        raise ValueError(f"unsupported batch periods: {unsupported}")
-    expected_order = tuple(period for period in SUPPORTED_PERIODS if period in set(periods))
-    if periods != expected_order:
-        raise ValueError(
-            "batch periods must be strictly chronological within 2022-Q1..2025-Q4"
-        )
+    pattern = re.compile(r"^(20\d{2})-Q([1-4])$")
+    parsed: list[tuple[int, int]] = []
+    for period in periods:
+        match = pattern.fullmatch(period)
+        if match is None:
+            raise ValueError(f"invalid batch period: {period!r}")
+        parsed.append((int(match.group(1)), int(match.group(2))))
+    if parsed != sorted(parsed):
+        raise ValueError("batch periods must be in chronological order")
+    ordinal = [year * 4 + quarter for year, quarter in parsed]
+    if any(right != left + 1 for left, right in zip(ordinal, ordinal[1:])):
+        raise ValueError("batch periods must form one contiguous quarterly envelope")
     required_refs = (
         "census_sample_release_ref",
         "frame_ref",
@@ -279,7 +286,7 @@ def run_batch(
         else "department-poverty-batch/v2"
     )
     batch_manifest = {
-        "schema_version": manifest_schema,
+        "schema_version": "department-poverty-batch/v1",
         "batch_id": spec["batch_id"],
         "geography_level": "department_2010",
         "periods": period_entries,
