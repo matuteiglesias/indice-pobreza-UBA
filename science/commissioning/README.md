@@ -5,6 +5,18 @@ This surface is a **scientific observability/commissioning layer**, not a new es
 It assembles already-governed artifacts and small pinned external validation benchmarks into
 one ephemeral diagnostic frame and a set of presentation-ready figures.
 
+## Consolidated authority
+
+Cross-ecosystem commissioning status is governed by:
+
+- `registry.json` — machine-readable question/status/dependency/weight/calibration registry;
+- `CONSOLIDATED_FRAMEWORK.md` — the human-readable commissioning spine and promotion gates;
+- `registry.py` — structural validator and compact status renderer.
+
+These files **reference** Telescope A/B/C, L1-L4 and transport diagnostics; they do not
+reimplement them. If a historical document conflicts with this registry about which
+surface is active or superseded, the registry controls the current commissioning map.
+
 ## Boundary
 
 It may:
