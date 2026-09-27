@@ -4,7 +4,7 @@ This program records the bounded evolution from the legacy v1 consumer runtime t
 
 Waves are ordered by dependency, not by ambition. A later wave may be split when a source/contract boundary becomes large. A wave may also be skipped if evidence shows that the capability belongs elsewhere.
 
-## Status snapshot — 2026-09-26
+## Status snapshot — 2026-09-27
 
 | Wave | Status on `main` | Current meaning |
 |---|---|---|
@@ -14,11 +14,13 @@ Waves are ordered by dependency, not by ambition. A later wave may be split when
 | P3 | implemented | frame, welfare, method, lines and threshold-area seams are explicit; adapters bridge current producer artifacts |
 | P4 | complete | generic weighted estimation and explicit aggregate identities are active |
 | P5 | waiting on justified input | no standard errors/intervals are fabricated from point welfare |
-| P6 | active commissioning | Telescope A provides direct EPH measurement; pinned official benchmarks live in the commissioning layer |
-| P7 | active commissioning | Telescope B/C provide bounded model-to-poverty and transport diagnostics; conditional residual improvements remain separate work |
+| P6 | commissioned | Telescope A provides the observed EPH measurement authority for its declared scope; current status/rerun triggers live in `science/commissioning/registry.json` |
+| P7 | commissioned diagnostic | Telescope B closes the within-EPH bridge for the current anchor; Telescope C remains transport-diagnostic only; current status/rerun triggers live in the commissioning registry |
 | P8 | implementation complete, commissioning ongoing | real-data producers and `poverty-estimate-release/v2` exist; period/geography coverage is expanded only with exact governed parents |
 | P9 | partial | legacy material remains preserved; active runtime has already shed model/GIS/publication ownership |
 | P10 | active consumer seam | Atlas contract and detached release consumption are implemented; rendering remains downstream |
+
+For cross-ecosystem commissioning questions, this wave table is descriptive; `science/commissioning/registry.json` is the current adjudication authority.
 
 The table is a state summary, not permission to collapse the wave boundaries. In particular, P5 remains blocked until uncertainty is supplied by a scientifically interpretable upstream representation.
 
