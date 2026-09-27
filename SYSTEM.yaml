@@ -78,13 +78,14 @@ generated_paths:
 - artifacts/
 - figures/
 verification:
-  status: active-v2-commissioning
-  last_verified: '2026-09-26'
+  status: active-v2-commissioning-closed-capability-permissions-explicit
+  last_verified: '2026-09-27'
   command: make v2-release-smoke && make atlas-contract-smoke && make commissioning-smoke
   current_real_gates:
-  - run G5 Census-target eph_agglomerate release for 2024-Q3 against exact governed parents
-  - commission the Q3 full-frame -> EPH-footprint -> EPH observed/point/predictive bridge before expanding G5 longitudinally
-  - expand G5/G7 to other quarters only after the Q3 bridge passes
+  - keep the closed Q3 commissioning family frozen unless an explicit registry rerun trigger fires
+  - materialize 2022/23 predictive verticals only where exact governed parents and current scoring policy authorize them
+  - complete the bounded real CPV-2022 donor-frame handoff/sensitivity path before claiming donor-vintage robustness
   - supply a justified uncertainty representation before publishing uncertainty statistics
+  - move a release from commissioning_only to research_public only through its governed capability contract
 maintenance:
   cadence: active-development
