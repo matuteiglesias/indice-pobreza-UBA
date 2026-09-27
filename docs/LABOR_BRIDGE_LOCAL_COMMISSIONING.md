@@ -1,6 +1,11 @@
 # Labor bridge commissioning — L1 to L3
 
-Status: software-ready; real-data materialization remains local.
+Status: **L1 closed/pass; L3 implementation commissioned; bounded L2→L3 revalidation pending.**
+
+Current work status and rerun triggers are governed by
+`science/commissioning/registry.json`. This document owns the L1 truth and L3
+calibration mechanics in this repository; L2 reconstruction and L4 welfare impact are owned
+by `income-modeling-eph`.
 
 This package replaces the historical employment-rate mutation path. The legacy
 `ajustar_empleo` routine is not a scientific parent, benchmark, or fallback for
@@ -8,7 +13,7 @@ this work.
 
 ## Contracts
 
-### L1/L2 — `research.eph-labor-truth/v1`
+### L1 — `research.eph-labor-truth/v1`
 
 `science/labor/core.py` and `scripts/build_eph_labor_truth.py` reconstruct the
 EPH labor state directly from `ESTADO` and `PONDERA`.
@@ -74,7 +79,7 @@ fields rather than analysis weights.
 Rows outside an official calibration domain remain
 `MODELLED_UNBENCHMARKED` and are never calibrated to urban EPH rates.
 
-## Local L1/L2 run
+## Local L1 run
 
 Create a commissioning config whose `parents.eph_person_files` maps every
 quarter to the governed raw EPH person file, then run:
@@ -98,13 +103,13 @@ Inspect `labor_stocks.csv` first if the gate fails, especially the
 
 ## Local L3 run
 
-L3 requires a harmonized Census person frame with `sample_person_id`,
-`eph_agglomerate_id`, and the shared labor-model features. The located 2022/23
-samples are selection-only, so this run waits for their governed full-payload
-materialization plus the existing geography handoff.
+The governed full-payload Census + semantic/geography path exists for the 2024-Q3
+commissioning anchor, and L3 has already passed once on that real surface. L3 should now be
+recomputed only after the bounded L2 rerun under the aligned shared-feature contract.
 
-After `income-modeling-eph` emits raw probabilities and an official per-domain
-target table exists:
+L3 requires a harmonized Census person frame with `sample_person_id`,
+`eph_agglomerate_id`, raw labor probabilities from `income-modeling-eph`, and the exact
+L1 per-domain target table:
 
 ```bash
 python scripts/calibrate_census_labor_probabilities.py \
@@ -129,7 +134,7 @@ period-stable microdata contract is frozen, but L3 v1 transports only the
 activity/employment/unemployment core.
 
 
-## L2 → L3 governed target handoff
+## L1 → L3 governed target handoff
 
 Do not manually transcribe per-agglomerate rates. Promote the weighted native
 agglomerate rows already emitted by L1:
