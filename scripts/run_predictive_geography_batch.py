@@ -86,7 +86,7 @@ def validate_batch_spec(spec: dict[str, Any]) -> None:
             raise ValueError(f"invalid batch period: {period!r}")
         parsed.append((int(match.group(1)), int(match.group(2))))
     if parsed != sorted(parsed):
-        raise ValueError("batch periods must be in chronological order")
+        raise ValueError("batch periods must be strictly chronological")
     ordinal = [year * 4 + quarter for year, quarter in parsed]
     if any(right != left + 1 for left, right in zip(ordinal, ordinal[1:])):
         raise ValueError("batch periods must form one contiguous quarterly envelope")
