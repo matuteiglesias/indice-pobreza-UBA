@@ -6,6 +6,8 @@ Infraestructura científica terminal para medir y estimar pobreza a partir de in
 
 ## Superficie científica actual (v2)
 
+Estado transversal actual: [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md). Para adjudicación de commissioning, la autoridad machine-readable es `science/commissioning/registry.json`; los runbooks históricos no definen por sí solos la cola de trabajo vigente.
+
 La superficie activa ya no es un runner atado a una única geografía. En `main` están implementados y probados:
 
 - contrato de método y kernel puro de medición FGT0/FGT1/FGT2;
