@@ -114,6 +114,14 @@ geography_id   estimate
 
 No spatial operation is needed until a consumer chooses to render it.
 
+## Downstream permissions
+
+`capabilities.json` is also the authority for what a consumer may do with the facts. The current contract distinguishes the existence of a point estimate from permission to derive stronger claims.
+
+Current research releases authorize point proportions, but do not authorize population counts, uncertainty intervals, or inferential ranking. Temporal comparison is descriptive-only. `not_for_interpretation=true` additionally restricts the release to commissioning/inspection presentation.
+
+These are executable permissions, not documentation hints.
+
 ## Exact parents
 
 Every release retains content-identified parent refs for the population frame, welfare estimates, poverty lines, threshold-area binding and poverty method. A real release must replace fixture identities with exact producer release IDs/hashes.
