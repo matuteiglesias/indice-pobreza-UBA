@@ -16,9 +16,9 @@ Waves are ordered by dependency, not by ambition. A later wave may be split when
 | P5 | waiting on justified input | no standard errors/intervals are fabricated from point welfare |
 | P6 | commissioned | Telescope A provides the observed EPH measurement authority for its declared scope; current status/rerun triggers live in `science/commissioning/registry.json` |
 | P7 | commissioned diagnostic | Telescope B closes the within-EPH bridge for the current anchor; Telescope C remains transport-diagnostic only; current status/rerun triggers live in the commissioning registry |
-| P8 | implementation complete, commissioning ongoing | real-data producers and `poverty-estimate-release/v2` exist; period/geography coverage is expanded only with exact governed parents |
+| P8 | implementation complete, operational materialization ongoing | real-data producers and `poverty-estimate-release/v2` exist; the Q3 commissioning family is closed and additional period/geography coverage is materialized only with exact governed parents |
 | P9 | partial | legacy material remains preserved; active runtime has already shed model/GIS/publication ownership |
-| P10 | active consumer seam | Atlas contract and detached release consumption are implemented; rendering remains downstream |
+| P10 | active governed consumer seam | Atlas consumption is implemented through `poverty-estimate-capabilities/v2`; interpretation/count/uncertainty/ranking permissions remain upstream release decisions |
 
 For cross-ecosystem commissioning questions, this wave table is descriptive; `science/commissioning/registry.json` is the current adjudication authority.
 
