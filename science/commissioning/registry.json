@@ -375,5 +375,36 @@
       "keep_for": "reproducibility tests only",
       "reason": "Legacy hard employment-rate treatment is outside the current probabilistic labor architecture."
     }
+  ],
+  "closure_programs": [
+    {
+      "id": "2024-Q3-commissioning-closure-v1",
+      "period": "2024-Q3",
+      "questions": [
+        "D-1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "rules": {
+        "l2_forbidden_features": [
+          "H06"
+        ],
+        "l3_expected_domains": 32,
+        "l4_arms": [
+          "no_labor",
+          "true_labor_oracle",
+          "transportable_labor_probabilities"
+        ],
+        "l4_shared_identity_fields": [
+          "row_universe_sha256",
+          "folds_sha256",
+          "welfare_target_id",
+          "scoring_contract_id",
+          "model_family_id",
+          "non_labor_feature_contract_sha256"
+        ]
+      }
+    }
   ]
 }
