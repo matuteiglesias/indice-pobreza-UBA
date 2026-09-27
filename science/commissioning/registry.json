@@ -191,13 +191,14 @@
         "kind": "none"
       },
       "current": {
-        "status": "revalidate",
-        "scope": "2024-Q3",
+        "status": "closed_pass",
+        "scope": "2024-Q3 corrected labor feature contract",
         "evidence": [
-          "local:data/labor-model-comparison-2024-q3.csv",
-          "repo:docs/LABOR_BRIDGE_SHADOW.md"
+          "local:data/labor-models-q3-corrected/hist_gradient_boosting-none/manifest.json",
+          "local:data/COMMISSIONING_CLOSURE_2024Q3.json",
+          "repo:docs/LABOR_BRIDGE_LOCAL_COMMISSIONING.md"
         ],
-        "note": "Prior Q3 2×2 study passed, but governed contract changed by removing unresolved H06; rerun once, no redesign."
+        "note": "Corrected HGB/no-fit-weight grouped-5-fold OOF run excludes H06 and remains coherent (active Brier 0.104515; conditional-unemployment Brier 0.055632; simplex error 1.11e-16)."
       },
       "promotion_role": "Produces candidate labor probabilities only; L2 success does not authorize welfare use.",
       "rerun_trigger": "Governed shared-feature contract, semantic roles, model family, fit-weight policy, or EPH period changes."
@@ -232,12 +233,13 @@
         "qa": "employment rate + simplex consistency; no third independent hard constraint"
       },
       "current": {
-        "status": "revalidate",
-        "scope": "2024-Q3",
+        "status": "closed_pass",
+        "scope": "2024-Q3 corrected L2 parent",
         "evidence": [
-          "local:data/census-labor-calibrated-2024-q3/calibration_qa.csv"
+          "local:data/census-labor-calibrated-2024-q3-corrected/manifest.json",
+          "local:data/COMMISSIONING_CLOSURE_2024Q3.json"
         ],
-        "note": "Calibration algorithm and Q3 gates passed; recompute after the one bounded L2 contract rerun because raw probabilities change."
+        "note": "Consumes the exact corrected L2 artifact. 32 calibrated EPH-frame domains plus one outside-frame unbenchmarked domain; maximum target residual 9.47e-11 pp; simplex error 1.11e-16."
       },
       "promotion_role": "Creates a calibrated labor-analysis layer; does not authorize labor probabilities as welfare features.",
       "rerun_trigger": "L2 model release, L1 target release, calibration domains, or calibration algorithm changes."
@@ -270,13 +272,14 @@
         "comparison": "no-labor vs true-labor oracle vs OOF labor-probability bridge"
       },
       "current": {
-        "status": "revalidate",
-        "scope": "2024-Q3",
+        "status": "closed_negative",
+        "scope": "2024-Q3 corrected three-arm welfare comparison",
         "evidence": [
-          "local:data/q3-labor-arms",
-          "local:labor-bridge-commissioning-summary.json"
+          "local:data/q3-labor-arms-corrected/manifest.json",
+          "local:data/COMMISSIONING_CLOSURE_2024Q3.json",
+          "repo:docs/LABOR_BRIDGE_LOCAL_COMMISSIONING.md"
         ],
-        "note": "Prior governed-identity shadow was negative: oracle labor helped welfare, bridge probabilities did not recover the gain. Rerun once after H06 removal; if materially unchanged, close negative."
+        "note": "True-labor oracle improves person and household welfare metrics, while the transportable labor bridge is neutral/slightly harmful. Labor is welfare-relevant, but the commissioned transportable reconstruction is not a useful welfare feature; stop unless an explicit upstream rerun trigger fires."
       },
       "promotion_role": "Only labor surface capable of authorizing bridge features into welfare production.",
       "rerun_trigger": "L2 governed feature contract/model, exact identity surface, or welfare model/folds change."
@@ -303,13 +306,14 @@
         "kind": "none"
       },
       "current": {
-        "status": "revalidate",
+        "status": "diagnostic_only",
         "scope": "2024-Q3 / CPV-2010",
         "evidence": [
-          "local:data/eph-census-domain-check-2024q3-cpv2010",
+          "local:data/eph-census-domain-check-2024q3-cpv2010/manifest.json",
+          "local:data/COMMISSIONING_CLOSURE_2024Q3.json",
           "repo:docs/EPH_CENSUS_DOMAIN_CHECK.md"
         ],
-        "note": "OOF classifier conclusion is closed and valid (S near-random; T and R add systematic separation). Refresh categorical marginals once after canonicalization/missingness fix on encuestador main eca34a22."
+        "note": "Corrected canonicalization/missingness refresh preserved the source-separation interpretation: EPH_TOTAL OOF AUC S=0.514802, S+T=0.706180, S+T+R=0.811938. Diagnostic only; no transport weights or production authorization."
       },
       "promotion_role": "Transport warning and block-attribution evidence only; never generates transport weights.",
       "rerun_trigger": "Semantic plane, donor vintage, EPH geography relation, exact model-support universe, or domain-diagnostic implementation changes."
