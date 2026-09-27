@@ -61,7 +61,18 @@ class PredictiveProvinceReleaseTest(unittest.TestCase):
             capabilities = json.loads((built / "capabilities.json").read_text())
             rows = (built / "poverty_estimates.csv").read_text().splitlines()
             self.assertEqual(manifest["scientific_status"], "research_estimate")
+            self.assertTrue(manifest["not_for_interpretation"])
             self.assertEqual(manifest["uncertainty_status"], "not_supplied")
+            self.assertEqual(capabilities["schema_version"], "poverty-estimate-capabilities/v2")
+            self.assertEqual(capabilities["permissions"]["interpretation"], "commissioning_only")
+            self.assertEqual(
+                capabilities["estimand_contract"]["analysis_weight_semantics"],
+                "unit_analysis_weight",
+            )
+            self.assertEqual(
+                capabilities["permissions"]["operations"]["population_counts"],
+                "not_authorized",
+            )
             self.assertEqual(len(rows) - 1, 2 * 12 + 12)
             self.assertEqual(capabilities["dimensions"]["universes"], ["households", "persons"])
             self.assertEqual(capabilities["dimensions"]["concepts"], ["indigence", "poverty"])
