@@ -53,7 +53,9 @@ Consumers should drive selectors from `capabilities.json`, not from hard-coded a
 
 The file exposes:
 
-- scientific status;
+- scientific status and `not_for_interpretation`;
+- a compact estimand contract (proportion, analysis-weight semantics, and absence/presence of population-total authority);
+- explicit downstream permissions for point estimates, counts, uncertainty intervals, inferential ranking, and temporal comparison;
 - available periods;
 - available universes;
 - available geography levels;
@@ -68,6 +70,8 @@ Example logical cell:
 ```
 
 A consumer must not offer a selector state absent from `availability`.
+
+The current research contract deliberately authorizes point proportions only. It does not authorize population counts, uncertainty intervals, or inferential ranking. Temporal comparison is descriptive-only unless a later release explicitly upgrades that permission. A consumer must fail closed when these permission fields are absent.
 
 ## Geography join
 
