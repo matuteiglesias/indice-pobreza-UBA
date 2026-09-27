@@ -159,9 +159,10 @@ true-labor oracle
 OOF transportable labor probabilities
 ```
 
-If the bridge again fails to recover a material fraction of the oracle gain
-after the current bounded revalidation, close it negative rather than starting
-a feature-engineering program.
+The corrected Q3 rerun confirmed the prior result: true labor improves welfare
+prediction, while the transportable labor probabilities do not recover that
+gain. L4 is therefore `closed_negative`. Do not restart feature engineering
+without an explicit upstream invalidation trigger.
 
 ### D-1
 
@@ -185,23 +186,36 @@ The large joint-distribution program is not active work. Pairwise matrices,
 joint-cell cubes, density-ratio weighting, IPF/raking and a general transport
 subsystem require a new scientific question and explicit authorization.
 
-## Near-term closure queue
+## Q3 closure result
 
-There are only three bounded reruns in the active registry:
+The bounded 2024-Q3 closure packet is complete and validated:
 
-1. **D-1 marginal refresh** after categorical canonicalization/missingness
-   reporting. Existing OOF source-classifier conclusions remain valid.
-2. **L2/L3** once after removal of unresolved H06 from the governed labor bridge
-   feature contract.
-3. **L4** once on that aligned L2/L3 output. If the prior negative welfare result
-   is materially unchanged, set L4 to `closed_negative`.
+- **D-1:** `diagnostic_only`; the corrected marginal refresh preserves the
+  source-separation interpretation (stable/shared near-random; target-period
+  and research-only tiers add separation).
+- **L2:** `closed_pass`; the corrected feature contract excludes unresolved
+  `H06` and the grouped-OOF labor reconstruction remains coherent.
+- **L3:** `closed_pass`; the exact corrected L2 artifact feeds 32 calibrated
+  EPH-frame domains, with the outside-frame domain retained as unbenchmarked.
+- **L4:** `closed_negative`; the true-labor oracle materially improves welfare,
+  while the transportable labor bridge is neutral/slightly harmful.
 
-Everything else should be treated as closed or diagnostic for its stated scope,
-not as a standing invitation to extend the experiment.
+The scientific conclusion is intentionally bounded: labor contains
+welfare-relevant information, but the currently transportable reconstruction
+does not preserve enough of that information to be a useful welfare feature.
+
+There is no active commissioning expansion queue. Closed questions rerun only on
+their explicit registry triggers. D-2, L5, Telescope D, generic raking/IPF,
+density-ratio weighting and a joint-distribution program are not implied next
+steps.
 
 ## Mechanical Q3 closure packet
 
-The bounded Q3 revalidation is governed by the registry program
+The bounded Q3 revalidation is complete. The following machinery is retained
+for audit/reproduction and for future trigger-driven revalidation, not as a
+standing work queue.
+
+The closure is governed by the registry program
 `2024-Q3-commissioning-closure-v1`. It covers only `D-1`, `L2`, `L3` and
 `L4`.
 
