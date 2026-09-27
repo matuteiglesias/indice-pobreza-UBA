@@ -28,6 +28,6 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install test dependencies
-        run: python -m pip install pandas
+        run: python -m pip install pandas pyarrow
       - name: Prove agglomerate frame and binding seams
         run: PYTHONPATH=src python -m unittest discover -s tests -p 'test_eph_agglomerate_handoff.py'

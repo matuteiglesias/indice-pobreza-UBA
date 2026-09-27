@@ -1,0 +1,410 @@
+{
+  "schema_version": "poverty-ecosystem-commissioning-registry/v1",
+  "as_of": "2026-09-27",
+  "authority": {
+    "repository": "matuteiglesias/indice-pobreza-UBA",
+    "path": "science/commissioning",
+    "role": "cross-ecosystem adjudication and observability only"
+  },
+  "status_vocabulary": {
+    "closed_pass": "Question answered positively for the declared scope; rerun only on an explicit trigger.",
+    "closed_negative": "Question answered negatively; do not keep optimizing the same hypothesis without a material upstream change.",
+    "diagnostic_only": "Evidence is valid for diagnosis/observability but cannot authorize production or a new estimator.",
+    "revalidate": "A bounded rerun is required because an upstream governed contract changed; no redesign is implied.",
+    "blocked": "Required governed parent/evidence is unavailable.",
+    "superseded": "Historical evidence retained for regression/provenance but no longer the active authority."
+  },
+  "invariants": {
+    "no_new_estimator": true,
+    "no_generic_raking_or_ipf": true,
+    "census_design_inverse_probability_is_analysis_weight": false,
+    "model_support_default_weight": "unit rows unless the owning experiment explicitly declares otherwise",
+    "population_composition_weight": "EPH PONDERA/PONDIH only when reproducing the relevant population estimand; Census target-year selected persons remain unit rows",
+    "calibration_is_mechanism_specific": true,
+    "identity_is_lineage_not_feature": true,
+    "outside_eph_frame_is_unbenchmarked": true,
+    "semantic_alignment_does_not_authorize_transport": true
+  },
+  "surfaces": [
+    {
+      "id": "T-A",
+      "family": "poverty",
+      "stage": "truth",
+      "name": "Telescope A — observed EPH poverty microscope",
+      "question": "Does the governed observed EPH measurement path reproduce auditable household/person poverty from raw welfare, composition, baskets and survey weights?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "science/telescope_a"
+      },
+      "depends_on": [],
+      "outcome_authority": "observed EPH ITF + governed CBA/CBT measurement",
+      "entity_geography": "EPH households/persons; native EPH region/agglomerate retained",
+      "weights": {
+        "measurement": "PONDIH",
+        "model_fit": null,
+        "transport": null
+      },
+      "calibration": {
+        "kind": "none"
+      },
+      "current": {
+        "status": "closed_pass",
+        "scope": "observed backbone through 2022-Q1..2025-Q4",
+        "evidence": [
+          "local:data/telescope-a-2022-2025-summary.csv",
+          "repo:science/telescope_a/README.md"
+        ],
+        "note": "A0 is canonical observed measurement; A1-A3 are diagnostic perturbations."
+      },
+      "promotion_role": "Observed poverty truth/benchmark surface for Telescope B and commissioning; never a predictive estimator.",
+      "rerun_trigger": "EPH source, basket method/lines, adult-equivalence method, PONDIH semantics, or poverty measurement contract changes."
+    },
+    {
+      "id": "T-B",
+      "family": "poverty",
+      "stage": "within_domain_model",
+      "name": "Telescope B — same-household welfare bridge",
+      "question": "Holding the Telescope-A cohort, lines and weights fixed, where does observed→OOF point→predictive poverty divergence enter?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "science/telescope_b"
+      },
+      "depends_on": [
+        "T-A"
+      ],
+      "outcome_authority": "Telescope-A observed household state; OOF welfare and nested residual ECDF are model evidence",
+      "entity_geography": "same EPH households/persons as Telescope A",
+      "weights": {
+        "measurement": "PONDIH",
+        "model_fit": "owned by upstream welfare model",
+        "transport": null
+      },
+      "calibration": {
+        "kind": "nested_outer_fold_residual_ecdf",
+        "target": "predictive welfare distribution",
+        "restriction": "training-fold only; no global residual substitution"
+      },
+      "current": {
+        "status": "closed_pass",
+        "scope": "2024-Q3 anchor",
+        "evidence": [
+          "repo:science/telescope_b/README.md",
+          "local:Telescope-B 2024-Q3 bridge bundle"
+        ],
+        "note": "Additional quarters are optional replication, not a prerequisite for the Q3 scientific conclusion."
+      },
+      "promotion_role": "Diagnoses point-model compression and predictive residual correction; feeds Telescope C.",
+      "rerun_trigger": "Welfare model, household folds, residual-calibration primitive, or Telescope-A cohort changes."
+    },
+    {
+      "id": "T-C",
+      "family": "poverty",
+      "stage": "transport",
+      "name": "Telescope C — EPH→Census welfare transport",
+      "question": "What changes when the frozen EPH welfare model/distribution leaves the EPH validation domain and scores the governed Census sample?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "science/telescope_c"
+      },
+      "depends_on": [
+        "T-B",
+        "D-1"
+      ],
+      "outcome_authority": "EPH validation only; Census has no observed welfare outcome authority",
+      "entity_geography": "EPH validation cohort versus governed Census target-year sample",
+      "weights": {
+        "measurement": "PONDIH on EPH validation side",
+        "model_fit": "inherited frozen welfare model",
+        "transport": "none"
+      },
+      "calibration": {
+        "kind": "inherited_nested_residual_ecdf",
+        "restriction": "no Census outcome calibration; no transport raking"
+      },
+      "current": {
+        "status": "diagnostic_only",
+        "scope": "2024-Q3 anchor",
+        "evidence": [
+          "repo:science/telescope_c/README.md",
+          "local:Telescope-C 2024-Q3 bundle"
+        ],
+        "note": "Transport decomposition is valid evidence but does not by itself authorize production transport."
+      },
+      "promotion_role": "Transport-risk decomposition only.",
+      "rerun_trigger": "Telescope-B model/distribution, semantic plane, Census donor/sample, or geography frame changes."
+    },
+    {
+      "id": "L1",
+      "family": "labor",
+      "stage": "truth",
+      "name": "L1 — EPH labor truth and official benchmark reproduction",
+      "question": "Can EPH weighted activity/employment/unemployment stocks and rates reproduce pinned official quarter benchmarks and accounting identities?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "scripts/build_eph_labor_truth.py"
+      },
+      "depends_on": [],
+      "outcome_authority": "EPH ESTADO with PONDERA; pinned INDEC headline benchmarks are external validation only",
+      "entity_geography": "EPH persons; national plus 32 native agglomerates",
+      "weights": {
+        "measurement": "PONDERA",
+        "model_fit": null,
+        "transport": null
+      },
+      "calibration": {
+        "kind": "none"
+      },
+      "current": {
+        "status": "closed_pass",
+        "scope": "16 quarters, 2022-Q1..2025-Q4",
+        "evidence": [
+          "local:data/eph-labor-truth-2022-2025",
+          "local:data/eph-labor-headline-2022-2025.csv"
+        ],
+        "note": "Maximum official benchmark deviation previously commissioned below the 0.10 pp gate."
+      },
+      "promotion_role": "Truth/target authority for labor commissioning and L3 calibration targets.",
+      "rerun_trigger": "EPH source release, ESTADO semantics, PONDERA semantics, or official benchmark snapshot changes."
+    },
+    {
+      "id": "L2",
+      "family": "labor",
+      "stage": "within_domain_model",
+      "name": "L2 — transportable labor reconstruction",
+      "question": "Can shared pre-labor EPH/Census covariates reconstruct coherent active / unemployed|active probabilities under household-grouped OOF evaluation?",
+      "authority": {
+        "repository": "matuteiglesias/income-modeling-eph",
+        "path": "configs/labor_bridge_feature_contract.yaml"
+      },
+      "depends_on": [
+        "L1",
+        "D-1"
+      ],
+      "outcome_authority": "EPH observed labor state for OOF evaluation only",
+      "entity_geography": "EPH persons for fit/evaluation; Census persons only for final inference",
+      "weights": {
+        "measurement": null,
+        "model_fit": "compare unit rows versus PONDERA; selection must be empirical",
+        "transport": "none"
+      },
+      "calibration": {
+        "kind": "none"
+      },
+      "current": {
+        "status": "revalidate",
+        "scope": "2024-Q3",
+        "evidence": [
+          "local:data/labor-model-comparison-2024-q3.csv",
+          "repo:docs/LABOR_BRIDGE_SHADOW.md"
+        ],
+        "note": "Prior Q3 2×2 study passed, but governed contract changed by removing unresolved H06; rerun once, no redesign."
+      },
+      "promotion_role": "Produces candidate labor probabilities only; L2 success does not authorize welfare use.",
+      "rerun_trigger": "Governed shared-feature contract, semantic roles, model family, fit-weight policy, or EPH period changes."
+    },
+    {
+      "id": "L3",
+      "family": "labor",
+      "stage": "calibration",
+      "name": "L3 — Census labor marginal calibration",
+      "question": "Can raw Census labor probabilities be calibrated to governed agglomerate activity and unemployment targets while preserving a coherent probability simplex?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "scripts/calibrate_census_labor_probabilities.py"
+      },
+      "depends_on": [
+        "L1",
+        "L2"
+      ],
+      "outcome_authority": "L1 PONDERA-weighted EPH targets inside EPH frame",
+      "entity_geography": "32 EPH agglomerates; outside-frame rows remain explicitly unbenchmarked",
+      "weights": {
+        "measurement": "PONDERA only in target construction",
+        "model_fit": null,
+        "transport": "no Census design-IPW analysis weight"
+      },
+      "calibration": {
+        "kind": "two_logit_offsets",
+        "constraints": [
+          "activity rate",
+          "unemployment conditional on calibrated activity"
+        ],
+        "qa": "employment rate + simplex consistency; no third independent hard constraint"
+      },
+      "current": {
+        "status": "revalidate",
+        "scope": "2024-Q3",
+        "evidence": [
+          "local:data/census-labor-calibrated-2024-q3/calibration_qa.csv"
+        ],
+        "note": "Calibration algorithm and Q3 gates passed; recompute after the one bounded L2 contract rerun because raw probabilities change."
+      },
+      "promotion_role": "Creates a calibrated labor-analysis layer; does not authorize labor probabilities as welfare features.",
+      "rerun_trigger": "L2 model release, L1 target release, calibration domains, or calibration algorithm changes."
+    },
+    {
+      "id": "L4",
+      "family": "labor",
+      "stage": "downstream_impact",
+      "name": "L4 — labor→welfare shadow adjudication",
+      "question": "Do transportable labor probabilities recover enough of the true-labor welfare oracle gain to justify inclusion in the income model?",
+      "authority": {
+        "repository": "matuteiglesias/income-modeling-eph",
+        "path": "docs/LABOR_BRIDGE_SHADOW.md"
+      },
+      "depends_on": [
+        "L2",
+        "L3",
+        "T-B",
+        "T-C"
+      ],
+      "outcome_authority": "EPH observed income/poverty for OOF welfare evaluation; Census remains transport-only",
+      "entity_geography": "exact source-backed EPH person identity; Census only after governed L3",
+      "weights": {
+        "measurement": "inherits Telescope/poverty measurement weights",
+        "model_fit": "income-model experiment contract",
+        "transport": "none beyond explicit L3 labor calibration"
+      },
+      "calibration": {
+        "kind": "none",
+        "comparison": "no-labor vs true-labor oracle vs OOF labor-probability bridge"
+      },
+      "current": {
+        "status": "revalidate",
+        "scope": "2024-Q3",
+        "evidence": [
+          "local:data/q3-labor-arms",
+          "local:labor-bridge-commissioning-summary.json"
+        ],
+        "note": "Prior governed-identity shadow was negative: oracle labor helped welfare, bridge probabilities did not recover the gain. Rerun once after H06 removal; if materially unchanged, close negative."
+      },
+      "promotion_role": "Only labor surface capable of authorizing bridge features into welfare production.",
+      "rerun_trigger": "L2 governed feature contract/model, exact identity surface, or welfare model/folds change."
+    },
+    {
+      "id": "D-1",
+      "family": "transport",
+      "stage": "transport",
+      "name": "Thin EPH↔Census within-agglomerate domain diagnostic",
+      "question": "How separable are EPH and Census within the governed EPH frame under stable/shared, target-period-state, and research-only feature tiers?",
+      "authority": {
+        "repository": "matuteiglesias/encuestador-de-hogares",
+        "path": "science/commissioning/run_eph_census_domain_check.py"
+      },
+      "depends_on": [],
+      "outcome_authority": "source identity only; no welfare or labor outcome",
+      "entity_geography": "EPH_TOTAL + 32 native agglomerates; outside-frame Census preserved separately",
+      "weights": {
+        "measurement": "two lenses: unit model-support; EPH PONDERA population composition",
+        "model_fit": "source-balanced classifier only",
+        "transport": "none"
+      },
+      "calibration": {
+        "kind": "none"
+      },
+      "current": {
+        "status": "revalidate",
+        "scope": "2024-Q3 / CPV-2010",
+        "evidence": [
+          "local:data/eph-census-domain-check-2024q3-cpv2010",
+          "repo:docs/EPH_CENSUS_DOMAIN_CHECK.md"
+        ],
+        "note": "OOF classifier conclusion is closed and valid (S near-random; T and R add systematic separation). Refresh categorical marginals once after canonicalization/missingness fix on encuestador main eca34a22."
+      },
+      "promotion_role": "Transport warning and block-attribution evidence only; never generates transport weights.",
+      "rerun_trigger": "Semantic plane, donor vintage, EPH geography relation, exact model-support universe, or domain-diagnostic implementation changes."
+    },
+    {
+      "id": "OBS",
+      "family": "ecosystem",
+      "stage": "observability",
+      "name": "Commissioning dashboard",
+      "question": "Can already-governed evidence be summarized consistently against pinned benchmarks and across periods without creating new estimands?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "science/commissioning"
+      },
+      "depends_on": [
+        "T-A",
+        "T-B",
+        "T-C",
+        "L1",
+        "D-1"
+      ],
+      "outcome_authority": "none; references owning surfaces",
+      "entity_geography": "mixed, inherited from referenced artifacts",
+      "weights": {
+        "measurement": "never invents or changes weights",
+        "model_fit": null,
+        "transport": null
+      },
+      "calibration": {
+        "kind": "none"
+      },
+      "current": {
+        "status": "diagnostic_only",
+        "scope": "ecosystem synthesis",
+        "evidence": [
+          "repo:science/commissioning/README.md"
+        ],
+        "note": "Dashboard/registry are observability surfaces and must never become estimator parents."
+      },
+      "promotion_role": "Presentation, status, benchmark and audit synthesis only.",
+      "rerun_trigger": "Referenced governed artifacts or benchmark snapshots change."
+    }
+  ],
+  "superseded": [
+    {
+      "id": "Q8-global-domain-classifier",
+      "status": "superseded",
+      "replaced_by": "D-1",
+      "keep_for": "historical regression evidence",
+      "reason": "Old Q8 used a global in-sample classifier with a different estimand; D-1 is household-grouped OOF and within-agglomerate."
+    },
+    {
+      "id": "Q4-legacy-labor-reconstruction",
+      "status": "superseded",
+      "replaced_by": "L2/L4",
+      "keep_for": "historical prior on oracle gain versus reconstructability",
+      "reason": "New bridge has governed identity, factorized labor probabilities, explicit calibration and semantic feature authority."
+    },
+    {
+      "id": "legacy-ajustar-empleo",
+      "status": "superseded",
+      "replaced_by": "L1/L2/L3",
+      "keep_for": "reproducibility tests only",
+      "reason": "Legacy hard employment-rate treatment is outside the current probabilistic labor architecture."
+    }
+  ],
+  "closure_programs": [
+    {
+      "id": "2024-Q3-commissioning-closure-v1",
+      "period": "2024-Q3",
+      "questions": [
+        "D-1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "rules": {
+        "l2_forbidden_features": [
+          "H06"
+        ],
+        "l3_expected_domains": 32,
+        "l4_arms": [
+          "no_labor",
+          "true_labor_oracle",
+          "transportable_labor_probabilities"
+        ],
+        "l4_shared_identity_fields": [
+          "row_universe_sha256",
+          "folds_sha256",
+          "welfare_target_id",
+          "scoring_contract_id",
+          "model_family_id",
+          "non_labor_feature_contract_sha256"
+        ]
+      }
+    }
+  ]
+}

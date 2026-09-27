@@ -71,5 +71,5 @@ jobs:
             echo
             echo "Hosted CI deliberately does **not** reconstruct the large local Census/semantic/predictive-welfare artifacts. Therefore a green run is research-contract liveness, not a newly recomputed official poverty estimate."
             echo
-            echo "Aggregate uncertainty remains not_supplied, Q8 transport caveats remain active, and publication/approval are separate downstream decisions."
+            echo "Aggregate uncertainty remains not_supplied. Transport/commissioning authority and rerun triggers are governed by science/commissioning/registry.json; historical Q8 evidence does not independently authorize transport. Publication/approval remain separate downstream decisions."
           } >> "$GITHUB_STEP_SUMMARY"

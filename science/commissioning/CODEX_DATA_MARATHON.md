@@ -3,6 +3,18 @@
 This document defines bounded local-agent missions that feed
 \`science/commissioning/\` without changing poverty/model semantics.
 
+## Authority note — consolidated 2026-09-27
+
+This file is a reproducibility/backlog packet, **not the current work queue**.
+
+Current commissioning state, rerun triggers and superseded analyses are governed by
+`registry.json` and `CONSOLIDATED_FRAMEWORK.md`. Do not execute a mission below merely
+because it is listed here. A mission is active only when the registry marks the owning
+surface `revalidate` or `blocked`, or when a new explicit scientific question is opened.
+
+In particular, do not expand Telescope B/C to more quarters solely for completeness and do
+not reopen the joint-distribution/transport-weighting frontier from this backlog.
+
 ## Status — 2026-09-26
 
 This is now a **reproducibility/backlog packet**, not an unstarted commissioning plan. PR #35 is merged.

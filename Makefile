@@ -77,8 +77,12 @@ release-index:
 	$(PYTHON) scripts/index_releases.py
 
 
-.PHONY: commissioning-smoke
-commissioning-smoke:
+.PHONY: commissioning-registry-check commissioning-smoke
+commissioning-registry-check:
+	$(PYTHON) science/commissioning/registry.py
+	$(PYTHON) -m unittest tests.test_commissioning_registry
+
+commissioning-smoke: commissioning-registry-check
 	rm -rf build/commissioning/benchmark-smoke
 	$(PYTHON) science/commissioning/run.py --config science/commissioning/config.example.json --output build/commissioning/benchmark-smoke
 	$(PYTHON) -m unittest discover -s tests -p 'test_commissioning_dashboard.py'

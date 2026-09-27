@@ -1,0 +1,28 @@
+name: Labor bridge contracts
+
+on:
+  pull_request:
+    paths:
+      - "science/labor/**"
+      - "scripts/build_eph_labor_truth.py"
+      - "scripts/build_labor_calibration_targets.py"
+      - "scripts/calibrate_census_labor_probabilities.py"
+      - "tests/test_labor_bridge.py"
+      - "docs/LABOR_BRIDGE_LOCAL_COMMISSIONING.md"
+      - ".github/workflows/labor-bridge.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install bounded test dependencies
+        run: python -m pip install numpy pandas
+      - name: Unit contracts
+        run: PYTHONPATH=. python -m unittest discover -s tests -p 'test_labor_bridge.py'
+      - name: Compile entrypoints
+        run: python -m py_compile science/labor/core.py scripts/build_eph_labor_truth.py scripts/build_labor_calibration_targets.py scripts/calibrate_census_labor_probabilities.py

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the governed eight-period predictive poverty batch from resolved parent refs.
+"""Run a governed longitudinal predictive poverty batch from resolved parent refs.
 
 The committed batch spec contains logical refs only.  A separate resolution file
 supplies local/fixture paths plus hashes; it is intentionally not committed by
@@ -22,6 +22,16 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
 DEFAULT_SPEC = ROOT / "configs/releases/predictive-poverty-2024q1-2025q4.json"
 DEFAULT_PROFILE = ROOT / "configs/geographies/predictive_geography_profiles_v1.json"
+LEGACY_PERIODS = (
+    "2024-Q1", "2024-Q2", "2024-Q3", "2024-Q4",
+    "2025-Q1", "2025-Q2", "2025-Q3", "2025-Q4",
+)
+SUPPORTED_PERIODS = tuple(
+    f"{year}-Q{quarter}"
+    for year in range(2022, 2026)
+    for quarter in range(1, 5)
+)
+
 _GEOGRAPHY_SPEC = importlib.util.spec_from_file_location(
     "predictive_geography_release",
     SCRIPT_DIR / "build_predictive_geography_release.py",
@@ -269,6 +279,12 @@ def run_batch(
             }
         )
 
+    periods_tuple = tuple(item["period"] for item in period_entries)
+    manifest_schema = (
+        "department-poverty-batch-2024q1-2025q4/v1"
+        if periods_tuple == LEGACY_PERIODS
+        else "department-poverty-batch/v2"
+    )
     batch_manifest = {
         "schema_version": "department-poverty-batch/v1",
         "batch_id": spec["batch_id"],
