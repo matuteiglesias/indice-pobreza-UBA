@@ -1,5 +1,7 @@
 # Local commissioning marathon — EPH agglomerates G1→G7
 
+> **Status note (2026-09-27): reproducibility runbook, not current ecosystem queue.** This document preserves the G-series local execution instructions and evidence expectations. Current cross-ecosystem scientific status is governed by `science/commissioning/registry.json` and summarized in `docs/CURRENT_STATE.md`. Do not infer that a dated “resume point” below is still the next system priority.
+
 This mission materializes the cloud-implemented agglomerate path on real local data.
 
 ## Non-negotiable scope
