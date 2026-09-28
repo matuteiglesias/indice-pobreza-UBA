@@ -211,6 +211,8 @@ steps.
 
 ## Mechanical Q3 closure packet
 
+The accepted closure receipt is preserved under `science/commissioning/receipts/` for durable audit. The registry remains the status authority; the receipt is evidence, not a second queue.
+
 The bounded Q3 revalidation is complete. The following machinery is retained
 for audit/reproduction and for future trigger-driven revalidation, not as a
 standing work queue.
