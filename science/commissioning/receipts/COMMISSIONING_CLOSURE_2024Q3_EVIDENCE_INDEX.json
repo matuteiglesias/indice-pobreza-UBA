@@ -1,0 +1,83 @@
+{
+  "contract": "research.2024-q3-commissioning-closure-evidence/v1",
+  "period": "2024-Q3",
+  "d1": {
+    "status": "diagnostic_only",
+    "manifest": "/home/matias/data/eph-census-domain-check-2024q3-cpv2010/manifest.json",
+    "manifest_sha256": "575ee3be79e8c85da751f577b5e439079f52333859a732e7fe9f4e142b523d9b",
+    "classifier_rows": 99,
+    "semantic_hard_violations": 0,
+    "support_diagnostics": [
+      "IX_TOT",
+      "P03",
+      "H15"
+    ],
+    "eph_total": {
+      "S": {
+        "auc": 0.5148015016959151,
+        "brier": 0.2486652412595526,
+        "log_loss": 0.690428440352292
+      },
+      "S+T": {
+        "auc": 0.7061800746840173,
+        "brier": 0.2128863368791615,
+        "log_loss": 0.6056930185883007
+      },
+      "S+T+R": {
+        "auc": 0.8119381365080739,
+        "brier": 0.1763712538467724,
+        "log_loss": 0.5211899680873987
+      }
+    },
+    "delta_T": 0.19137857298810224,
+    "delta_R": 0.10575806182405656
+  },
+  "l2": {
+    "status": "closed_pass",
+    "manifest": "/home/matias/data/labor-models-q3-corrected/hist_gradient_boosting-none/manifest.json",
+    "manifest_sha256": "7ff5b27279901aef18ed145c39a2919cef73c5a7588df944c375755d4e377aaf",
+    "rows": 47509,
+    "features": [
+      "P02",
+      "P05",
+      "P09",
+      "P10",
+      "V01",
+      "H05",
+      "H07",
+      "H08",
+      "H09",
+      "H13",
+      "H14",
+      "PROP",
+      "P03",
+      "IX_TOT"
+    ],
+    "h06_present": false,
+    "active_brier": 0.10451513033537518,
+    "conditional_unemployment_brier": 0.05563157565836664
+  },
+  "l3": {
+    "status": "closed_pass",
+    "manifest": "/home/matias/data/census-labor-calibrated-2024-q3-corrected/manifest.json",
+    "manifest_sha256": "df337603a491f8589854a47506003a3970c05b1759b910d066eb6e8abe749758",
+    "calibrated_domains": 32,
+    "unbenchmarked_domains": 1,
+    "max_abs_target_delta_pp": 9.469369732784116e-11,
+    "simplex_error": 1.1102230246251565e-16
+  },
+  "l4": {
+    "status": "closed_negative",
+    "manifest": "/home/matias/data/q3-labor-arms-corrected/manifest.json",
+    "manifest_sha256": "6a5fc87d822221346e90daa68306420c34565007c7335775a5cb9bf79ae31fc0",
+    "oracle_labor_useful": "yes",
+    "transportable_bridge_improves": "no",
+    "metrics": "see metrics.csv"
+  },
+  "parents": {
+    "semantic_plane_sha256": "32c3f9ed2f047fe315dddc84665b44f4e541933e91f58504c104497799d8308c",
+    "g2_manifest_sha256": "46c2419b006de94b637a94c8123856d49f74107db0306e33268055cf4da2a716",
+    "eph_release": "eph-2024-q3-3b6a7a15c4af",
+    "census_sample": "census-sample-2024-0839713eafea8d1b"
+  }
+}
