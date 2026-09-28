@@ -1,0 +1,241 @@
+{
+  "schema_version": "poverty-ecosystem-commissioning-closure/v1",
+  "program_id": "2024-Q3-commissioning-closure-v1",
+  "period": "2024-Q3",
+  "registry": {
+    "schema_version": "poverty-ecosystem-commissioning-registry/v1",
+    "program_contract_sha256": "84ae70bb4c008efbe627608bb8b98544b37cb47c0e4a35591716a10d4d69cb29"
+  },
+  "questions": {
+    "D-1": {
+      "period": "2024-Q3",
+      "status": "diagnostic_only",
+      "producer": {
+        "repository": "matuteiglesias/encuestador-de-hogares",
+        "git_commit": "8af34e83d8cc389cab97e5583c9b111f014c3c58"
+      },
+      "artifact": {
+        "id": "eph-census-domain-check-2024q3-cpv2010",
+        "sha256": "575ee3be79e8c85da751f577b5e439079f52333859a732e7fe9f4e142b523d9b"
+      },
+      "parents": {},
+      "evidence": [
+        {
+          "id": "eph-census-domain-check-2024q3-cpv2010-manifest",
+          "sha256": "575ee3be79e8c85da751f577b5e439079f52333859a732e7fe9f4e142b523d9b",
+          "period": "2024-Q3"
+        }
+      ],
+      "acceptance": {
+        "status": "accepted",
+        "checks": [
+          "Corrected OOF source-separation diagnostic completed; remains diagnostic-only."
+        ]
+      },
+      "closure_reason": "Corrected OOF source-separation diagnostic completed; remains diagnostic-only.",
+      "reopen_triggers": [
+        "Semantic plane, donor vintage, EPH geography relation, exact model-support universe, or domain-diagnostic implementation changes."
+      ]
+    },
+    "L2": {
+      "period": "2024-Q3",
+      "status": "closed_pass",
+      "producer": {
+        "repository": "matuteiglesias/income-modeling-eph",
+        "git_commit": "9653e5116b569e0ddb0a8fe94d63c904b2cc8c4a"
+      },
+      "artifact": {
+        "id": "hist_gradient_boosting-none-corrected-q3",
+        "sha256": "7ff5b27279901aef18ed145c39a2919cef73c5a7588df944c375755d4e377aaf"
+      },
+      "parents": {
+        "L1": {
+          "id": "eph-labor-truth-2022-2025",
+          "sha256": "063a09119d9fa66e99b99f1b2ee7663bb4818b65a35178c3441a8cf0440f36c4",
+          "period": "2024-Q3"
+        },
+        "D-1": {
+          "id": "eph-census-domain-check-2024q3-cpv2010",
+          "sha256": "575ee3be79e8c85da751f577b5e439079f52333859a732e7fe9f4e142b523d9b",
+          "period": "2024-Q3"
+        }
+      },
+      "evidence": [
+        {
+          "id": "hist_gradient_boosting-none-corrected-q3-manifest",
+          "sha256": "7ff5b27279901aef18ed145c39a2919cef73c5a7588df944c375755d4e377aaf",
+          "period": "2024-Q3"
+        }
+      ],
+      "acceptance": {
+        "status": "accepted",
+        "checks": [
+          "Corrected contract excludes unresolved H06 and produces complete grouped OOF probabilities."
+        ]
+      },
+      "closure_reason": "Corrected contract excludes unresolved H06 and produces complete grouped OOF probabilities.",
+      "reopen_triggers": [
+        "Governed shared-feature contract, semantic roles, model family, fit-weight policy, or EPH period changes."
+      ],
+      "feature_contract": {
+        "id": "labor-bridge-feature-contract-v1",
+        "sha256": "1889512530fb0446234c65f46fe9f060bff8f6b05a7c83013782aca6c7d35cea",
+        "features": [
+          "P02",
+          "P05",
+          "P09",
+          "P10",
+          "V01",
+          "H05",
+          "H07",
+          "H08",
+          "H09",
+          "H13",
+          "H14",
+          "PROP",
+          "P03",
+          "IX_TOT"
+        ]
+      }
+    },
+    "L3": {
+      "period": "2024-Q3",
+      "status": "closed_pass",
+      "producer": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "git_commit": "ddaa5d8ab1b148b24426fd93d952efd73c0d842b"
+      },
+      "artifact": {
+        "id": "census-labor-calibrated-2024-q3-corrected",
+        "sha256": "df337603a491f8589854a47506003a3970c05b1759b910d066eb6e8abe749758"
+      },
+      "parents": {
+        "L1": {
+          "id": "eph-labor-truth-2022-2025",
+          "sha256": "063a09119d9fa66e99b99f1b2ee7663bb4818b65a35178c3441a8cf0440f36c4",
+          "period": "2024-Q3"
+        },
+        "L2": {
+          "id": "hist_gradient_boosting-none-corrected-q3",
+          "sha256": "7ff5b27279901aef18ed145c39a2919cef73c5a7588df944c375755d4e377aaf",
+          "period": "2024-Q3"
+        }
+      },
+      "evidence": [
+        {
+          "id": "census-labor-calibrated-2024-q3-corrected-manifest",
+          "sha256": "df337603a491f8589854a47506003a3970c05b1759b910d066eb6e8abe749758",
+          "period": "2024-Q3"
+        }
+      ],
+      "acceptance": {
+        "status": "accepted",
+        "checks": [
+          "Calibration gate passes for all 32 mapped domains with numerical simplex and marginal closure."
+        ]
+      },
+      "closure_reason": "Calibration gate passes for all 32 mapped domains with numerical simplex and marginal closure.",
+      "reopen_triggers": [
+        "L2 model release, L1 target release, calibration domains, or calibration algorithm changes."
+      ],
+      "calibration": {
+        "domain_count": 32,
+        "targets": {
+          "id": "labor-targets-2024-Q3",
+          "sha256": "69430c7745745f13366c8f19270c0a8778f14aab47d5810b7a55a1c42e43edc1"
+        },
+        "qa": {
+          "id": "calibration_qa.csv",
+          "sha256": "acaa499d3541a3de50c8cd1165b6f300d9cf9f86167b81a5a341586fa0b3a87e"
+        },
+        "gate_status": "PASS"
+      }
+    },
+    "L4": {
+      "period": "2024-Q3",
+      "status": "closed_negative",
+      "producer": {
+        "repository": "matuteiglesias/income-modeling-eph",
+        "git_commit": "9653e5116b569e0ddb0a8fe94d63c904b2cc8c4a"
+      },
+      "artifact": {
+        "id": "q3-labor-arms-corrected",
+        "sha256": "6a5fc87d822221346e90daa68306420c34565007c7335775a5cb9bf79ae31fc0"
+      },
+      "parents": {
+        "L2": {
+          "id": "hist_gradient_boosting-none-corrected-q3",
+          "sha256": "7ff5b27279901aef18ed145c39a2919cef73c5a7588df944c375755d4e377aaf",
+          "period": "2024-Q3"
+        },
+        "L3": {
+          "id": "census-labor-calibrated-2024-q3-corrected",
+          "sha256": "df337603a491f8589854a47506003a3970c05b1759b910d066eb6e8abe749758",
+          "period": "2024-Q3"
+        },
+        "T-B": {
+          "id": "household-welfare-predictive-2024-q3-b189384e40e1654c",
+          "sha256": "20f8afcaa657374a11df64af0307e2849bbbe2e9c83aca973adbd6cf8aca6d04",
+          "period": "2024-Q3"
+        },
+        "T-C": {
+          "id": "telescope-c-q3-governed",
+          "sha256": "41064770758a8389a1a5247379f7ae251634fd15ecc13bd821642fe2aae7738c",
+          "period": "2024-Q3"
+        }
+      },
+      "evidence": [
+        {
+          "id": "q3-labor-arms-corrected-manifest",
+          "sha256": "6a5fc87d822221346e90daa68306420c34565007c7335775a5cb9bf79ae31fc0",
+          "period": "2024-Q3"
+        }
+      ],
+      "acceptance": {
+        "status": "accepted",
+        "checks": [
+          "Oracle labor improves welfare prediction; transportable labor bridge does not recover the gain."
+        ]
+      },
+      "closure_reason": "Oracle labor improves welfare prediction; transportable labor bridge does not recover the gain.",
+      "reopen_triggers": [
+        "L2 governed feature contract/model, exact identity surface, or welfare model/folds change."
+      ],
+      "comparison": {
+        "arms": [
+          {
+            "name": "no_labor",
+            "row_universe_sha256": "c35569de65d68cf1d35a4e04d9f940543574dd172290b7b84eedd5584e73d6c7",
+            "folds_sha256": "81ede4b18c2faab3cb8753abae2a5bc0b35d275d9b512acdd1401aa4359ff954",
+            "welfare_target_id": "log10(P47T)",
+            "scoring_contract_id": "person_log_income_and_household_mean:v1",
+            "model_family_id": "HistGradientBoostingRegressor:v1",
+            "non_labor_feature_contract_sha256": "1889512530fb0446234c65f46fe9f060bff8f6b05a7c83013782aca6c7d35cea"
+          },
+          {
+            "name": "true_labor_oracle",
+            "row_universe_sha256": "c35569de65d68cf1d35a4e04d9f940543574dd172290b7b84eedd5584e73d6c7",
+            "folds_sha256": "81ede4b18c2faab3cb8753abae2a5bc0b35d275d9b512acdd1401aa4359ff954",
+            "welfare_target_id": "log10(P47T)",
+            "scoring_contract_id": "person_log_income_and_household_mean:v1",
+            "model_family_id": "HistGradientBoostingRegressor:v1",
+            "non_labor_feature_contract_sha256": "1889512530fb0446234c65f46fe9f060bff8f6b05a7c83013782aca6c7d35cea"
+          },
+          {
+            "name": "transportable_labor_probabilities",
+            "row_universe_sha256": "c35569de65d68cf1d35a4e04d9f940543574dd172290b7b84eedd5584e73d6c7",
+            "folds_sha256": "81ede4b18c2faab3cb8753abae2a5bc0b35d275d9b512acdd1401aa4359ff954",
+            "welfare_target_id": "log10(P47T)",
+            "scoring_contract_id": "person_log_income_and_household_mean:v1",
+            "model_family_id": "HistGradientBoostingRegressor:v1",
+            "non_labor_feature_contract_sha256": "1889512530fb0446234c65f46fe9f060bff8f6b05a7c83013782aca6c7d35cea"
+          }
+        ],
+        "adjudication": {
+          "oracle_labor_useful": "yes",
+          "transportable_bridge_improves": "no"
+        }
+      }
+    }
+  }
+}
