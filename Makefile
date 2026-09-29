@@ -1,4 +1,4 @@
-.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check v2-release-smoke atlas-contract-smoke
+.PHONY: hygiene status smoke policy-check contracts-check contracts-smoke adapters-smoke method-check measurement-check v2-contracts-check estimation-check v2-release-smoke atlas-contract-smoke measurement-alignment-check measurement-alignment-run
 
 PYTHON ?= PYTHONPATH=src python3
 
@@ -86,3 +86,12 @@ commissioning-smoke: commissioning-registry-check
 	rm -rf build/commissioning/benchmark-smoke
 	$(PYTHON) science/commissioning/run.py --config science/commissioning/config.example.json --output build/commissioning/benchmark-smoke
 	$(PYTHON) -m unittest discover -s tests -p 'test_commissioning_dashboard.py'
+
+
+measurement-alignment-check:
+	$(PYTHON) -m unittest tests.test_measurement_alignment
+
+measurement-alignment-run:
+	@test -n "$(CONFIG)" || (echo "CONFIG is required" >&2; exit 2)
+	@test -n "$(OUTPUT)" || (echo "OUTPUT is required" >&2; exit 2)
+	$(PYTHON) -m science.measurement_alignment.run --config "$(CONFIG)" --output "$(OUTPUT)"
