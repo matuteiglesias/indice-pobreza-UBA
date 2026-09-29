@@ -104,3 +104,12 @@ cedlas-dt370-replication-run:
 	@test -n "$(CONFIG)" || (echo "CONFIG is required" >&2; exit 2)
 	@test -n "$(OUTPUT)" || (echo "OUTPUT is required" >&2; exit 2)
 	$(PYTHON) -m science.measurement_alignment.run_cedlas_dt370 --config "$(CONFIG)" --output "$(OUTPUT)"
+
+
+cedlas-choice-attribution-check:
+	$(PYTHON) -m unittest tests.test_cedlas_choice_attribution
+
+cedlas-choice-attribution-run:
+	@test -n "$(CONFIG)" || (echo "CONFIG is required" >&2; exit 2)
+	@test -n "$(OUTPUT)" || (echo "OUTPUT is required" >&2; exit 2)
+	$(PYTHON) -m science.measurement_alignment.run_cedlas_choice_attribution --config "$(CONFIG)" --output "$(OUTPUT)"
