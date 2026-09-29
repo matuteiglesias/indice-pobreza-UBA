@@ -1,0 +1,71 @@
+{
+  "cedlas_choice_release": "/home/matias/data/cedlas-dt370-forensic/choices/cedlas-choice-attribution-fde92f0ddc5153a8",
+  "external_targets": "science/measurement_alignment/external_targets/cedlas_dt370_table5.csv",
+  "periods": [
+    {
+      "period": "2022-Q1",
+      "telescope_a_households": "/home/matias/data/telescope-a-2022-q1/households.parquet"
+    },
+    {
+      "period": "2022-Q2",
+      "telescope_a_households": "/home/matias/data/telescope-a-2022-q2/households.parquet"
+    },
+    {
+      "period": "2022-Q3",
+      "telescope_a_households": "/home/matias/data/telescope-a-2022-q3/households.parquet"
+    },
+    {
+      "period": "2022-Q4",
+      "telescope_a_households": "/home/matias/data/telescope-a-2022-q4/households.parquet"
+    },
+    {
+      "period": "2023-Q1",
+      "telescope_a_households": "/home/matias/data/telescope-a-2023-q1/households.parquet"
+    },
+    {
+      "period": "2023-Q2",
+      "telescope_a_households": "/home/matias/data/telescope-a-2023-q2/households.parquet"
+    },
+    {
+      "period": "2023-Q3",
+      "telescope_a_households": "/home/matias/data/telescope-a-2023-q3/households.parquet"
+    },
+    {
+      "period": "2023-Q4",
+      "telescope_a_households": "/home/matias/data/telescope-a-2023-q4/households.parquet"
+    },
+    {
+      "period": "2024-Q1",
+      "telescope_a_households": "/home/matias/data/telescope-a-2024-q1/households.parquet"
+    },
+    {
+      "period": "2024-Q2",
+      "telescope_a_households": "/home/matias/data/telescope-a-2024-q2/households.parquet"
+    },
+    {
+      "period": "2024-Q3",
+      "telescope_a_households": "/home/matias/data/telescope-a-t3-q3/households.parquet"
+    },
+    {
+      "period": "2024-Q4",
+      "telescope_a_households": "/home/matias/data/telescope-a-2024-q4/households.parquet"
+    },
+    {
+      "period": "2025-Q1",
+      "telescope_a_households": "/home/matias/data/telescope-a-2025-q1/households.parquet"
+    },
+    {
+      "period": "2025-Q2",
+      "telescope_a_households": "/home/matias/data/telescope-a-2025-q2/households.parquet"
+    },
+    {
+      "period": "2025-Q3",
+      "telescope_a_households": "/home/matias/data/telescope-a-2025-q1/telescope-a-2025-q3/households.parquet"
+    },
+    {
+      "period": "2025-Q4",
+      "telescope_a_households": "/home/matias/data/telescope-a-2025-q4/households.parquet"
+    }
+  ],
+  "primary_engel_sensitivity_release": "/home/matias/data/engho-2017-18/engel-sensitivity-signed-sales/engel-sensitivity-95d0632b226c375d"
+}

@@ -1,0 +1,13 @@
+{
+  "release_id": "cedlas-poverty-replication-a301021eaaf80dde",
+  "manifest_sha256": "0c739c7be7f1d2c01b258a61c1e7c17175e092bd95a7be2f014b44a978c824f1",
+  "code_commit": "0fe6d533632767d6668b892b31b1d93f06d3bf6c",
+  "upstream_canastas_commit": "e5e786a",
+  "threshold_release_id": "cedlas-dt370-replication-2eedcb977b47232e",
+  "threshold_manifest_sha256": "eabf4e7f96da630cb2780d33dbf6ef1f1cad706a1c96dba8ee5a049411453db6",
+  "telescope_a_baseline_reproduction": "pass",
+  "max_abs_table5_difference_pp": 0.06119717455567719,
+  "target_tolerance_pp": 0.1,
+  "status": "pass",
+  "respondent_level_eph_data_included": false
+}

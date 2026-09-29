@@ -1,0 +1,17 @@
+{
+  "all_published_semesters_within_tolerance": true,
+  "cba_changed": false,
+  "cedlas_manifest_sha256": "eabf4e7f96da630cb2780d33dbf6ef1f1cad706a1c96dba8ee5a049411453db6",
+  "cedlas_release_id": "cedlas-dt370-replication-2eedcb977b47232e",
+  "coicop02_food_fraction": "1",
+  "m2_reporting_drift": "deferred",
+  "max_abs_table5_difference_pp": 0.06119717455567719,
+  "nonresponse_calibration_performed": false,
+  "official_basket_release_id": "regional-baskets-v2-price-fb884d2b770bbe6f",
+  "regionalization": "paper_published_ratio",
+  "status": "pass",
+  "target_tolerance_pp": 0.1,
+  "telescope_a_baseline_reproduction": "pass",
+  "tobacco_in_food": true,
+  "welfare_changed": false
+}

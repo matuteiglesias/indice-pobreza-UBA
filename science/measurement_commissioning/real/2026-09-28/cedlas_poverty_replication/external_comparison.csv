@@ -1,0 +1,8 @@
+semester,our_estimate,published_cedlas,difference,difference_pp,within_0_1pp,role
+2022-S1,0.4289410446077384,0.429,-5.895539226158375e-05,-0.0058955392261583,True,replication_validation_not_estimator_input
+2022-S2,0.4635893222192701,0.464,-0.0004106777807299,-0.0410677780729951,True,replication_validation_not_estimator_input
+2023-S1,0.4683880282544432,0.469,-0.0006119717455567,-0.0611971745556771,True,replication_validation_not_estimator_input
+2023-S2,0.4886858540344925,0.489,-0.0003141459655074,-0.0314145965507495,True,replication_validation_not_estimator_input
+2024-S1,0.59101039930782,0.591,1.0399307819985992e-05,0.0010399307819985,True,replication_validation_not_estimator_input
+2024-S2,0.4485471557409263,0.449,-0.0004528442590736,-0.0452844259073659,True,replication_validation_not_estimator_input
+2025-S1,0.3970164787557286,0.397,1.6478755728632777e-05,0.0016478755728632,True,replication_validation_not_estimator_input

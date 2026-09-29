@@ -1,0 +1,17 @@
+experiment,policy,transition,households,pondih_mass,person_weight_mass
+M1,T1_previous_month,false_to_false,143640,113626777.0,290660282.0
+M1,T1_previous_month,false_to_true,0,0.0,0.0
+M1,T1_previous_month,true_to_false,5568,3995510.0,13836618.0
+M1,T1_previous_month,true_to_true,54299,43216015.0,168425744.0
+M1,Tm_current_previous_midpoint,false_to_false,143640,113626777.0,290660282.0
+M1,Tm_current_previous_midpoint,false_to_true,0,0.0,0.0
+M1,Tm_current_previous_midpoint,true_to_false,2733,1978877.0,6763770.0
+M1,Tm_current_previous_midpoint,true_to_true,57134,45232648.0,175498592.0
+M3,engho17_level_only,false_to_false,106414,84809785.0,201544685.0
+M3,engho17_level_only,false_to_true,37226,28816992.0,89115597.0
+M3,engho17_level_only,true_to_false,0,0.0,0.0
+M3,engho17_level_only,true_to_true,59867,47211525.0,182262362.0
+M3,engho17_level_plus_trajectory,false_to_false,107201,85329767.0,202705690.0
+M3,engho17_level_plus_trajectory,false_to_true,36439,28297010.0,87954592.0
+M3,engho17_level_plus_trajectory,true_to_false,0,0.0,0.0
+M3,engho17_level_plus_trajectory,true_to_true,59867,47211525.0,182262362.0

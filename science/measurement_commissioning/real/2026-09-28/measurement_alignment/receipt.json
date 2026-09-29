@@ -1,0 +1,31 @@
+{
+  "release_id": "measurement-alignment-9881018e3eaef09f",
+  "manifest_sha256": "4abfd1434204c85b1c0dd93fed28c284cfaa7b24f4a624e7a907aabcea47ea6e",
+  "code_commit": "0fe6d533632767d6668b892b31b1d93f06d3bf6c",
+  "upstream_canastas_commit": "e5e786a",
+  "coverage_periods": 16,
+  "coverage_start": "2022-Q1",
+  "coverage_end": "2025-Q4",
+  "qa": {
+    "engel_reference_method_id": "research.argentina-engel-reference-structure/engho-2017-18-p29-p48-signed-sales-v2",
+    "engel_reference_release_id": "engel-reference-080d0d1bdf25fd2f",
+    "engel_sensitivity_manifest_sha256": "6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c",
+    "engel_sensitivity_release_id": "engel-sensitivity-95d0632b226c375d",
+    "m1_welfare_changed": false,
+    "m2_reporting_drift": "deferred",
+    "m3_cba_changed": false,
+    "m3_welfare_changed": false,
+    "nonresponse_calibration_performed": false,
+    "official_basket_manifest_sha256": "5b3b8b035615b4c8087f6cad9240f15add6eba2a39fea0794aefa6dd427a2c86",
+    "official_basket_release_id": "regional-baskets-v2-price-fb884d2b770bbe6f",
+    "scientific_status": "research_validation_not_official_statistics",
+    "semester_method": "pooled_household_contributions_not_average_of_quarter_rates",
+    "status": "pass",
+    "telescope_a_baseline_reproduction": "pass"
+  },
+  "largest_quarterly_m1_effect_pp": -0.077736,
+  "largest_semester_m1_effect_pp": -0.062612,
+  "largest_quarterly_m3_full_effect_pp": 0.221575,
+  "largest_semester_m3_full_effect_pp": 0.209152,
+  "respondent_level_eph_data_included": false
+}

@@ -1,0 +1,43 @@
+{
+  "artifact_type": "research.argentina-poverty-cedlas-choice-attribution/v1",
+  "census_execution_performed": false,
+  "choice_manifest_sha256": "e5288da3507814ed3c18827f87cdf3a20d598d7042bea0d1839e0f026c2c05cd",
+  "choice_release_id": "cedlas-choice-attribution-fde92f0ddc5153a8",
+  "files": {
+    "choice_attribution.csv": {
+      "bytes": 12311,
+      "sha256": "19ed3fbaf059f09ae5e5bf4338e1b6fbda6459ac6462ca932cc26a2e496b4237"
+    },
+    "config.lock.json": {
+      "bytes": 2493,
+      "sha256": "f9ac8f8a08aeae734aeaf3476e2f211d15f33624220ccd35a3437b339bbb97c5"
+    },
+    "qa.json": {
+      "bytes": 749,
+      "sha256": "2d6112932be27057c1b16335ee80e5878d29ae60934917f8938d0c5b2705112d"
+    },
+    "quarterly_estimates.csv": {
+      "bytes": 1776392,
+      "sha256": "1724392507e45828575b66a305fd3f18d6ba5a2612b2131b05abc4a4b00d8880"
+    },
+    "semester_estimates.csv": {
+      "bytes": 890518,
+      "sha256": "f7dafd44e25298f82fb0e0492f703d1dd657f34820d76b16bf145da5efdb9a96"
+    },
+    "transitions.csv": {
+      "bytes": 113418,
+      "sha256": "869e46ced24ec9282a2f89cd2d355f57b789b7cb38dd7661208584d7618af601"
+    }
+  },
+  "m2_reporting_drift": "deferred",
+  "nonresponse_calibration_performed": false,
+  "official_basket_release_id": "regional-baskets-v2-price-fb884d2b770bbe6f",
+  "paper_exact_max_abs_table5_difference_pp": 0.06119717455567719,
+  "paper_exact_target_tolerance_pp": 0.1,
+  "predictive_welfare_execution_performed": false,
+  "primary_engel_manifest_sha256": "6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c",
+  "primary_engel_release_id": "engel-sensitivity-95d0632b226c375d",
+  "release_id": "cedlas-choice-poverty-e5864cdf7d9a0a7d",
+  "schema": "cedlas-dt370-choice-poverty-attribution/v1",
+  "status": "forensic_replication_validation"
+}

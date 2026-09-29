@@ -1,0 +1,44 @@
+{
+  "artifact_type": "research.argentina-poverty-cedlas-dt370-replication/v1",
+  "cedlas_threshold_manifest_sha256": "eabf4e7f96da630cb2780d33dbf6ef1f1cad706a1c96dba8ee5a049411453db6",
+  "cedlas_threshold_release_id": "cedlas-dt370-replication-2eedcb977b47232e",
+  "census_execution_performed": false,
+  "coicop02_food_fraction": "1",
+  "files": {
+    "config.lock.json": {
+      "bytes": 2359,
+      "sha256": "cc437bb440d0fadc931855309f137eb1eda75ee753e41cbbece42c97a8f0429e"
+    },
+    "external_comparison.csv": {
+      "bytes": 960,
+      "sha256": "8535d043268874de2df4cf0332c0620912eda5f16d8b8ee819f7d8efbbfd8c01"
+    },
+    "qa.json": {
+      "bytes": 689,
+      "sha256": "f1cf7ee73d8e13c995dab0fc187172099d970ac2fe3f02d5bebcc848c7355d46"
+    },
+    "quarterly_estimates.csv": {
+      "bytes": 310075,
+      "sha256": "489f603c765f8cb94a8611f05a93cd26906c0831391bc2ba5acb95e5f5cf5c78"
+    },
+    "semester_estimates.csv": {
+      "bytes": 155533,
+      "sha256": "216557c073e98d0b896444a39236a417da4c641e09e5c7d25871abbe5cb62ee9"
+    },
+    "transitions.csv": {
+      "bytes": 11399,
+      "sha256": "0ac0c991bd03e5a395740ab3565ae107dcafb6fd1cddec67aacb1c847a262023"
+    }
+  },
+  "m2_reporting_drift": "deferred",
+  "max_abs_table5_difference_pp": 0.06119717455567719,
+  "nonresponse_calibration_performed": false,
+  "predictive_welfare_execution_performed": false,
+  "regionalization": "paper_published_ratio",
+  "release_id": "cedlas-poverty-replication-a301021eaaf80dde",
+  "schema": "cedlas-dt370-poverty-replication/v1",
+  "status": "replication_validation",
+  "target_tolerance_pp": 0.1,
+  "telescope_a_baseline_reproduction": "pass",
+  "tobacco_in_food": true
+}

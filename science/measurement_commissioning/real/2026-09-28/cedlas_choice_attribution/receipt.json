@@ -1,0 +1,22 @@
+{
+  "release_id": "cedlas-choice-poverty-e5864cdf7d9a0a7d",
+  "manifest_sha256": "ab85eab5d863682fbb9218a0854385967fefa29ebf88a7a8207e593b9c051b02",
+  "code_commit": "0fe6d533632767d6668b892b31b1d93f06d3bf6c",
+  "upstream_canastas_commit": "e5e786a",
+  "canastas_choice_release_id": "cedlas-choice-attribution-fde92f0ddc5153a8",
+  "canastas_choice_manifest_sha256": "e5288da3507814ed3c18827f87cdf3a20d598d7042bea0d1839e0f026c2c05cd",
+  "primary_engel_release_id": "engel-sensitivity-95d0632b226c375d",
+  "primary_engel_manifest_sha256": "6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c",
+  "paper_exact_max_abs_table5_difference_pp": 0.06119717455567719,
+  "variant_count": 9,
+  "effects_pp": {
+    "equal_vs_paper_max": 0.111,
+    "pooled_vs_equal_max": 4.04,
+    "direct_vs_inherited_max": 0.342,
+    "alcohol_only_vs_full02_max": 1.984,
+    "paper_alcohol_only_vs_exact_max": 1.893,
+    "primary_signed_sales_vs_paper_range": "9.93\u201312.09"
+  },
+  "differences_are_sequential_or_pairwise_not_additive": true,
+  "respondent_level_eph_data_included": false
+}

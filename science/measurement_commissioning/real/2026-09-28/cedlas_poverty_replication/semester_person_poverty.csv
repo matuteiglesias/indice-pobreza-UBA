@@ -1,0 +1,17 @@
+period,experiment,policy,geography_level,geography_id,universe,concept,estimand,estimate,weighted_denominator,household_records
+2022-S1,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.3628604766854147,58210214.0,27075
+2022-S1,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.4289410446077384,58210214.0,27075
+2022-S2,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.3935536766241019,58473424.0,26350
+2022-S2,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.4635893222192701,58473424.0,26350
+2023-S1,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.3999802329565649,58734125.0,26409
+2023-S1,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.4683880282544432,58734125.0,26409
+2023-S2,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.4189639955079629,58992389.0,25565
+2023-S2,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.4886858540344925,58992389.0,25565
+2024-S1,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.5287982169181733,59249328.0,25271
+2024-S1,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.59101039930782,59249328.0,25271
+2024-S2,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.3807788641167512,59504038.0,24866
+2024-S2,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.4485471557409263,59504038.0,24866
+2025-S1,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.315979987137017,59755968.0,24504
+2025-S1,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.3970164787557286,59755968.0,24504
+2025-S2,M3R_CEDLAS,official,national,ARG,persons,poverty,fgt0,0.2841360449728329,60003158.0,23467
+2025-S2,M3R_CEDLAS,cedlas_updated_consumption,national,ARG,persons,poverty,fgt0,0.3724051990730221,60003158.0,23467

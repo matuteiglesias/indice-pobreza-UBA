@@ -1,0 +1,17 @@
+{
+  "engel_reference_method_id": "research.argentina-engel-reference-structure/engho-2017-18-p29-p48-signed-sales-v2",
+  "engel_reference_release_id": "engel-reference-080d0d1bdf25fd2f",
+  "engel_sensitivity_manifest_sha256": "6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c",
+  "engel_sensitivity_release_id": "engel-sensitivity-95d0632b226c375d",
+  "m1_welfare_changed": false,
+  "m2_reporting_drift": "deferred",
+  "m3_cba_changed": false,
+  "m3_welfare_changed": false,
+  "nonresponse_calibration_performed": false,
+  "official_basket_manifest_sha256": "5b3b8b035615b4c8087f6cad9240f15add6eba2a39fea0794aefa6dd427a2c86",
+  "official_basket_release_id": "regional-baskets-v2-price-fb884d2b770bbe6f",
+  "scientific_status": "research_validation_not_official_statistics",
+  "semester_method": "pooled_household_contributions_not_average_of_quarter_rates",
+  "status": "pass",
+  "telescope_a_baseline_reproduction": "pass"
+}

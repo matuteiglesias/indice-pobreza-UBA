@@ -1,0 +1,16 @@
+{
+  "cba_changed": false,
+  "choice_manifest_sha256": "e5288da3507814ed3c18827f87cdf3a20d598d7042bea0d1839e0f026c2c05cd",
+  "choice_release_id": "cedlas-choice-attribution-fde92f0ddc5153a8",
+  "m2_reporting_drift": "deferred",
+  "nonresponse_calibration_performed": false,
+  "official_basket_release_id": "regional-baskets-v2-price-fb884d2b770bbe6f",
+  "paper_exact_max_abs_table5_difference_pp": 0.06119717455567719,
+  "paper_exact_target_tolerance_pp": 0.1,
+  "primary_engel_manifest_sha256": "6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c",
+  "primary_engel_release_id": "engel-sensitivity-95d0632b226c375d",
+  "status": "pass",
+  "telescope_a_baseline_reproduction": "pass",
+  "variant_count": 9,
+  "welfare_changed": false
+}

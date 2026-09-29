@@ -1,0 +1,57 @@
+{
+  "artifact_type": "research.argentina-poverty-measurement-alignment/v1",
+  "census_execution_performed": false,
+  "engel_reference_method_id": "research.argentina-engel-reference-structure/engho-2017-18-p29-p48-signed-sales-v2",
+  "engel_reference_release_id": "engel-reference-080d0d1bdf25fd2f",
+  "engel_sensitivity_manifest_sha256": "6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c",
+  "engel_sensitivity_release_id": "engel-sensitivity-95d0632b226c375d",
+  "experiments": [
+    "M1_timing",
+    "M3_engho_engel"
+  ],
+  "files": {
+    "LIMITATIONS.md": {
+      "bytes": 855,
+      "sha256": "9d9916f7ab18bae83617ef21ebe2ca9e58df1fffd2028ad05c80e46f13180088"
+    },
+    "config.lock.json": {
+      "bytes": 2501,
+      "sha256": "6fe0c89ec636df1025dc1dda2816497d1775059de349bf1fba7b2b13dc225f34"
+    },
+    "external_comparison.csv": {
+      "bytes": 3754,
+      "sha256": "df7fe9d79cbff26873ed5693d17e9965df9f9fad887aea35d265f892f329200f"
+    },
+    "line_policies.csv": {
+      "bytes": 44248,
+      "sha256": "2a91f97285b3e69ebbddb6882cc0203c9d0008e62702bb2e37a8c9edd1b3b35d"
+    },
+    "qa.json": {
+      "bytes": 942,
+      "sha256": "e9207b76e3aa8b778299e2bbaa1d0ee48b8f313d03072fd5e8636f0980d915b8"
+    },
+    "quarterly_estimates.csv": {
+      "bytes": 893617,
+      "sha256": "bc0e3037a6152791f5d6387969965e06c176b8087eec874de0b64e8d9c32de66"
+    },
+    "semester_estimates.csv": {
+      "bytes": 448231,
+      "sha256": "d205df23a476c70bd4f2ad6846bbc5cff5db9ddf038e32290715a01c4f48fbf0"
+    },
+    "transitions.csv": {
+      "bytes": 40032,
+      "sha256": "68e8435a316110cf4baebffa950589e9c6470578cc7537511cb353ae4bf34b69"
+    }
+  },
+  "m2_reporting_drift": "deferred",
+  "nonresponse_calibration_performed": false,
+  "official_basket_manifest_sha256": "5b3b8b035615b4c8087f6cad9240f15add6eba2a39fea0794aefa6dd427a2c86",
+  "official_basket_release_id": "regional-baskets-v2-price-fb884d2b770bbe6f",
+  "period_count": 16,
+  "predictive_welfare_execution_performed": false,
+  "release_id": "measurement-alignment-9881018e3eaef09f",
+  "schema": "measurement-alignment-artifact/v1",
+  "scientific_poverty_execution_performed": true,
+  "status": "candidate_diagnostic",
+  "telescope_a_baseline_reproduction": "pass"
+}
