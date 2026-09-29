@@ -28,7 +28,7 @@ repositories.
 | L3 | `closed_pass` | exact corrected L2 → 32-domain labor marginal calibration |
 | L4 | `closed_negative` | true labor helps welfare; transportable labor probabilities do not |
 | M1 | `diagnostic_only` | timing sensitivity implemented; real 2022-Q1..2025-Q4 materialization pending |
-| M3 | `diagnostic_only` | signed-sales ENGHo/Engel threshold sensitivity implemented; real Poverty-side materialization pending |
+| M3 | `diagnostic_only` | signed-sales ENGHo/Engel threshold sensitivity implemented; real Poverty-side materialization complete; forensic CEDLAS replication lane implemented and real forensic run pending |
 
 The Q3 commissioning family is therefore **closed**. It is not a recurring pipeline.
 A surface reruns only when its explicit `rerun_trigger` fires.
@@ -80,6 +80,27 @@ The cloud implementation is complete and synthetic contracts are under CI. The r
 **M2 reporting drift is deferred. Income non-response calibration is not part of the active Measurement Alignment programme.**
 
 No M1/M3 result authorizes Census/province/department propagation until observed-EPH commissioning is reviewed.
+
+### CEDLAS DT370 forensic lane
+
+The remaining ~10–12 pp external M3 gap is now treated as a reconstruction problem, not a tuning target.
+
+Cloud implementation includes:
+
+- paper-exact published low/very-low educational-climate threshold reconstruction;
+- full COICOP02 (alcohol+tobacco) food treatment used by the paper;
+- inherited historical regional ICE relativities;
+- May-2018 regional-division IPC evolution;
+- aggregate-only raw-ENGHo provenance checks using `clima_educativo`, `gastot`, and `gc_01..gc_12`;
+- explicit equal-group versus literal pooled low+very-low reference structures;
+- full-COICOP02 versus alcohol-only food-scope ablation;
+- inherited versus direct regional structure ablation;
+- old-method IPC reconstruction control;
+- Poverty-side Table-5 replication with a 0.1 pp target;
+- Poverty-side choice attribution against both `paper_exact` and the primary signed-sales p29–p48 full path.
+
+This forensic family is diagnostic only. It cannot mutate the primary p29–p48 Artifact A/B and it does not reopen M2 reporting drift or non-response calibration.
+
 
 ## Census donor / semantic state
 
