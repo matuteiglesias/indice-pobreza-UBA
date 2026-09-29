@@ -1,0 +1,17 @@
+{
+  "schema": "measurement-alignment-external-targets/v1",
+  "targets": [
+    {
+      "id": "cedlas-dt370-table5",
+      "authors": "Ignacio Albina, Leonardo Gasparini, Leopoldo Tornarolli",
+      "year": 2026,
+      "title": "Medición de la pobreza en contextos de inflación cambiante: el caso de Argentina",
+      "role": "validation_only",
+      "notes": [
+        "Table-5 poverty rates are not estimator inputs.",
+        "M1 comparison uses the published current/previous-month average-basket arm as an external plausibility target.",
+        "M3 comparison is directional/approximate because this project freezes national weighted p29-p48 and direct regional expenditure structures rather than the paper's exploratory reference-population construction."
+      ]
+    }
+  ]
+}

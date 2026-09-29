@@ -1,6 +1,6 @@
 {
   "schema_version": "poverty-ecosystem-commissioning-registry/v1",
-  "as_of": "2026-09-27",
+  "as_of": "2026-09-28",
   "authority": {
     "repository": "matuteiglesias/indice-pobreza-UBA",
     "path": "science/commissioning",
@@ -317,6 +317,78 @@
       },
       "promotion_role": "Transport warning and block-attribution evidence only; never generates transport weights.",
       "rerun_trigger": "Semantic plane, donor vintage, EPH geography relation, exact model-support universe, or domain-diagnostic implementation changes."
+    },
+    {
+      "id": "M1",
+      "family": "measurement_alignment",
+      "stage": "calibration",
+      "name": "M1 — income/basket timing sensitivity",
+      "question": "Holding the Telescope-A A0 cohort, ITF, PONDIH and adult equivalence fixed, how much do quarter-native current, one-month-lagged and midpoint basket clocks move observed EPH poverty?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "science/measurement_alignment"
+      },
+      "depends_on": [
+        "T-A"
+      ],
+      "outcome_authority": "Telescope-A observed EPH A0; monthly governed official basket values are threshold evidence only",
+      "entity_geography": "same observed EPH households/persons as Telescope A; national plus six basket regions",
+      "weights": {
+        "measurement": "PONDIH",
+        "model_fit": null,
+        "transport": null
+      },
+      "calibration": {
+        "kind": "none",
+        "restriction": "threshold clock only; no household-specific receipt month is asserted"
+      },
+      "current": {
+        "status": "diagnostic_only",
+        "scope": "implemented for 2022-Q1..2025-Q4; real 16-quarter materialization pending",
+        "evidence": [
+          "repo:science/measurement_alignment/README.md",
+          "repo:tests/test_measurement_alignment.py"
+        ],
+        "note": "T0 must reproduce Telescope A exactly. T1 shifts each monthly CBA/CBT one month backward; Tm is the current/lag midpoint. M2 reporting drift and non-response calibration are out of scope."
+      },
+      "promotion_role": "Observed-EPH timing sensitivity only; cannot alter canonical Telescope A or production thresholds.",
+      "rerun_trigger": "Monthly basket parent, Telescope-A A0 household state, adult equivalence, or timing-policy contract changes."
+    },
+    {
+      "id": "M3",
+      "family": "measurement_alignment",
+      "stage": "calibration",
+      "name": "M3 — signed-sales ENGHo/Engel threshold sensitivity",
+      "question": "Holding Telescope-A observed welfare, weights and adult equivalence fixed, how do signed-sales ENGHo17 level-only and level-plus-trajectory CBT paths change observed EPH poverty?",
+      "authority": {
+        "repository": "matuteiglesias/indice-pobreza-UBA",
+        "path": "science/measurement_alignment"
+      },
+      "depends_on": [
+        "T-A"
+      ],
+      "outcome_authority": "Telescope-A observed EPH A0 plus candidate/diagnostic research.argentina-regional-baskets-engel-sensitivity/v1 threshold paths",
+      "entity_geography": "same observed EPH households/persons as Telescope A; national plus six basket regions",
+      "weights": {
+        "measurement": "PONDIH",
+        "model_fit": null,
+        "transport": null
+      },
+      "calibration": {
+        "kind": "none",
+        "restriction": "official CBA fixed; only CBT/ICE changes through signed-sales Artifact B"
+      },
+      "current": {
+        "status": "diagnostic_only",
+        "scope": "implemented for 2022-Q1..2025-Q4; real 16-quarter Poverty-side materialization pending",
+        "evidence": [
+          "repo:science/measurement_alignment/README.md",
+          "repo:tests/test_measurement_alignment.py"
+        ],
+        "note": "Requires Artifact B locked to research.argentina-engel-reference-structure/engho-2017-18-p29-p48-signed-sales-v2. External CEDLAS values are validation only."
+      },
+      "promotion_role": "Observed-EPH ENGHo/Engel ablation only; does not promote alternative thresholds to production.",
+      "rerun_trigger": "Signed-sales Artifact A/B, regional IPC parent, official basket parent, or Telescope-A A0 state changes."
     },
     {
       "id": "OBS",

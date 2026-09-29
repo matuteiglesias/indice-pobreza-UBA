@@ -16,6 +16,7 @@ authority:
   - weighted poverty estimands over already-governed frame/design inputs
   - propagation of justified upstream uncertainty representations when available
   - governed poverty estimate releases, capabilities, QA and limitations
+  - observed-EPH mechanism-specific threshold sensitivities for timing and signed-sales ENGHo/Engel commissioning
   does_not_own:
   - official INDEC poverty publication
   - Census acquisition, sampling or geography authority
@@ -69,6 +70,9 @@ canonical_commands:
 - name: verify-commissioning-surface
   command: make commissioning-smoke
   output: benchmark-backed commissioning smoke with capability blocking
+- name: verify-measurement-alignment
+  command: make measurement-alignment-check
+  output: synthetic M1 timing + M3 signed-sales ENGHo alignment proof
 - name: produce-legacy-v1-release
   command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
   input: poverty-slice-lock/v1
@@ -78,11 +82,13 @@ generated_paths:
 - artifacts/
 - figures/
 verification:
-  status: active-v2-commissioning-closed-capability-permissions-explicit
+  status: active-v2-commissioning-with-m1-m3-measurement-alignment
   last_verified: '2026-09-27'
   command: make v2-release-smoke && make atlas-contract-smoke && make commissioning-smoke
   current_real_gates:
   - keep the closed Q3 commissioning family frozen unless an explicit registry rerun trigger fires
+  - materialize M1 timing and M3 signed-sales ENGHo observed-EPH sensitivities over 2022-Q1..2025-Q4 before any downstream propagation
+  - keep M2 reporting drift deferred and do not open income non-response calibration
   - materialize 2022/23 predictive verticals only where exact governed parents and current scoring policy authorize them
   - complete the bounded real CPV-2022 donor-frame handoff/sensitivity path before claiming donor-vintage robustness
   - supply a justified uncertainty representation before publishing uncertainty statistics
