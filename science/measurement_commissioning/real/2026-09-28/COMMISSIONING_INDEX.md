@@ -1,0 +1,22 @@
+# September 28 commissioning index
+
+Navigation/provenance ledger for the completed September 28 evidence. This
+is not a duplicate report.
+
+| Ladder node | Owner | Evidence | Release / manifest | Code | Status | Scientific meaning |
+|---|---|---|---|---|---|---|
+| ENGHo expenditure treatment | `canastasINDEC` | [signed-sales](https://github.com/matuteiglesias/canastasINDEC/tree/main/science/engel_commissioning/real/2026-09-28/signed_sales) | Artifact A `engel-reference-080d0d1bdf25fd2f` / `b3b24b76da2664de73dd16e210d60c2ecdd21670e5b7afddb709a4b7327e32ff`; Artifact B `engel-sensitivity-95d0632b226c375d` / `6fa8bde9a02c879e7d7dee2b005607fd7462a5193e08a651550d30f1450b380c` | `e5e786a` (compatibility fix `cf16b51`) | PASS with diagnostics | Signed ENGHo sales are preserved rather than clipped. |
+| Engel/reference-population choices | `canastasINDEC` | [low-education provenance](https://github.com/matuteiglesias/canastasINDEC/tree/main/science/engel_commissioning/real/2026-09-28/cedlas_low_education) | ENGHo parent `engho-2017-2018-ff05578d65ae` / parent hash recorded in receipt | `92bd952` | DIAGNOSTIC | Equal-group, pooled, alcohol/tobacco and regional reference choices are measured as aggregate evidence. |
+| CBA/CBT threshold construction | `canastasINDEC` | [DT370 threshold](https://github.com/matuteiglesias/canastasINDEC/tree/main/science/engel_commissioning/real/2026-09-28/cedlas_dt370_threshold) | `cedlas-dt370-replication-2eedcb977b47232e` / `eabf4e7f96da630cb2780d33dbf6ef1f1cad706a1c96dba8ee5a049411453db6` | `e5e786a` | PASS | Paper-exact published vector, inherited regionalization and IPC path are reconstructed and validated. |
+| Direct EPH/Telescope-A poverty | `indice-pobreza-UBA` | [measurement alignment](https://github.com/matuteiglesias/indice-pobreza-UBA/tree/main/science/measurement_commissioning/real/2026-09-28/measurement_alignment) | `measurement-alignment-9881018e3eaef09f` / `4abfd1434204c85b1c0dd93fed28c284cfaa7b24f4a624e7a907aabcea47ea6e` | `98df1c0` | PASS | The 16-quarter observed Telescope-A baseline is reproduced unchanged. |
+| Measurement-alignment sensitivities | `indice-pobreza-UBA` | [M1/M3 package](https://github.com/matuteiglesias/indice-pobreza-UBA/tree/main/science/measurement_commissioning/real/2026-09-28/measurement_alignment) | Same release / manifest above | `98df1c0` | PASS | Timing and signed-sales Engel sensitivities are isolated without changing baseline welfare or CBA. |
+| CEDLAS threshold replication | `canastasINDEC` | [DT370 threshold](https://github.com/matuteiglesias/canastasINDEC/tree/main/science/engel_commissioning/real/2026-09-28/cedlas_dt370_threshold) | Same threshold release / manifest above | `e5e786a` | PASS | Tables 3/4 and the old-method control quantify reconstruction fidelity. |
+| CEDLAS poverty replication | `indice-pobreza-UBA` | [Table 5 package](https://github.com/matuteiglesias/indice-pobreza-UBA/tree/main/science/measurement_commissioning/real/2026-09-28/cedlas_poverty_replication) | `cedlas-poverty-replication-a301021eaaf80dde` / `0c739c7be7f1d2c01b258a61c1e7c17175e092bd95a7be2f014b44a978c824f1` | `98df1c0` | PASS | The paper-exact updated-consumption poverty vector reproduces Table 5 within tolerance. |
+| Choice-attribution bridge | `indice-pobreza-UBA` + `canastasINDEC` | [Poverty bridge](https://github.com/matuteiglesias/indice-pobreza-UBA/tree/main/science/measurement_commissioning/real/2026-09-28/cedlas_choice_attribution) / [Canastas choice evidence](https://github.com/matuteiglesias/canastasINDEC/tree/main/science/engel_commissioning/real/2026-09-28) | Poverty `cedlas-choice-poverty-e5864cdf7d9a0a7d` / `ab85eab5d863682fbb9218a0854385967fefa29ebf88a7a8207e593b9c051b02`; Canastas `cedlas-choice-attribution-fde92f0ddc5153a8` / `e5288da3507814ed3c18827f87cdf3a20d598d7042bea0d1839e0f026c2c05cd` | `98df1c0` / `e5e786a` | PASS | Poverty-point movements are attributed to reference population, food scope, regionalization and primary-path choices without implying additivity. |
+| Predictive welfare / Census transport | `indice-pobreza-UBA` | Not modified | Not applicable | No September 28 change | OUT OF SCOPE | No predictive welfare, Census transport, or downstream predictive release was rerun or changed. |
+
+## Explicit non-changes
+
+The September 28 session made no changes to predictive welfare, Census,
+M2 reporting drift, income non-response calibration, Atlas products, or
+production poverty outputs.
