@@ -54,10 +54,10 @@ class CedlasPovertyReplicationTests(unittest.TestCase):
             art=_artifact(root/"artifact")
             q1=_hh(root/"q1"/"households.parquet","2024-Q1",120,[115,150],[1,1])
             q2=_hh(root/"q2"/"households.parquet","2024-Q2",180,[170,250],[9,1])
-            # Candidate poverty: q1 both poor; q2 first poor, second nonpoor => pooled 11/12.
+            # Candidate poverty: q1 first poor; q2 first poor, second nonpoor => pooled 10/12.
             targets=root/"targets.csv"
             pd.DataFrame([{
-                "semester":"2024-S1","updated_consumption_person_poverty":11/12
+                "semester":"2024-S1","updated_consumption_person_poverty":10/12
             }]).to_csv(targets,index=False)
             result=run_cedlas_poverty_replication({
                 "cedlas_replication_release":str(art),
@@ -75,7 +75,7 @@ class CedlasPovertyReplicationTests(unittest.TestCase):
                 (sem.geography_level=="national")&(sem.universe=="persons")&
                 (sem.concept=="poverty")&(sem.estimand=="fgt0")
             ].iloc[0]
-            self.assertAlmostEqual(float(row.estimate),11/12)
+            self.assertAlmostEqual(float(row.estimate),10/12)
             self.assertFalse(result["qa"]["welfare_changed"])
             self.assertFalse(result["qa"]["cba_changed"])
 
