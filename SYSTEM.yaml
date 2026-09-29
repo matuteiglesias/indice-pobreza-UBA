@@ -17,6 +17,7 @@ authority:
   - propagation of justified upstream uncertainty representations when available
   - governed poverty estimate releases, capabilities, QA and limitations
   - observed-EPH mechanism-specific threshold sensitivities for timing and signed-sales ENGHo/Engel commissioning
+  - forensic observed-EPH replication/attribution of published CEDLAS DT370 updated-consumption choices
   does_not_own:
   - official INDEC poverty publication
   - Census acquisition, sampling or geography authority
@@ -73,6 +74,9 @@ canonical_commands:
 - name: verify-measurement-alignment
   command: make measurement-alignment-check
   output: synthetic M1 timing + M3 signed-sales ENGHo alignment proof
+- name: verify-cedlas-dt370-replication
+  command: make cedlas-dt370-replication-check && make cedlas-choice-attribution-check
+  output: synthetic paper-exact and methodological-choice poverty replication proofs
 - name: produce-legacy-v1-release
   command: PYTHONPATH=src python -m poverty_pipeline run-lock <poverty-slice-lock/v1-path>
   input: poverty-slice-lock/v1
@@ -82,13 +86,14 @@ generated_paths:
 - artifacts/
 - figures/
 verification:
-  status: active-v2-commissioning-with-m1-m3-measurement-alignment
+  status: active-v2-commissioning-with-m1-m3-and-cedlas-forensic-alignment
   last_verified: '2026-09-27'
   command: make v2-release-smoke && make atlas-contract-smoke && make commissioning-smoke
   current_real_gates:
   - keep the closed Q3 commissioning family frozen unless an explicit registry rerun trigger fires
   - materialize M1 timing and M3 signed-sales ENGHo observed-EPH sensitivities over 2022-Q1..2025-Q4 before any downstream propagation
   - keep M2 reporting drift deferred and do not open income non-response calibration
+  - materialize the paper-exact CEDLAS DT370 Table-5 replication and forensic choice-attribution lane before interpreting the residual M3 gap
   - materialize 2022/23 predictive verticals only where exact governed parents and current scoring policy authorize them
   - complete the bounded real CPV-2022 donor-frame handoff/sensitivity path before claiming donor-vintage robustness
   - supply a justified uncertainty representation before publishing uncertainty statistics

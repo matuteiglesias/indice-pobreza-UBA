@@ -48,3 +48,31 @@ Semester estimates pool the two quarter-level household contribution tables and 
 ## External evidence
 
 external_targets/cedlas_dt370_table5.csv is validation evidence only. It does not tune lines or estimator parameters. Our M3 reference population and regional construction deliberately differ from CEDLAS, and M1 is quarter-native rather than household-month exact.
+
+
+## Forensic CEDLAS DT370 replication
+
+A separate forensic lane reproduces the published CEDLAS updated-consumption experiment without mutating the primary p29-p48 method.
+
+The threshold-side authority is built in `canastasINDEC` and follows the paper-exact choices:
+
+- published low/very-low educational-climate division vectors;
+- simple equal-group average of those two published vectors;
+- food block = COICOP 01 + the full COICOP 02 alcohol+tobacco division;
+- inherited old regional/national ICE ratios;
+- May 2018 base;
+- governed direct regional-division IPC.
+
+The Poverty-side `cedlas_dt370.py` applies that threshold path to the exact Telescope-A A0 households and validates the published Table-5 updated-consumption poverty column at a target tolerance of 0.1 percentage point.
+
+The companion `cedlas_choice_attribution.py` consumes the aggregate-only Canastas choice artifact and applies all methodological variants to the same observed-EPH households. It also includes the primary signed-sales p29-p48 full path as a comparison arm.
+
+The forensic variants isolate:
+
+- published vector versus microdata-reconstructed equal-group vector;
+- equal weighting of low/very-low groups versus literal pooled low+very-low households;
+- inherited historical regional ICE ratios versus direct regional expenditure structures;
+- full COICOP02 in food versus alcohol-only within division 02;
+- paper-exact CEDLAS versus the primary signed-sales p29-p48 path.
+
+All outputs are diagnostic. None of these variants silently overwrite the primary Artifact A/B method.
