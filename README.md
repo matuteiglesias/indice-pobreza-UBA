@@ -18,6 +18,19 @@ La superficie activa ya no es un runner atado a una única geografía. En `main`
 - Telescope A (EPH observado), Telescope B (observado → OOF point → predictivo) y Telescope C (transporte EPH → Census);
 - dashboard de commissioning y comparador observado-vs-predictivo por aglomerado.
 
+### Measurement Alignment — M1 / M3
+
+`science/measurement_alignment/` adds two bounded observed-EPH sensitivities beside the frozen Telescope-A A0 result:
+
+- **M1 timing**: current quarter-mean basket, one-month-lagged basket, and current/lag midpoint. ITF, PONDIH, adult equivalence and the A0 cohort remain fixed.
+- **M3 ENGHo/Engel**: official, signed-sales ENGHo17 level-only, and signed-sales ENGHo17 level-plus-trajectory CBT paths. Official CBA remains fixed.
+
+Both experiments consume Telescope A's audited `households.parquet` rather than reparsing EPH. Semester results pool the two quarters' household contributions and recompute FGT; quarter rates are never averaged into semester rates.
+
+M2 source-specific reporting drift is deferred. Income non-response calibration is explicitly outside this programme.
+
+External CEDLAS values under `science/measurement_alignment/external_targets/` are validation/falsification evidence only and never estimator inputs.
+
 La geografía sigue siendo una clave, nunca una geometría calculada dentro de Poverty. `eph_agglomerate` es una geografía de cobertura EPH de primer nivel: puede cruzar provincias/departamentos y no recibe un padre administrativo inventado.
 
 ## Interfaz legacy compatible (v1)
