@@ -56,6 +56,8 @@ def _write_engel(root: Path, *, signed: bool=True) -> Path:
         "method_id":"research.argentina-regional-baskets-engel-sensitivity/engho17-fixed-base-regional-ipc-v1",
         "release_id":"engel-synthetic",
         "engho_reference_release_id":"reference-synthetic",
+        "official_basket_release_id":"basket-synthetic",
+        "scientific_poverty_execution_performed":False,
     }))
     (root/"parent_locks.json").write_text(json.dumps({
         "engho_reference":{
