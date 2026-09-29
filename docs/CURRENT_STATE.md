@@ -1,6 +1,6 @@
 # Poverty ecosystem current state
 
-As of 2026-09-27.
+As of 2026-09-28.
 
 This document is a **current-state index**, not a new scientific authority. It exists so
 future agents do not infer today's work queue from dated runbooks, experiment notes, or
@@ -27,6 +27,8 @@ repositories.
 | L2 | `closed_pass` | corrected shared-feature labor reconstruction; unresolved H06 excluded |
 | L3 | `closed_pass` | exact corrected L2 → 32-domain labor marginal calibration |
 | L4 | `closed_negative` | true labor helps welfare; transportable labor probabilities do not |
+| M1 | `diagnostic_only` | timing sensitivity implemented; real 2022-Q1..2025-Q4 materialization pending |
+| M3 | `diagnostic_only` | signed-sales ENGHo/Engel threshold sensitivity implemented; real Poverty-side materialization pending |
 
 The Q3 commissioning family is therefore **closed**. It is not a recurring pipeline.
 A surface reruns only when its explicit `rerun_trigger` fires.
@@ -63,6 +65,21 @@ Important distinction:
 
 Use `docs/CODEX_BACKFILL_2022_2023_VERTICALS.md` as a bounded local-data
 materialization runbook, not as evidence that every cell is already present.
+
+## Measurement Alignment state
+
+Two threshold-side mechanisms are now implemented beside frozen Telescope A:
+
+- **M1 timing**: T0 current quarter mean, T1 one-month-lagged monthly lines, and Tm current/lag midpoint. The exact A0 household cohort, ITF, PONDIH and adult equivalence remain fixed.
+- **M3 ENGHo/Engel**: official, signed-sales ENGHo17 level-only and signed-sales ENGHo17 level-plus-trajectory CBT paths. Official CBA remains fixed.
+
+Both surfaces consume Telescope A's audited `households.parquet`. They do not reparse EPH or create a new welfare estimator. Semester estimates pool household contributions across the two quarters and recompute FGT; they are never averages of quarterly rates.
+
+The cloud implementation is complete and synthetic contracts are under CI. The remaining bounded step is a real 16-quarter local materialization against the governed official basket parent and signed-sales ENGHo Artifact B.
+
+**M2 reporting drift is deferred. Income non-response calibration is not part of the active Measurement Alignment programme.**
+
+No M1/M3 result authorizes Census/province/department propagation until observed-EPH commissioning is reviewed.
 
 ## Census donor / semantic state
 
