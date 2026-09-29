@@ -97,9 +97,9 @@ class CedlasChoicePovertyTests(unittest.TestCase):
             q1=_hh(root/"q1"/"households.parquet","2024-Q1",120,[115,150],[1,1])
             q2=_hh(root/"q2"/"households.parquet","2024-Q2",180,[170,250],[9,1])
             targets=root/"targets.csv"
-            # Paper-exact thresholds are 20% higher: pooled poor mass 11/12.
+            # Paper-exact thresholds are 20% higher: pooled poor mass 10/12.
             pd.DataFrame([{
-                "semester":"2024-S1","updated_consumption_person_poverty":11/12,
+                "semester":"2024-S1","updated_consumption_person_poverty":10/12,
             }]).to_csv(targets,index=False)
 
             result=run_cedlas_choice_attribution({
@@ -123,7 +123,7 @@ class CedlasChoicePovertyTests(unittest.TestCase):
             )
             paper=table[table["variant_id"]=="paper_exact"].iloc[0]
             alcohol=table[table["variant_id"]=="paper_vector_alcohol_only"].iloc[0]
-            self.assertAlmostEqual(float(paper["person_poverty"]),11/12)
+            self.assertAlmostEqual(float(paper["person_poverty"]),10/12)
             self.assertLess(float(alcohol["person_poverty"]),float(paper["person_poverty"]))
             self.assertLess(float(paper["delta_vs_primary_p29_p48_pp"]),0)
 
