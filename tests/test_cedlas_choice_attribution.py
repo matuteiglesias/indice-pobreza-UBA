@@ -94,7 +94,7 @@ class CedlasChoicePovertyTests(unittest.TestCase):
             root=Path(tmp)
             choice=_choice(root/"choice")
             primary=_primary(root/"primary")
-            q1=_hh(root/"q1"/"households.parquet","2024-Q1",120,[115,150],[1,1])
+            q1=_hh(root/"q1"/"households.parquet","2024-Q1",120,[140,150],[1,1])
             q2=_hh(root/"q2"/"households.parquet","2024-Q2",180,[170,250],[9,1])
             targets=root/"targets.csv"
             # Paper-exact thresholds are 20% higher: pooled poor mass 10/12.
