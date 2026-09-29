@@ -91,6 +91,8 @@ def load_engel_artifact(root: Path) -> dict:
     manifest,manifest_sha=_read_manifest(root)
     if manifest.get("artifact_type")!=ENGEL_ARTIFACT_TYPE or manifest.get("method_id")!=ENGEL_METHOD_ID:
         raise AlignmentError("ENGHo sensitivity parent identity mismatch")
+    if manifest.get("scientific_poverty_execution_performed") is not False:
+        raise AlignmentError("ENGHo parent must remain threshold-only")
     locks=json.loads((root/"parent_locks.json").read_text(encoding="utf-8"))
     ref=locks.get("engho_reference",{})
     if ref.get("method_id")!=ENGEL_REFERENCE_METHOD_ID:
@@ -299,6 +301,11 @@ def external_comparison(semester_estimates: pd.DataFrame, targets_path: Path) ->
 def run_alignment(config: dict) -> dict:
     baskets=load_official_baskets(Path(config["official_basket_release"]))
     engel=load_engel_artifact(Path(config["engel_sensitivity_release"]))
+    if engel["manifest"].get("official_basket_release_id") != baskets["manifest"].get("release_id"):
+        raise AlignmentError("M3 official basket parent differs from M1/Telescope basket parent")
+    parent_hashes=engel["manifest"].get("parent_manifest_sha256",{})
+    if parent_hashes.get("official_baskets") not in (None,baskets["manifest_sha256"]):
+        raise AlignmentError("M3 official basket manifest hash differs from supplied basket parent")
     period_specs=config.get("periods",[])
     if not period_specs:
         raise AlignmentError("config needs periods")
