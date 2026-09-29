@@ -321,7 +321,7 @@
     {
       "id": "M1",
       "family": "measurement_alignment",
-      "stage": "threshold_sensitivity",
+      "stage": "calibration",
       "name": "M1 — income/basket timing sensitivity",
       "question": "Holding the Telescope-A A0 cohort, ITF, PONDIH and adult equivalence fixed, how much do quarter-native current, one-month-lagged and midpoint basket clocks move observed EPH poverty?",
       "authority": {
@@ -357,7 +357,7 @@
     {
       "id": "M3",
       "family": "measurement_alignment",
-      "stage": "threshold_sensitivity",
+      "stage": "calibration",
       "name": "M3 — signed-sales ENGHo/Engel threshold sensitivity",
       "question": "Holding Telescope-A observed welfare, weights and adult equivalence fixed, how do signed-sales ENGHo17 level-only and level-plus-trajectory CBT paths change observed EPH poverty?",
       "authority": {
