@@ -86,14 +86,15 @@ generated_paths:
 - artifacts/
 - figures/
 verification:
-  status: active-v2-commissioning-with-m1-m3-and-cedlas-forensic-alignment
-  last_verified: '2026-09-27'
+  status: active-v2-real-measurement-alignment-longitudinal-welfare-blocked-resource
+  last_verified: '2026-09-30'
   command: make v2-release-smoke && make atlas-contract-smoke && make commissioning-smoke
   current_real_gates:
-  - keep the closed Q3 commissioning family frozen unless an explicit registry rerun trigger fires
-  - materialize M1 timing and M3 signed-sales ENGHo observed-EPH sensitivities over 2022-Q1..2025-Q4 before any downstream propagation
+  - keep the historical 2024-Q3 labor commissioning family frozen unless an explicit registry rerun trigger fires
+  - M1 timing and M3 signed-sales ENGHo observed-EPH sensitivities are real-data materialized over 2022-Q1..2025-Q4 and remain diagnostic
+  - the CEDLAS DT370 paper-exact replication and methodological choice-attribution lane is published and remains forensic/diagnostic
   - keep M2 reporting drift deferred and do not open income non-response calibration
-  - materialize the paper-exact CEDLAS DT370 Table-5 replication and forensic choice-attribution lane before interpreting the residual M3 gap
+  - LONG-WELFARE upstream data/semantic gates are complete; real L10/L11/L12 science remains blocked until encuestador-de-hogares has a resource-safe execution plane
   - materialize 2022/23 predictive verticals only where exact governed parents and current scoring policy authorize them
   - complete the bounded real CPV-2022 donor-frame handoff/sensitivity path before claiming donor-vintage robustness
   - supply a justified uncertainty representation before publishing uncertainty statistics
