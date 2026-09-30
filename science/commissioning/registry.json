@@ -1,6 +1,6 @@
 {
   "schema_version": "poverty-ecosystem-commissioning-registry/v1",
-  "as_of": "2026-09-28",
+  "as_of": "2026-09-30",
   "authority": {
     "repository": "matuteiglesias/indice-pobreza-UBA",
     "path": "science/commissioning",
@@ -23,7 +23,8 @@
     "calibration_is_mechanism_specific": true,
     "identity_is_lineage_not_feature": true,
     "outside_eph_frame_is_unbenchmarked": true,
-    "semantic_alignment_does_not_authorize_transport": true
+    "semantic_alignment_does_not_authorize_transport": true,
+    "historical_labor_L1_L4_scope": "Registry surfaces L1/L2/L3/L4 refer to the bounded 2024-Q3 labor-bridge commissioning family; the 2017-2026 longitudinal welfare program is LONG-WELFARE."
   },
   "surfaces": [
     {
@@ -285,6 +286,41 @@
       "rerun_trigger": "L2 governed feature contract/model, exact identity surface, or welfare model/folds change."
     },
     {
+      "id": "LONG-WELFARE",
+      "family": "longitudinal_welfare",
+      "stage": "downstream_impact",
+      "name": "Longitudinal welfare/labor commissioning — 2017-Q1..2026-Q1",
+      "question": "Can governed longitudinal EPH composition, current aggregate labor context, explicit time structure and short-gap stale/donor labor evidence improve out-of-fold terminal welfare while preserving source clocks and transport boundaries?",
+      "authority": {
+        "repository": "matuteiglesias/encuestador-de-hogares",
+        "path": "docs/LABOR_UPGRADE_CURRENT_STATE_2026-09-30.md"
+      },
+      "depends_on": [],
+      "outcome_authority": "EPH P47T_real for matched OOF welfare evaluation; Census remains research scoring only after EPH arm adjudication",
+      "entity_geography": "EPH persons/households over 2017-Q1..2026-Q1; later exact CPV-2010 sample scoring under explicit donor-vintage semantics",
+      "weights": {
+        "measurement": "inherited from declared longitudinal welfare experiment; aggregate labor rates are contextual covariates, not row weights",
+        "model_fit": "household/panel-grouped OOF under C4B fold contract",
+        "transport": "none before Gate-E arm selection"
+      },
+      "calibration": {
+        "kind": "arm_specific",
+        "restriction": "KL moment projection is optional L12-only and requires an explicit compatible universe; no hidden aggregate rewrite"
+      },
+      "current": {
+        "status": "blocked",
+        "scope": "L1/L1B/L2/L3A/L3B and C4/C4B complete; L4 preflight green; first full real L10 run terminated before bundle emission because object-heavy intake exhausted practical RAM/swap",
+        "evidence": [
+          "repo:matuteiglesias/encuestador-de-hogares/docs/LABOR_UPGRADE_CURRENT_STATE_2026-09-30.md",
+          "local:/home/matias/data/L4_PREFLIGHT_RECEIPT.json",
+          "local:/home/matias/data/L4_RECEIPT.json"
+        ],
+        "note": "Scientific/data prerequisites are green. The active blocker is resource-safe execution at 1.87M-row scale, not missing data or unresolved semantics. No longitudinal L10/L11/L12 scientific result exists yet."
+      },
+      "promotion_role": "Adjudicates the longitudinal L10/L11/L12 welfare arm before any bounded Census research-scoring proof; does not alter observed poverty measurement.",
+      "rerun_trigger": "A resource-safe execution plane can run the reviewed C4B semantics at real scale, or a governed L1/L2/L3/C4 parent/contract materially changes."
+    },
+    {
       "id": "D-1",
       "family": "transport",
       "stage": "transport",
@@ -344,12 +380,12 @@
       },
       "current": {
         "status": "diagnostic_only",
-        "scope": "implemented for 2022-Q1..2025-Q4; real 16-quarter materialization pending",
+        "scope": "real 16-quarter materialization complete, 2022-Q1..2025-Q4",
         "evidence": [
-          "repo:science/measurement_alignment/README.md",
-          "repo:tests/test_measurement_alignment.py"
+          "repo:science/measurement_commissioning/real/2026-09-28/measurement_alignment/receipt.json",
+          "repo:science/measurement_commissioning/real/2026-09-28/measurement_alignment/release_manifest.json"
         ],
-        "note": "T0 must reproduce Telescope A exactly. T1 shifts each monthly CBA/CBT one month backward; Tm is the current/lag midpoint. M2 reporting drift and non-response calibration are out of scope."
+        "note": "Real measurement-alignment release measurement-alignment-9881018e3eaef09f passed; T0 reproduces Telescope A, with midpoint/lagged timing retained as observed-EPH sensitivities."
       },
       "promotion_role": "Observed-EPH timing sensitivity only; cannot alter canonical Telescope A or production thresholds.",
       "rerun_trigger": "Monthly basket parent, Telescope-A A0 household state, adult equivalence, or timing-policy contract changes."
@@ -380,12 +416,13 @@
       },
       "current": {
         "status": "diagnostic_only",
-        "scope": "implemented for 2022-Q1..2025-Q4; real 16-quarter Poverty-side materialization pending",
+        "scope": "real 16-quarter Poverty-side materialization complete, 2022-Q1..2025-Q4; CEDLAS forensic replication and choice attribution published",
         "evidence": [
-          "repo:science/measurement_alignment/README.md",
-          "repo:tests/test_measurement_alignment.py"
+          "repo:science/measurement_commissioning/real/2026-09-28/measurement_alignment/receipt.json",
+          "repo:science/measurement_commissioning/real/2026-09-28/cedlas_poverty_replication/receipt.json",
+          "repo:science/measurement_commissioning/real/2026-09-28/cedlas_choice_attribution/receipt.json"
         ],
-        "note": "Requires Artifact B locked to research.argentina-engel-reference-structure/engho-2017-18-p29-p48-signed-sales-v2. External CEDLAS values are validation only."
+        "note": "Signed-sales M3 real materialization passed. CEDLAS paper-exact poverty replication is within 0.1 pp tolerance and choice attribution isolates reference-population, food-scope and regionalization differences without implying additivity."
       },
       "promotion_role": "Observed-EPH ENGHo/Engel ablation only; does not promote alternative thresholds to production.",
       "rerun_trigger": "Signed-sales Artifact A/B, regional IPC parent, official basket parent, or Telescope-A A0 state changes."
