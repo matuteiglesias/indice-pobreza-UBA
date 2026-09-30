@@ -44,7 +44,9 @@ Telescope C
 EPH → Census transport decomposition
 ```
 
-### Labor
+### Historical bounded labor bridge — 2024-Q3
+
+The registry IDs below are retained for the closed 2024-Q3 bridge and must not be reused as shorthand for the newer longitudinal programme.
 
 ```text
 L1
@@ -59,6 +61,34 @@ bounded agglomerate marginal calibration
 L4
 does the bridge improve welfare prediction?
 ```
+
+
+### Longitudinal welfare/labor — 2017-Q1..2026-Q1
+
+The newer programme is a separate registry surface, `LONG-WELFARE`, owned by
+`encuestador-de-hogares`:
+
+```text
+L1/L1B official aggregate labor context
+          +
+L2 real 37-quarter EPH evidence
+          +
+L3B governed P0_LONG / P1R_NOLAB_LONG composition
+          ↓
+L10 composition + aggregate labor + explicit time
+          ↓
+short-gap panel evidence
+     ↙             ↘
+   L11             L12
+stale observed   donor-informed current-state probabilities
+     \             /
+          ↓
+     arm adjudication
+          ↓
+ bounded Census research scoring
+```
+
+This programme is currently `blocked` only at real-scale execution: the first L10 run exhausted practical memory before emitting a result bundle. No longitudinal L10/L11/L12 conclusion exists yet. The historical 2024-Q3 `closed_negative` labor-bridge result is anchor evidence, not a substitute for this adjudication.
 
 ### Transport support
 
@@ -204,10 +234,7 @@ The scientific conclusion is intentionally bounded: labor contains
 welfare-relevant information, but the currently transportable reconstruction
 does not preserve enough of that information to be a useful welfare feature.
 
-There is no active commissioning expansion queue. Closed questions rerun only on
-their explicit registry triggers. D-2, L5, Telescope D, generic raking/IPF,
-density-ratio weighting and a joint-distribution program are not implied next
-steps.
+There is no automatic expansion of the closed 2024-Q3 commissioning family. Closed questions rerun only on their explicit registry triggers. The active longitudinal work is separately represented by `LONG-WELFARE`, whose next step is resource-safe execution rather than a new labor estimator. D-2, L5, Telescope D, generic raking/IPF, density-ratio weighting and a joint-distribution program are not implied next steps.
 
 ## Mechanical Q3 closure packet
 
