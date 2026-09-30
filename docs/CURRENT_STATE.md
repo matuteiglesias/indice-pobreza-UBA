@@ -27,7 +27,7 @@ repositories.
 | L2 | `closed_pass` | **historical Q3 labor family**: corrected shared-feature labor reconstruction; unresolved H06 excluded |
 | L3 | `closed_pass` | **historical Q3 labor family**: exact corrected L2 → 32-domain labor marginal calibration |
 | L4 | `closed_negative` | **historical Q3 labor family**: true labor helps welfare; commissioned transportable labor probabilities do not |
-| LONG-WELFARE | `blocked` | new 2017-Q1..2026-Q1 L10/L11/L12 programme; all upstream gates green, real L10 blocked by object-heavy memory usage before result emission |
+| LONG-WELFARE | `blocked` | new 2017-Q1..2026-Q1 L10/L11/L12 programme; C6 resource-safe runtime merged, real 1.87M-row acceptance and L10 result still pending |
 | M1 | `diagnostic_only` | real 16-quarter timing sensitivity materialized and published |
 | M3 | `diagnostic_only` | real signed-sales ENGHo/Engel sensitivity + CEDLAS replication/choice-attribution materialized and published |
 
