@@ -13,9 +13,11 @@ Cross-ecosystem commissioning status is governed by:
 - `CONSOLIDATED_FRAMEWORK.md` — the human-readable commissioning spine and promotion gates;
 - `registry.py` — structural validator and compact status renderer.
 
-These files **reference** Telescope A/B/C, L1-L4 and transport diagnostics; they do not
-reimplement them. If a historical document conflicts with this registry about which
-surface is active or superseded, the registry controls the current commissioning map.
+These files **reference** Telescope A/B/C, the historical bounded 2024-Q3 labor
+surfaces `L1-L4`, the newer `LONG-WELFARE` longitudinal programme, and transport
+diagnostics; they do not reimplement them. The two labor namespaces are intentionally
+distinct. If a historical document conflicts with this registry about which surface is
+active or superseded, the registry controls the current commissioning map.
 
 ## Boundary
 
