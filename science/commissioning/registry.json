@@ -309,16 +309,17 @@
       },
       "current": {
         "status": "blocked",
-        "scope": "L1/L1B/L2/L3A/L3B and C4/C4B complete; L4 preflight green; first full real L10 run terminated before bundle emission because object-heavy intake exhausted practical RAM/swap",
+        "scope": "L1/L1B/L2/L3A/L3B and C4/C4B complete; C6 resource-safe runtime merged; real 1.87M-row C6 acceptance and L10 Gate-A result still pending",
         "evidence": [
           "repo:matuteiglesias/encuestador-de-hogares/docs/LABOR_UPGRADE_CURRENT_STATE_2026-09-30.md",
+          "repo:matuteiglesias/encuestador-de-hogares/docs/C6_RESOURCE_SAFE_LONGITUDINAL_EXECUTION.md",
           "local:/home/matias/data/L4_PREFLIGHT_RECEIPT.json",
           "local:/home/matias/data/L4_RECEIPT.json"
         ],
-        "note": "Scientific/data prerequisites are green. The active blocker is resource-safe execution at 1.87M-row scale, not missing data or unresolved semantics. No longitudinal L10/L11/L12 scientific result exists yet."
+        "note": "Scientific/data prerequisites and the C6 computational implementation are green. The active gate is real-scale C6 resource/restartability acceptance; no longitudinal L10/L11/L12 scientific result exists yet."
       },
       "promotion_role": "Adjudicates the longitudinal L10/L11/L12 welfare arm before any bounded Census research-scoring proof; does not alter observed poverty measurement.",
-      "rerun_trigger": "A resource-safe execution plane can run the reviewed C4B semantics at real scale, or a governed L1/L2/L3/C4 parent/contract materially changes."
+      "rerun_trigger": "The merged C6 execution plane passes the real 1.87M-row resource/restartability gate, or a governed L1/L2/L3/C4 parent/contract materially changes."
     },
     {
       "id": "D-1",
