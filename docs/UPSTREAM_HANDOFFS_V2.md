@@ -87,10 +87,13 @@ Poverty will refuse or defer a real run when:
 
 ## Handoff B — deployable welfare estimates
 
-### Producer candidates
+### Producer authority
 
-- promoted model package/evidence from `income-modeling-eph`;
-- a separate Census scoring/inference runtime consuming that promoted package and an exact frame.
+The current welfare-deployment/scoring authority is `encuestador-de-hogares`.
+
+`income-modeling-eph` remains the EPH-only preprocessing/model-research authority and may provide scientific evidence or candidate model ideas, but Poverty must not treat it as the Census scoring runtime.
+
+The target handoff is therefore a governed `research.household-welfare@1`-family release (or compatible successor) emitted by the survey→Census inference layer over one exact frame/sample.
 
 ### Core output
 
@@ -233,13 +236,13 @@ A good next release should move toward:
 - removal or deprecation of poverty-region classification as an intrinsic geography requirement;
 - enough design information to state which estimands the weight supports.
 
-### For model promotion / Census inference
+### For `encuestador-de-hogares` welfare inference
 
-A good promoted/deployed release should move toward:
+A good promoted/deployed release should provide:
 
-- no poverty-time import of `income-modeling-eph`;
-- exact model artifact identity and feature contract;
-- scoring over one exact Census/frame release;
+- no poverty-time import of `income-modeling-eph` or model-training runtime;
+- exact transport/welfare model artifact identity and governed composition profile;
+- scoring over one exact Census frame/sample release with donor vintage and welfare period kept distinct;
 - output in an approved linear welfare concept;
 - explicit monetary reference;
 - exact frame namespace coverage;
