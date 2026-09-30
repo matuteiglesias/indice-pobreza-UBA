@@ -1,6 +1,6 @@
 # Poverty ecosystem current state
 
-As of 2026-09-28.
+As of 2026-09-30.
 
 This document is a **current-state index**, not a new scientific authority. It exists so
 future agents do not infer today's work queue from dated runbooks, experiment notes, or
@@ -22,16 +22,28 @@ repositories.
 | Telescope A | `closed_pass` | observed EPH poverty truth, 2022-Q1..2025-Q4 |
 | Telescope B | `closed_pass` | within-EPH observed → OOF point → predictive bridge, Q3 anchor |
 | Telescope C | `diagnostic_only` | EPH→Census transport decomposition, Q3 anchor; no Census outcome authority |
-| L1 | `closed_pass` | EPH labor truth / official benchmark reproduction, 16 quarters |
+| L1 | `closed_pass` | **historical Q3 labor family**: EPH labor truth / official benchmark reproduction, 16 quarters |
 | D-1 | `diagnostic_only` | corrected Q3/CPV-2010 source-separation diagnostic; no transport weighting |
-| L2 | `closed_pass` | corrected shared-feature labor reconstruction; unresolved H06 excluded |
-| L3 | `closed_pass` | exact corrected L2 → 32-domain labor marginal calibration |
-| L4 | `closed_negative` | true labor helps welfare; transportable labor probabilities do not |
-| M1 | `diagnostic_only` | timing sensitivity implemented; real 2022-Q1..2025-Q4 materialization pending |
-| M3 | `diagnostic_only` | signed-sales ENGHo/Engel threshold sensitivity implemented; real Poverty-side materialization complete; forensic CEDLAS replication lane implemented and real forensic run pending |
+| L2 | `closed_pass` | **historical Q3 labor family**: corrected shared-feature labor reconstruction; unresolved H06 excluded |
+| L3 | `closed_pass` | **historical Q3 labor family**: exact corrected L2 → 32-domain labor marginal calibration |
+| L4 | `closed_negative` | **historical Q3 labor family**: true labor helps welfare; commissioned transportable labor probabilities do not |
+| LONG-WELFARE | `blocked` | new 2017-Q1..2026-Q1 L10/L11/L12 programme; all upstream gates green, real L10 blocked by object-heavy memory usage before result emission |
+| M1 | `diagnostic_only` | real 16-quarter timing sensitivity materialized and published |
+| M3 | `diagnostic_only` | real signed-sales ENGHo/Engel sensitivity + CEDLAS replication/choice-attribution materialized and published |
 
 The Q3 commissioning family is therefore **closed**. It is not a recurring pipeline.
 A surface reruns only when its explicit `rerun_trigger` fires.
+
+## Labor programme namespaces
+
+There are now two distinct labor programmes.
+
+- Registry IDs `L1/L2/L3/L4` refer to the bounded **2024-Q3 labor bridge** and remain closed for that declared question.
+- `LONG-WELFARE` is the newer **2017-Q1..2026-Q1 longitudinal welfare/labor** programme owned by `encuestador-de-hogares`.
+
+The Q3 `closed_negative` result remains valid anchor evidence but does not adjudicate L10 aggregate labor context, short-gap L11 stale-state evidence, or L12 donor-informed current-state probabilities.
+
+The dated cross-repository baseline is `docs/POVERTY_ECOSYSTEM_BASELINE_2026-09-30.md`.
 
 ## What the labor closure means
 
@@ -52,8 +64,9 @@ feature set.
 
 ## Temporal coverage
 
-The code/contract surface now supports a 2022-Q1..2025-Q4 logical envelope where the
-required governed parents exist.
+Observed poverty/measurement commissioning retains its governed 2022-Q1..2025-Q4
+envelope. Separately, the longitudinal welfare research parent surface now spans
+2017-Q1..2026-Q1 with 37 exact EPH quarters.
 
 Important distinction:
 
@@ -75,7 +88,7 @@ Two threshold-side mechanisms are now implemented beside frozen Telescope A:
 
 Both surfaces consume Telescope A's audited `households.parquet`. They do not reparse EPH or create a new welfare estimator. Semester estimates pool household contributions across the two quarters and recompute FGT; they are never averages of quarterly rates.
 
-The cloud implementation is complete and synthetic contracts are under CI. The remaining bounded step is a real 16-quarter local materialization against the governed official basket parent and signed-sales ENGHo Artifact B.
+The real 16-quarter measurement-alignment materialization is complete and published as `measurement-alignment-9881018e3eaef09f`. Telescope-A reproduction passes; M1/M3 remain diagnostic sensitivities rather than production threshold changes.
 
 **M2 reporting drift is deferred. Income non-response calibration is not part of the active Measurement Alignment programme.**
 
@@ -83,7 +96,7 @@ No M1/M3 result authorizes Census/province/department propagation until observed
 
 ### CEDLAS DT370 forensic lane
 
-The remaining ~10–12 pp external M3 gap is now treated as a reconstruction problem, not a tuning target.
+The former ~10–12 pp external M3 gap has been reconstructed as a methodological-choice attribution problem rather than a tuning target.
 
 Cloud implementation includes:
 
@@ -99,7 +112,7 @@ Cloud implementation includes:
 - Poverty-side Table-5 replication with a 0.1 pp target;
 - Poverty-side choice attribution against both `paper_exact` and the primary signed-sales p29–p48 full path.
 
-This forensic family is diagnostic only. It cannot mutate the primary p29–p48 Artifact A/B and it does not reopen M2 reporting drift or non-response calibration.
+The paper-exact poverty replication `cedlas-poverty-replication-a301021eaaf80dde` reproduces Table 5 within the declared 0.1 pp tolerance, and the choice-attribution release isolates reference-population, food-scope and regionalization effects. This forensic family remains diagnostic only. It cannot mutate the primary p29–p48 Artifact A/B and it does not reopen M2 reporting drift or non-response calibration.
 
 
 ## Census donor / semantic state
@@ -135,9 +148,7 @@ This is a donor-frame experiment, not a sampler redesign.
 
 ### Semantic plane
 
-`eph-censo-aligner` has a source-backed real policy for EPH 2024-Q3 ↔ CPV-2010.
-The commissioned plane has zero hard semantic violations; support-only differences remain
-diagnostic. Semantic alignment does not authorize statistical transport.
+`eph-censo-aligner` retains the source-backed exact EPH 2024-Q3 ↔ CPV-2010 review policy and now also materializes real 37-quarter canonical longitudinal composition profiles. `P0_LONG` and `P1R_NOLAB_LONG` each preserve all 1,869,620 C2 rows across 2017-Q1..2026-Q1; reviewed survey-special codes become feature-level nulls while unknown substantive drift still fails closed. Semantic alignment does not authorize statistical transport.
 
 ## Poverty release permissions
 
