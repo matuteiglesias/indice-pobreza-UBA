@@ -130,7 +130,7 @@ class CommissioningRegistryTest(unittest.TestCase):
     def test_registry_is_valid_and_small(self) -> None:
         data = load()
         result = REGISTRY.validate_registry(data)
-        self.assertEqual(result["active_surfaces"], 11)
+        self.assertEqual(result["active_surfaces"], 12)
         self.assertEqual(result["historical_surfaces"], 3)
         self.assertEqual(result["closure_programs"], 1)
         self.assertIs(data["invariants"]["no_generic_raking_or_ipf"], True)
@@ -143,7 +143,7 @@ class CommissioningRegistryTest(unittest.TestCase):
         data = load()
         ids = [surface["id"] for surface in data["surfaces"]]
         self.assertEqual(
-            ids, ["T-A", "T-B", "T-C", "L1", "L2", "L3", "L4", "D-1", "M1", "M3", "OBS"]
+            ids, ["T-A", "T-B", "T-C", "L1", "L2", "L3", "L4", "LONG-WELFARE", "D-1", "M1", "M3", "OBS"]
         )
         by_id = {surface["id"]: surface for surface in data["surfaces"]}
         self.assertEqual(by_id["T-A"]["stage"], "truth")
@@ -152,6 +152,8 @@ class CommissioningRegistryTest(unittest.TestCase):
         self.assertEqual(by_id["L1"]["stage"], "truth")
         self.assertEqual(by_id["L3"]["stage"], "calibration")
         self.assertEqual(by_id["L4"]["stage"], "downstream_impact")
+        self.assertEqual(by_id["LONG-WELFARE"]["current"]["status"], "blocked")
+        self.assertEqual(by_id["LONG-WELFARE"]["stage"], "downstream_impact")
         self.assertEqual(by_id["M1"]["stage"], "calibration")
         self.assertEqual(by_id["M3"]["stage"], "calibration")
         self.assertTrue(
