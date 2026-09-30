@@ -143,11 +143,14 @@ blocker = resource-safe execution plane
 scientific L10/L11/L12 result = not yet produced
 ```
 
-The next implementation frontier is C6-style execution hardening: compact columnar
-representation, bounded/sequential fold execution and restartable checkpoints while
-preserving the already-reviewed C4B fold/time/composition semantics.
+C6 resource-safe execution hardening is now merged in `encuestador-de-hogares`:
+a streamed C2↔C5 model plane, typed memory-mapped arrays, persistent fold IDs,
+sequential outer-fold execution and atomic restartable checkpoints passed hosted
+synthetic C4B-parity/regression gates.
 
-Do not treat this resource blocker as a reason to reopen L1/L2/L3 semantic architecture.
+The current frontier is the **real 1.87M-row C6 acceptance run**: prove the resource
+budget and checkpoint resume semantics, then run L4 Gate-A matched comparisons. Do not
+treat this acceptance gate as a reason to reopen L1/L2/L3 semantic architecture.
 
 ## Status precedence
 
