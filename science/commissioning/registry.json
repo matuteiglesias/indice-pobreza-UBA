@@ -308,18 +308,18 @@
         "restriction": "KL moment projection is optional L12-only and requires an explicit compatible universe; no hidden aggregate rewrite"
       },
       "current": {
-        "status": "blocked",
-        "scope": "L1/L1B/L2/L3A/L3B and C4/C4B complete; C6 resource-safe runtime merged; real 1.87M-row C6 acceptance and L10 Gate-A result still pending",
+        "status": "diagnostic_only",
+        "scope": "Gate A complete bounded commissioning; Gate B complete descriptive evidence; 2017-Q1..2026-Q1; 827,793 eligible 1Q/3Q pairs",
         "evidence": [
           "repo:matuteiglesias/encuestador-de-hogares/docs/LABOR_UPGRADE_CURRENT_STATE_2026-09-30.md",
           "repo:matuteiglesias/encuestador-de-hogares/docs/C6_RESOURCE_SAFE_LONGITUDINAL_EXECUTION.md",
-          "local:/home/matias/data/L4_PREFLIGHT_RECEIPT.json",
-          "local:/home/matias/data/L4_RECEIPT.json"
+          "local:/home/matias/data/l4-c6-20260930/C6_REAL_ACCEPTANCE_RECEIPT.json",
+          "local:/home/matias/data/l4-gate-b-20261001/GATE_B_REAL_RECEIPT.json"
         ],
-        "note": "Scientific/data prerequisites and the C6 computational implementation are green. The active gate is real-scale C6 resource/restartability acceptance; no longitudinal L10/L11/L12 scientific result exists yet."
+        "note": "Gate B is descriptive evidence only. L11 is pending matched evaluation on supported panel rows; L12 is pending separate OOF transition-model justification."
       },
       "promotion_role": "Adjudicates the longitudinal L10/L11/L12 welfare arm before any bounded Census research-scoring proof; does not alter observed poverty measurement.",
-      "rerun_trigger": "The merged C6 execution plane passes the real 1.87M-row resource/restartability gate, or a governed L1/L2/L3/C4 parent/contract materially changes."
+      "rerun_trigger": "L2 parent, panel-link policy, monetary parent, L10 folds/target, or L11/L12 transition specification changes."
     },
     {
       "id": "D-1",
