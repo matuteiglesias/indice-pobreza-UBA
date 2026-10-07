@@ -86,3 +86,23 @@ The first integration target is `2024-Q3`; basket packaging should therefore sel
 5. aggregate unit-weight research FGT estimates, keeping Q8 transport caveats attached.
 
 Collective/private dwelling refinement is explicitly deferred for this first smoke.
+
+## Governed canastas quarter-slice adapter
+
+`poverty_pipeline.adapters.adapt_canastas_poverty_slice` is the read-only boundary from a governed `canastasINDEC` quarter slice into Poverty's existing `PovertyLineRelease` contract.
+
+It validates, before returning any line values:
+
+- `research.argentina-regional-baskets-poverty-input/v1` artifact identity;
+- the v2 basket method and exact curated-official-panel monetary reference;
+- candidate/reviewed/approved source status without promoting it;
+- exact producer-declared payload hashes;
+- requested period identity;
+- exactly the six governed threshold-area IDs;
+- `ARS_per_equivalent_adult` units and row-level monetary identity;
+- positive CBA/CBT with CBA <= CBT;
+- the upstream invariant that no poverty execution was performed by canastas.
+
+The adapter receives the Poverty method release ID from the Poverty side. It does not ask `canastasINDEC` to own or guess Poverty methodology, geography bindings, adult equivalence, welfare, or FGT semantics.
+
+Adapting a basket slice is a consumer-contract proof only. It does not authorize or execute a poverty estimate.
