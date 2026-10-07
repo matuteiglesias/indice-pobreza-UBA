@@ -137,7 +137,8 @@ class CanastasBasketAdapterTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             release = self.release(Path(tmp))
             table = release / "regional_baskets.csv"
-            rows = list(csv.DictReader(table.open(newline="", encoding="utf-8")))
+            with table.open(newline="", encoding="utf-8") as stream:
+                rows = list(csv.DictReader(stream))
             rows[-1]["region_id"] = rows[0]["region_id"]
             with table.open("w", newline="", encoding="utf-8") as stream:
                 writer = csv.DictWriter(
